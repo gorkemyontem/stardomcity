@@ -5,7 +5,7 @@
 	$form_width = ( isset( $this->settings['width'] ) && !empty( $this->settings['width'] ) ) ? ( 'max-width:'. $this->settings['width'] .';') : '';
 ?>
 
-<form class="wpfepp-form" method="POST" style="<?php echo $form_width ?>">
+<form class="wpfepp wpfepp-form" method="POST" style="<?php echo $form_width ?>">
 	
 	<div class="wpfepp-message <?php echo ( $submission_status ) ? "success" : "error"; ?><?php echo isset( $form_errors['form'] ) ? 'display' : ''; ?>">
 		<?php echo ( isset( $form_errors['form'] ) ) ? $form_errors['form'] : ""; ?>
@@ -74,7 +74,7 @@
 						<div class="wpfepp-<?php echo $field_key; ?>-field">
 							<div class="wpfepp-<?php echo $field_key; ?>-container"><?php $this->output_thumbnail($field_current); ?></div>
 							<a class="wpfepp-<?php echo $field_key; ?>-link" href="#"><?php _e('Select Featured Image', 'wpfepp-plugin'); ?></a>
-							<a class="wpfepp-<?php echo $field_key; ?>-close" href="#"><i class="wpfepp-icon-close"></i></a>
+							<a class="wpfepp-<?php echo $field_key; ?>-close" href="#"><span class="dashicons dashicons-no"></span></a>
 							<input type="hidden" value="<?php echo ( $field_current ) ? esc_attr( $field_current ) : "-1"; ?>" name="<?php echo $field_key; ?>" class="wpfepp-<?php echo $field_key; ?>-id wpfepp-form-field" <?php echo $this->print_restrictions( $field ); ?> />
 						</div>
 					<?php } ?>
@@ -262,7 +262,7 @@
 								<div class="wpfepp-media-preview"><?php echo wpfepp_media_preview_html( $field_current, $attachdata ); ?></div>
 								<div class="element-media-controls">
 									<a href="#" class="wpfepp-media-select"><?php _e( "Select / Upload File", "wpfepp-plugin" ); ?></a>
-									<a href="#" class="wpfepp-media-clear"><i class="wpfepp-icon-close"></i></a>
+									<a href="#" class="wpfepp-media-clear"><span class="dashicons dashicons-no"></span></a>
 								</div>
 							</div>
 							<?php } elseif( $field['element'] == 'image_galery' ) { ?>
@@ -271,7 +271,7 @@
 								<div class="wpfepp-media-preview"><?php echo wpfepp_media_preview_html( $field_current, 'attids' ); ?></div>
 								<div class="element-media-controls">
 									<a href="#" class="wpfepp-media-select"><?php _e( "Select Gallery Images", "wpfepp-plugin" ); ?></a>
-									<a href="#" class="wpfepp-media-clear"><i class="wpfepp-icon-close"></i></a>
+									<a href="#" class="wpfepp-media-clear"><span class="dashicons dashicons-no"></span></a>
 								</div>
 							</div>
 							<?php } ?>
@@ -304,10 +304,11 @@
 		<?php wp_nonce_field( 'wpfepp-form-'.$this->id.'-nonce', '_wpnonce', false, true ); ?>
 		<input type="hidden" name="action" value="wpfepp_handle_submission_ajax" />
 
-		<?php //Finally, the submit button ?>
-		<button type="submit" class="wpfepp-button wpfepp-submit-button <?php echo (isset($this->settings['button_color'])) ? $this->settings['button_color'] : 'blue'; ?>" name="wpfepp-form-<?php echo $this->id; ?>-submit"><i></i> <?php _e('Submit', 'wpfepp-plugin'); ?></button>
+		<?php /* Send form */ ?>
+		<button type="submit" class="wpfepp-button wpfepp-submit-button <?php echo (isset($this->settings['button_color'])) ? $this->settings['button_color'] : 'blue'; ?>" name="wpfepp-form-<?php echo $this->id; ?>-submit"><?php _e( "Submit", "wpfepp-plugin" ); ?></button>
 		<?php if( $this->settings['enable_drafts'] && ($this->post_status($final_post_id) == 'new' || $this->post_status($final_post_id) == 'draft') ): ?>
-			<button type="submit" class="wpfepp-button wpfepp-save-button cancel" name="wpfepp-form-<?php echo $this->id; ?>-save"><i></i> <?php _e('Save Draft', 'wpfepp-plugin'); ?></button>
+		<button type="submit" class="wpfepp-button wpfepp-save-button cancel" name="wpfepp-form-<?php echo $this->id; ?>-save"><?php _e( "Save Draft", "wpfepp-plugin" ); ?></button>
 		<?php endif; ?>
+		<span class="dashicons dashicons-update"></span>
 	</div>
 </form>

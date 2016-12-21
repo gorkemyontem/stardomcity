@@ -62,7 +62,16 @@ class Ai1wm_Export_Controller {
 		}
 
 		// Get hook
-		if ( isset( $wp_filter['ai1wm_export'] ) && ( $filters = $wp_filter['ai1wm_export'] ) && ksort( $filters ) ) {
+		if ( isset( $wp_filter['ai1wm_export'] ) && ( $filters = $wp_filter['ai1wm_export'] ) ) {
+			// WordPress 4.7 introduces new class for working with filters/actions called WP_Hook
+			// which adds another level of abstraction and we need to address it.
+			if ( is_object( $filters ) ) {
+				$filters = current( $filters );
+			}
+
+			ksort( $filters );
+
+			// Loop over filters
 			while ( $hooks = current( $filters ) ) {
 				if ( $priority === key( $filters ) ) {
 					foreach ( $hooks as $hook ) {

@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-11-21 16:38+0000\n"
+"POT-Creation-Date: 2016-12-17 23:51+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: \n"
@@ -14,28 +14,28 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "X-Generator: Loco - https://localise.biz/"
 
-#: admin/class-wpfepp-admin-messages.php:49
+#: admin/class-wpfepp-admin-messages.php:53
 msgid ""
 "Thank you for installing the latest version of Frontend Publishing Pro "
 "(Rehub addition)."
 msgstr ""
 
-#: admin/class-wpfepp-admin-messages.php:50
+#: admin/class-wpfepp-admin-messages.php:54
 #: admin/class-wpfepp-form-manager.php:163
 msgid "Forms"
 msgstr ""
 
-#: admin/class-wpfepp-admin-messages.php:51
+#: admin/class-wpfepp-admin-messages.php:55
 #: admin/class-wpfepp-form-manager.php:53
-#: admin/class-wpfepp-plugin-settings.php:99 admin/partials/settings.php:10
+#: admin/class-wpfepp-plugin-settings.php:99 admin/partials/settings.php:9
 msgid "Settings"
 msgstr ""
 
-#: admin/class-wpfepp-admin-messages.php:52
+#: admin/class-wpfepp-admin-messages.php:56
 msgid "List of important theme meta fields"
 msgstr ""
 
-#: admin/class-wpfepp-admin-messages.php:53
+#: admin/class-wpfepp-admin-messages.php:57
 msgid "Dismiss This Message"
 msgstr ""
 
@@ -116,7 +116,7 @@ msgstr ""
 msgid "RH Frontend"
 msgstr ""
 
-#: admin/class-wpfepp-form-manager.php:163 admin/partials/forms.php:3
+#: admin/class-wpfepp-form-manager.php:163 admin/partials/forms.php:2
 msgid "Frontend Publishing Forms"
 msgstr ""
 
@@ -211,11 +211,11 @@ msgstr ""
 msgid "Name"
 msgstr ""
 
-#: admin/class-wpfepp-list-table.php:105 admin/partials/forms.php:21
+#: admin/class-wpfepp-list-table.php:105 admin/partials/forms.php:22
 msgid "Post Type"
 msgstr ""
 
-#: admin/class-wpfepp-list-table.php:106 admin/partials/forms.php:16
+#: admin/class-wpfepp-list-table.php:106 admin/partials/forms.php:17
 msgid "Description"
 msgstr ""
 
@@ -261,55 +261,55 @@ msgid "Payment"
 msgstr ""
 
 #: admin/class-wpfepp-plugin-settings.php:99
-#: admin/class-wpfepp-plugin-settings.php:109
+#: admin/class-wpfepp-plugin-settings.php:108
 msgid "Frontend Publishing Settings"
 msgstr ""
 
-#: admin/class-wpfepp-plugin-settings.php:157
+#: admin/class-wpfepp-plugin-settings.php:156
 msgid "There are errors in your submission. Please try again."
 msgstr ""
 
-#: admin/class-wpfepp-plugin-settings.php:158
+#: admin/class-wpfepp-plugin-settings.php:157
 msgid "This field is required."
 msgstr ""
 
-#: admin/class-wpfepp-plugin-settings.php:159
+#: admin/class-wpfepp-plugin-settings.php:158
 msgid "Please enter atleast {0} words."
 msgstr ""
 
-#: admin/class-wpfepp-plugin-settings.php:160
+#: admin/class-wpfepp-plugin-settings.php:159
 msgid "You can't enter more than {0} words."
 msgstr ""
 
-#: admin/class-wpfepp-plugin-settings.php:161
+#: admin/class-wpfepp-plugin-settings.php:160
 msgid "Please enter atleast {0} symbols."
 msgstr ""
 
-#: admin/class-wpfepp-plugin-settings.php:162
+#: admin/class-wpfepp-plugin-settings.php:161
 msgid "You can't enter more than {0} symbols."
 msgstr ""
 
-#: admin/class-wpfepp-plugin-settings.php:163
+#: admin/class-wpfepp-plugin-settings.php:162
 msgid "You can't enter more than {0} links."
 msgstr ""
 
-#: admin/class-wpfepp-plugin-settings.php:164
+#: admin/class-wpfepp-plugin-settings.php:163
 msgid "Please enter atleast {0}."
 msgstr ""
 
-#: admin/class-wpfepp-plugin-settings.php:165
+#: admin/class-wpfepp-plugin-settings.php:164
 msgid "You can't enter more than {0}."
 msgstr ""
 
-#: admin/class-wpfepp-plugin-settings.php:166
+#: admin/class-wpfepp-plugin-settings.php:165
 msgid "Please enter a valid email address."
 msgstr ""
 
-#: admin/class-wpfepp-plugin-settings.php:167
+#: admin/class-wpfepp-plugin-settings.php:166
 msgid "Please enter a valid URL."
 msgstr ""
 
-#: admin/class-wpfepp-plugin-settings.php:168
+#: admin/class-wpfepp-plugin-settings.php:167
 msgid "The content you have entered is not original."
 msgstr ""
 
@@ -445,12 +445,12 @@ msgid "Save Settings"
 msgstr ""
 
 #: admin/class-wpfepp-tab-form-extended.php:199
-#: includes/class-wpfepp-form.php:970
+#: includes/class-wpfepp-form.php:937
 msgid "Lock Pin Location"
 msgstr ""
 
 #: admin/class-wpfepp-tab-form-extended.php:200
-#: includes/class-wpfepp-form.php:971
+#: includes/class-wpfepp-form.php:938
 msgid "Unlock Pin Location"
 msgstr ""
 
@@ -467,7 +467,7 @@ msgid "Required"
 msgstr ""
 
 #: admin/class-wpfepp-tab-form-fields.php:118
-#: admin/class-wpfepp-tab-form-fields.php:413
+#: admin/class-wpfepp-tab-form-fields.php:412
 msgid "Label"
 msgstr ""
 
@@ -702,63 +702,63 @@ msgstr ""
 msgid "Fallback Value"
 msgstr ""
 
-#: admin/class-wpfepp-tab-form-fields.php:405
+#: admin/class-wpfepp-tab-form-fields.php:404
 msgid "Update Form"
 msgstr ""
 
-#: admin/class-wpfepp-tab-form-fields.php:411
+#: admin/class-wpfepp-tab-form-fields.php:410
 msgid "Custom Fields"
 msgstr ""
 
-#: admin/class-wpfepp-tab-form-fields.php:415
+#: admin/class-wpfepp-tab-form-fields.php:414
 msgid "Meta Key"
 msgstr ""
 
-#: admin/class-wpfepp-tab-form-fields.php:418
+#: admin/class-wpfepp-tab-form-fields.php:417
 msgid "Add field"
 msgstr ""
 
-#: admin/class-wpfepp-tab-form-fields.php:423
+#: admin/class-wpfepp-tab-form-fields.php:422
 msgid "REhub Theme Fields"
 msgstr ""
 
-#: admin/class-wpfepp-tab-form-fields.php:425
+#: admin/class-wpfepp-tab-form-fields.php:424
 msgid "Image gallery"
 msgstr ""
 
-#: admin/class-wpfepp-tab-form-fields.php:426
+#: admin/class-wpfepp-tab-form-fields.php:425
 msgid "Offer product URL"
 msgstr ""
 
-#: admin/class-wpfepp-tab-form-fields.php:427
+#: admin/class-wpfepp-tab-form-fields.php:426
 msgid "Offer product Name"
 msgstr ""
 
-#: admin/class-wpfepp-tab-form-fields.php:428
+#: admin/class-wpfepp-tab-form-fields.php:427
 msgid "Offer product Description"
 msgstr ""
 
-#: admin/class-wpfepp-tab-form-fields.php:429
+#: admin/class-wpfepp-tab-form-fields.php:428
 msgid "Offer product Old price"
 msgstr ""
 
-#: admin/class-wpfepp-tab-form-fields.php:430
+#: admin/class-wpfepp-tab-form-fields.php:429
 msgid "Offer product Price"
 msgstr ""
 
-#: admin/class-wpfepp-tab-form-fields.php:431
+#: admin/class-wpfepp-tab-form-fields.php:430
 msgid "Offer product Coupon code"
 msgstr ""
 
-#: admin/class-wpfepp-tab-form-fields.php:432
+#: admin/class-wpfepp-tab-form-fields.php:431
 msgid "Offer product Expiration date"
 msgstr ""
 
-#: admin/class-wpfepp-tab-form-fields.php:433
+#: admin/class-wpfepp-tab-form-fields.php:432
 msgid "Offer product Image URL"
 msgstr ""
 
-#: admin/class-wpfepp-tab-form-fields.php:434
+#: admin/class-wpfepp-tab-form-fields.php:433
 msgid "Offer product Logo URL"
 msgstr ""
 
@@ -1098,17 +1098,17 @@ msgid "Which tabs would you like to display in the post list table"
 msgstr ""
 
 #: admin/class-wpfepp-tab-settings-list.php:64
-#: includes/partials/post-list.php:33
+#: includes/partials/post-list.php:30
 msgid "Live"
 msgstr ""
 
 #: admin/class-wpfepp-tab-settings-list.php:64
-#: includes/partials/post-list.php:34
+#: includes/partials/post-list.php:31
 msgid "Pending"
 msgstr ""
 
 #: admin/class-wpfepp-tab-settings-list.php:64
-#: includes/partials/post-list.php:35
+#: includes/partials/post-list.php:32
 msgid "Draft"
 msgstr ""
 
@@ -1313,95 +1313,99 @@ msgstr ""
 msgid "Admin"
 msgstr ""
 
-#: includes/class-wpfepp-form.php:163 includes/class-wpfepp-post-list.php:97
+#: includes/class-wpfepp-form.php:151 includes/class-wpfepp-post-list.php:91
 msgid "No form with the specified ID was found"
 msgstr ""
 
-#: includes/class-wpfepp-form.php:168 includes/class-wpfepp-post-list.php:101
+#: includes/class-wpfepp-form.php:156 includes/class-wpfepp-post-list.php:95
 #, php-format
 msgid "You need to %s first."
 msgstr ""
 
-#: includes/class-wpfepp-form.php:168 includes/class-wpfepp-post-list.php:101
-msgid "log in"
+#: includes/class-wpfepp-form.php:156
+msgid "login"
 msgstr ""
 
-#: includes/class-wpfepp-form.php:173 includes/class-wpfepp-post-list.php:105
+#: includes/class-wpfepp-form.php:161 includes/class-wpfepp-post-list.php:99
 msgid "Woocommerce plugin is deactivated or not installed."
 msgstr ""
 
-#: includes/class-wpfepp-form.php:242
+#: includes/class-wpfepp-form.php:225
 msgid "Drafts are not allowed!"
 msgstr ""
 
-#: includes/class-wpfepp-form.php:251 includes/class-wpfepp-form.php:325
+#: includes/class-wpfepp-form.php:234 includes/class-wpfepp-form.php:308
 msgid "Captcha response incorrect"
 msgstr ""
 
-#: includes/class-wpfepp-form.php:265 includes/class-wpfepp-form.php:374
+#: includes/class-wpfepp-form.php:248 includes/class-wpfepp-form.php:357
 msgid "Preview"
 msgstr ""
 
-#: includes/class-wpfepp-form.php:267
+#: includes/class-wpfepp-form.php:250
 #, php-format
 msgid "The post has been saved successfully! %s"
 msgstr ""
 
-#: includes/class-wpfepp-form.php:302
+#: includes/class-wpfepp-form.php:285
 msgid "This form no longer exists."
 msgstr ""
 
-#: includes/class-wpfepp-form.php:307
+#: includes/class-wpfepp-form.php:290
 msgid "You failed the security check."
 msgstr ""
 
-#: includes/class-wpfepp-form.php:311
+#: includes/class-wpfepp-form.php:294
 msgid "You do not have permission to modify this post."
 msgstr ""
 
-#: includes/class-wpfepp-form.php:339
+#: includes/class-wpfepp-form.php:322
 msgid "ERROR: "
 msgstr ""
 
-#: includes/class-wpfepp-form.php:343
+#: includes/class-wpfepp-form.php:326
 msgid "passed"
 msgstr ""
 
-#: includes/class-wpfepp-form.php:343
+#: includes/class-wpfepp-form.php:326
 msgid "failed"
 msgstr ""
 
-#: includes/class-wpfepp-form.php:375
+#: includes/class-wpfepp-form.php:358
 msgid "View"
 msgstr ""
 
-#: includes/class-wpfepp-form.php:380
+#: includes/class-wpfepp-form.php:363
 #, php-format
 msgid "The post has been created successfully. %s %s"
 msgstr ""
 
-#: includes/class-wpfepp-form.php:383
+#: includes/class-wpfepp-form.php:366
 #, php-format
 msgid "The post has been updated successfully. %s %s"
 msgstr ""
 
-#: includes/class-wpfepp-form.php:388
+#: includes/class-wpfepp-form.php:371
 msgid "Continue Editing"
 msgstr ""
 
-#: includes/class-wpfepp-post-list.php:141
+#: includes/class-wpfepp-post-list.php:95
+msgid "log in"
+msgstr ""
+
+#: includes/class-wpfepp-post-list.php:133
 msgid "Sorry! You failed the security check"
 msgstr ""
 
-#: includes/class-wpfepp-post-list.php:145
+#: includes/class-wpfepp-post-list.php:137
 msgid "You don't have permission to delete this post"
 msgstr ""
 
-#: includes/class-wpfepp-post-list.php:151
+#: includes/class-wpfepp-post-list.php:143
 msgid "The article could not be deleted"
 msgstr ""
 
-#: includes/class-wpfepp-post-list.php:156
+#: includes/class-wpfepp-post-list.php:148
 msgid "The article has been deleted successfully!"
 msgstr ""
 
@@ -1459,41 +1463,41 @@ msgstr ""
 msgid "Enter the form ID that owns the package."
 msgstr ""
 
-#: admin/partials/forms.php:8
+#: admin/partials/forms.php:9
 msgid "Create a New Form"
 msgstr ""
 
-#: admin/partials/forms.php:11
+#: admin/partials/forms.php:12
 msgid "Form Name"
 msgstr ""
 
-#: admin/partials/forms.php:13
+#: admin/partials/forms.php:14
 msgid "The name of this form"
 msgstr ""
 
-#: admin/partials/forms.php:18
+#: admin/partials/forms.php:19
 msgid "A tiny description explaining what this form does"
 msgstr ""
 
-#: admin/partials/forms.php:33
+#: admin/partials/forms.php:34
 msgid "The post type of this form"
 msgstr ""
 
-#: admin/partials/forms.php:36
+#: admin/partials/forms.php:37
 msgid "Import elements from"
 msgstr ""
 
-#: admin/partials/forms.php:39
+#: admin/partials/forms.php:40
 msgid ""
 "If you want to duplicate the fields, settings and emails of an existing form,"
 " specify it here. Otherwise defaults values will be used for everything."
 msgstr ""
 
-#: admin/partials/forms.php:46
+#: admin/partials/forms.php:47
 msgid "Create Form"
 msgstr ""
 
-#: admin/partials/settings.php:13
+#: admin/partials/settings.php:12
 msgid ""
 "Delete 'show_all=0' if you want to show all posts of user (including posts "
 "submitted with another forms)"
@@ -1535,32 +1539,40 @@ msgstr ""
 msgid "Save Draft"
 msgstr ""
 
-#: includes/partials/post-list.php:43
+#: includes/partials/post-list.php:39
 msgid "live"
 msgstr ""
 
-#: includes/partials/post-list.php:47
+#: includes/partials/post-list.php:42
 msgid "pending"
 msgstr ""
 
-#: includes/partials/post-list.php:51
+#: includes/partials/post-list.php:45
 msgid "draft"
 msgstr ""
 
-#: includes/partials/post-list.php:58
+#: includes/partials/post-list.php:51
 #, php-format
 msgid "You don't have any %s articles."
 msgstr ""
 
-#: includes/partials/post-list.php:72
+#: includes/partials/post-list.php:64
 msgid "View Post"
 msgstr ""
 
-#: includes/partials/post-list.php:93
+#: includes/partials/post-list.php:69
+msgid "Edit Post"
+msgstr ""
+
+#: includes/partials/post-list.php:75
+msgid "Delete Post"
+msgstr ""
+
+#: includes/partials/post-list.php:85
 msgid "Newer Posts"
 msgstr ""
 
-#: includes/partials/post-list.php:96
+#: includes/partials/post-list.php:88
 msgid "Older Posts"
 msgstr ""
 
