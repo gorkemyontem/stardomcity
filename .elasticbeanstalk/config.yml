@@ -15,3 +15,11 @@ global:
   default_region: eu-central-1
   profile: eb-cli
   sc: git
+files:
+  "/etc/php.d/project.ini" :
+    mode: "000644"
+    owner: root
+    group: root
+    content: |
+      upload_max_filesize = 64M
+      post_max_size = 64M
