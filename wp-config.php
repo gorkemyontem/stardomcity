@@ -17,8 +17,6 @@
  *
  * @package WordPress
  */
- define('WP_HOME','http://dev.stardomcity.com/'); define('WP_SITEURL','http://dev.stardomcity.com/wordpress');
-
 
  if($_SERVER['Env'] == 'Test' || $_SERVER['Env'] == 'Prod'){
 	 define('DB_NAME', $_SERVER['RDS_DB_NAME']);
