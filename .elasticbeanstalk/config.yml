@@ -1,8 +1,11 @@
 branch-defaults:
   master:
-    environment: Sample-env
+    environment: Test
 environment-defaults:
   Sample-env:
+    branch: null
+    repository: null
+  Test:
     branch: null
     repository: null
 global:

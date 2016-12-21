@@ -1,0 +1,83 @@
+/*
+Theme Name:     Retention
+Description:    Retention theme is based on Twenty Eleven Wordpress theme.
+Author:         The Wordpress Team (Twenty Eleven) and Jacek Szemplinski (Retention)
+Template:       twentyeleven
+Version:		1.3
+License: 		GNU General Public License v2 or later
+License URI: 	http://www.gnu.org/licenses/gpl-2.0.html
+Tags:			dark, light, white, black, gray, one-column, two-columns, left-sidebar, right-sidebar, fixed-width, flexible-width, custom-background, custom-colors, custom-header, custom-menu, editor-style, featured-image-header, featured-images, flexible-header, full-width-template, microformats, post-formats, rtl-language-support, sticky-post, theme-options, translation-ready
+*/
+
+@import url("../twentyeleven/style.css");
+
+body{
+	margin: 0px;
+	padding: 0px;
+	font-size: 12pt;
+	font-weight: 300;
+	color: #363636;
+}
+
+#page{
+	background: #FFFFFF url(images/bg01.png) repeat;
+}
+
+#access{
+	background: #00AABB;
+}
+
+#access a{
+	display: block;
+	letter-spacing: 1px;
+	padding: 20px 40px;
+	text-decoration: none;
+	text-align: center;
+	text-transform: uppercase;
+	font-size: 0.80em;
+	font-weight: 600;
+	border: none;
+	color: #FFF;
+}
+
+#access ul{
+	font-size: 16px;
+}
+
+#branding .image{
+	border: 5px solid #FFFFFF;
+}
+
+a{
+	color: #171717;
+}
+
+#site-generator{
+	background: #333333;
+}
+
+#site-generator a{
+	color: #FFFFFF;
+	font-style: italic;
+}
+
+#branding{
+	background: #333333;
+}
+
+#site-title a{
+	color: #FFF;
+}
+
+#site-description{
+	color: #E6E6E6;
+	font-style: italic;
+	font-weight: bold;
+}
+
+#branding #searchform {
+	background-color: #fff;
+	border-color: #000;
+	color: #222;
+}
+
