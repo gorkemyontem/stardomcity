@@ -5,17 +5,6 @@
  *
  * @package WordPress
  */
- if(true){
- var_dump($_SERVER['Env']);
- exit;
-
- 	// $dbport = $_SERVER['RDS_PORT'];
- 	// $dbname = $_SERVER['RDS_DB_NAME'];
- 	//
- 	// $username = $_SERVER['RDS_USERNAME'];
- 	// $password = $_SERVER['RDS_PASSWORD'];
-
- }
 
 /**
  * Tells WordPress to load the WordPress theme and output it.

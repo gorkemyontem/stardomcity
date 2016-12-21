@@ -1,13 +1,13 @@
 branch-defaults:
   master:
-    environment: LowCost-env
+    environment: Sample-env
 environment-defaults:
-  LowCost-env:
+  Sample-env:
     branch: null
     repository: null
 global:
   application_name: stardomcity
-  default_ec2_keyname: null
+  default_ec2_keyname: StardomEC2KeyPair
   default_platform: 64bit Amazon Linux 2016.09 v2.2.0 running PHP 7.0
   default_region: eu-central-1
   profile: eb-cli
