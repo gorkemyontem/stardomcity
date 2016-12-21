@@ -24,6 +24,8 @@
 	 define('DB_USER', $_SERVER['RDS_USERNAME']);
 	 define('DB_PASSWORD', $_SERVER['RDS_PASSWORD']);
 	 define('DB_HOST', 'localhost');
+	 // $dbport = $_SERVER['RDS_PORT'];
+	 var_dump($_SERVER['RDS_PORT']);
 
 } else {
 
