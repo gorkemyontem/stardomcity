@@ -6,7 +6,7 @@
  * @package WordPress
  */
  if(true){
- var_dump($_SERVER['RDS_HOSTNAME']);
+ var_dump($_SERVER['Env']);
  exit;
 
  	// $dbport = $_SERVER['RDS_PORT'];
