@@ -90,7 +90,7 @@ class Ai1wm_Http_Stream extends Ai1wm_Http_Abstract {
 
 		// Send data to server
 		if ( ( $length = fwrite( $handle, $request ) ) !== strlen( $request ) ) {
-			trigger_error( sprintf( 'fwrite wrote only %d instead of %d' , $length, strlen( $request ) ) );
+			trigger_error( sprintf( 'fwrite wrote only %d instead of %d', $length, strlen( $request ) ) );
 		}
 
 		// Set blocking/non-blocking mode on a stream

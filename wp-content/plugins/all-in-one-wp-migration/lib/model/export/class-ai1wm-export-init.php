@@ -23,50 +23,26 @@
  * ╚══════╝╚══════╝╚═╝  ╚═╝  ╚═══╝  ╚═╝     ╚═╝╚═╝  ╚═╝╚══════╝╚═╝  ╚═╝
  */
 
-class Ai1wm_Cron {
+class Ai1wm_Export_Init {
 
-	/*
-	 * Schedules a hook which will be executed by the WordPress
-	 * actions core on a specific interval
-	 *
-	 * @param  string $hook       Event hook
-	 * @param  string $recurrence How often the event should reoccur
-	 * @param  array  $args       Arguments to pass to the hook function(s)
-	 * @return mixed
-	 */
-	public static function add( $hook, $recurrence, $args = array() ) {
-		$args      = array_slice( func_get_args(), 2 );
-		$schedules = wp_get_schedules();
+	public static function execute( $params ) {
 
-		if ( isset( $schedules[$recurrence] ) && ( $current = $schedules[$recurrence] ) ) {
-			return wp_schedule_event( time() + $current['interval'], $recurrence, $hook, $args );
-		}
-	}
+		// Set progress
+		Ai1wm_Status::info( __( 'Preparing to export...', AI1WM_PLUGIN_NAME ) );
 
-	/*
-	 * Un-schedules all previously-scheduled cron jobs using a particular
-	 * hook name or a specific combination of hook name and arguments.
-	 *
-	 * @param  string $hook Event hook
-	 * @return void
-	 */
-	public static function clear( $hook ) {
-		$crons = _get_cron_array();
-		if ( empty( $crons ) ) {
-			return;
+		// Set archive
+		if ( empty( $params['archive'] ) ) {
+			$params['archive'] = ai1wm_archive_file();
 		}
 
-		foreach ( $crons as $timestamp => $cron ) {
-			if ( ! empty( $cron[$hook] ) )  {
-				unset( $crons[$timestamp][$hook] );
-
-				// Unset empty timestamps
-				if ( empty( $crons[$timestamp] ) ) {
-					unset( $crons[$timestamp] );
-				}
-			}
+		// Set storage
+		if ( empty( $params['storage'] ) ) {
+			$params['storage'] = ai1wm_storage_folder();
 		}
 
-		return _set_cron_array( $crons );
+		// Set progress
+		Ai1wm_Status::info( __( 'Done preparing to export.', AI1WM_PLUGIN_NAME ) );
+
+		return $params;
 	}
 }

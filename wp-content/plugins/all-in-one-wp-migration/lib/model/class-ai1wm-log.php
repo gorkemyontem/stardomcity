@@ -38,9 +38,9 @@ class Ai1wm_Log {
 		$data[] = PHP_EOL;
 
 		// Write log data
-		if ( $handle = fopen( ai1wm_export_path( $params ), 'a' ) ) {
-			fwrite( $handle, implode( PHP_EOL, $data ) );
-			fclose( $handle );
+		if ( $handle = ai1wm_open( ai1wm_export_path( $params ), 'a' ) ) {
+			ai1wm_write( $handle, implode( PHP_EOL, $data ) );
+			ai1wm_close( $handle );
 		}
 	}
 
@@ -57,9 +57,9 @@ class Ai1wm_Log {
 		$data[] = PHP_EOL;
 
 		// Write log data
-		if ( $handle = fopen( ai1wm_import_path( $params ), 'a' ) ) {
-			fwrite( $handle, implode( PHP_EOL, $data ) );
-			fclose( $handle );
+		if ( $handle = ai1wm_open( ai1wm_import_path( $params ), 'a' ) ) {
+			ai1wm_write( $handle, implode( PHP_EOL, $data ) );
+			ai1wm_close( $handle );
 		}
 	}
 
@@ -76,9 +76,9 @@ class Ai1wm_Log {
 		$data[] = PHP_EOL;
 
 		// Write log data
-		if ( $handle = fopen( ai1wm_error_path(), 'a' ) ) {
-			fwrite( $handle, implode( PHP_EOL, $data ) );
-			fclose( $handle );
+		if ( $handle = ai1wm_open( ai1wm_error_path(), 'a' ) ) {
+			ai1wm_write( $handle, implode( PHP_EOL, $data ) );
+			ai1wm_close( $handle );
 		}
 	}
 }

@@ -71,13 +71,10 @@ class Ai1wm_Export_Enumerate {
 
 			// Exclude inactive plugins
 			if ( isset( $params['options']['no_inactive_plugins'] ) ) {
-				foreach ( get_plugins() as $basename => $plugin ) {
+				foreach ( get_plugins() as $plugin => $info ) {
 					if ( is_plugin_inactive( $basename ) ) {
-						if ( dirname( $basename ) === '.' ) {
-							$inactive_plugins[] = 'plugins' . DIRECTORY_SEPARATOR . basename( $basename );
-						} else {
-							$inactive_plugins[] = 'plugins' . DIRECTORY_SEPARATOR . dirname( $basename );
-						}
+						$inactive_plugins[] = 'plugins' . DIRECTORY_SEPARATOR .
+							( ( dirname( $plugin ) === '.' ) ? basename( $plugin ) : dirname( $plugin ) );
 					}
 				}
 			}
@@ -106,7 +103,7 @@ class Ai1wm_Export_Enumerate {
 		}
 
 		// Create map file
-		$filemap = fopen( ai1wm_filemap_path( $params ) , 'a+' );
+		$filemap = ai1wm_open( ai1wm_filemap_path( $params ) , 'a+' );
 
 		try {
 
@@ -122,7 +119,7 @@ class Ai1wm_Export_Enumerate {
 			// Write path line
 			foreach ( $iterator as $item ) {
 				if ( $item->isFile() ) {
-					if ( fwrite( $filemap, $iterator->getSubPathName() . PHP_EOL ) ) {
+					if ( ai1wm_write( $filemap, $iterator->getSubPathName() . PHP_EOL ) ) {
 						$total_files++;
 
 						// Add current file size
@@ -134,6 +131,9 @@ class Ai1wm_Export_Enumerate {
 			// Skip bad file permissions
 		}
 
+		// Set progress
+		Ai1wm_Status::info( __( 'Done retrieving a list of all WordPress files.', AI1WM_PLUGIN_NAME ) );
+
 		// Set total files
 		$params['total_files'] = $total_files;
 
@@ -141,10 +141,7 @@ class Ai1wm_Export_Enumerate {
 		$params['total_size'] = $total_size;
 
 		// Close the filemap file
-		fclose( $filemap );
-
-		// Set progress
-		Ai1wm_Status::info( __( 'Done retrieving a list of all WordPress files.', AI1WM_PLUGIN_NAME ) );
+		ai1wm_close( $filemap );
 
 		return $params;
 	}

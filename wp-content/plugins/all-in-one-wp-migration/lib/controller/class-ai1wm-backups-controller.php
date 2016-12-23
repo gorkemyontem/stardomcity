@@ -42,8 +42,6 @@ class Ai1wm_Backups_Controller {
 			'backups/index',
 			array(
 				'backups'     => $model->get_files(),
-				'free_space'  => $model->get_free_space(),
-				'total_space' => $model->get_total_space(),
 				'username'    => get_option( AI1WM_AUTH_USER ),
 				'password'    => get_option( AI1WM_AUTH_PASSWORD ),
 			)

@@ -69,7 +69,7 @@ function ai1wm_archive_path( $params ) {
 	}
 
 	// Get archive path
-	if ( empty( $params['backups'] ) ) {
+	if ( empty( $params['ai1wm_manual_backups'] ) ) {
 		return ai1wm_storage_path( $params ) . DIRECTORY_SEPARATOR . basename( $params['archive'] );
 	}
 
@@ -286,17 +286,18 @@ function ai1wm_site_name() {
  * @return string
  */
 function ai1wm_archive_file() {
-	$site = parse_url( site_url() );
 	$name = array();
 
 	// Add domain
-	if ( isset( $site['host'] ) ) {
-		$name[] = $site['host'];
-	}
+	$name[] = parse_url( site_url(), PHP_URL_HOST );
 
 	// Add path
-	if ( isset( $site['path'] ) ) {
-		$name[] = trim( $site['path'], '/' );
+	if ( ( $path = explode( '/', parse_url( site_url(), PHP_URL_PATH ) ) ) ) {
+		foreach ( $path as $directory ) {
+			if ( $directory ) {
+				$name[] = $directory;
+			}
+		}
 	}
 
 	// Add year, month and day
@@ -308,7 +309,7 @@ function ai1wm_archive_file() {
 	// Add unique identifier
 	$name[] = rand( 100, 999 );
 
-	return sprintf( '%s.wpress', implode( '-', $name ) );
+	return sprintf( '%s.wpress', strtolower( implode( '-', $name ) ) );
 }
 
 /**
@@ -317,20 +318,21 @@ function ai1wm_archive_file() {
  * @return string
  */
 function ai1wm_archive_folder() {
-	$site = parse_url( site_url() );
 	$name = array();
 
 	// Add domain
-	if ( isset( $site['host'] ) ) {
-		$name[] = $site['host'];
-	}
+	$name[] = parse_url( site_url(), PHP_URL_HOST );
 
 	// Add path
-	if ( isset( $site['path'] ) ) {
-		$name[] = trim( $site['path'] , '/' );
+	if ( ( $path = explode( '/', parse_url( site_url(), PHP_URL_PATH ) ) ) ) {
+		foreach ( $path as $directory ) {
+			if ( $directory ) {
+				$name[] = $directory;
+			}
+		}
 	}
 
-	return implode( '-', $name );
+	return strtolower( implode( '-', $name ) );
 }
 
 /**
@@ -478,6 +480,7 @@ function ai1wm_content_filters( $filters = array() ) {
 	return array_merge( $filters, array(
 			'index.php',
 			'ai1wm-backups',
+			'object-cache.php',
 			'themes' . DIRECTORY_SEPARATOR . 'index.php',
 			'plugins' . DIRECTORY_SEPARATOR . 'index.php',
 			'uploads' . DIRECTORY_SEPARATOR . 'index.php',
@@ -693,29 +696,51 @@ function ai1wm_urldecode( $value ) {
  */
 function ai1wm_open( $file, $mode ) {
 	$file_handle = fopen( $file, $mode );
-
 	if ( false === $file_handle ) {
-		throw new Exception( sprintf( __( 'Unable to open %s with mode %s', AI1WM_PLUGIN_NAME ), $file, $mode ) );
+		throw new Ai1wm_Not_Accesible_Exception( sprintf( __( 'Unable to open %s with mode %s', AI1WM_PLUGIN_NAME ), $file, $mode ) );
 	}
+
 	return $file_handle;
 }
 
 /**
  * Write contents to a file
  *
- * @param  resource $handle File handle to write to
+ * @param  resource $handle  File handle to write to
  * @param  string   $content Contents to write to the file
- * @param  string   $file Filename that contents shall be written to
  * @return int
  * @throws Exception
  */
-function ai1wm_write( $handle, $content, $file ) {
+function ai1wm_write( $handle, $content ) {
 	$write_result = fwrite( $handle, $content );
-
 	if ( false === $write_result ) {
-		throw new Exception( sprintf( __( 'Unable to write to %s.', AI1WM_PLUGIN_NAME ), $file ) );
+		if ( ( $meta = stream_get_meta_data( $handle ) ) ) {
+			throw new Ai1wm_Not_Writable_Exception( sprintf( __( 'Unable to write to: %s', AI1WM_PLUGIN_NAME ), $meta['uri'] ) );
+		}
+	} elseif ( strlen( $content ) !== $write_result  ) {
+		throw new Ai1wm_Quota_Exceeded_Exception( __( 'Out of disk space.', AI1WM_PLUGIN_NAME ) );
 	}
+
 	return $write_result;
+}
+
+/**
+ * Read contents from a file
+ *
+ * @param  resource $handle   File handle to read from
+ * @param  string   $filesize File size
+ * @return int
+ * @throws Exception
+ */
+function ai1wm_read( $handle, $filesize ) {
+	$read_result = fread( $handle, $filesize );
+	if ( false === $read_result ) {
+		if ( ( $meta = stream_get_meta_data( $handle ) ) ) {
+			throw new Ai1wm_Not_Readable_Exception( sprintf( __( 'Unable to read file: %s', AI1WM_PLUGIN_NAME ), $meta['uri'] ) );
+		}
+	}
+
+	return $read_result;
 }
 
 /**
@@ -747,8 +772,8 @@ function ai1wm_unlink( $file ) {
 function ai1wm_copy( $source_file, $destination_file ) {
 	$source_handle = ai1wm_open( $source_file, 'rb' );
 	$destination_handle = ai1wm_open( $destination_file, 'ab' );
-	while ( $buffer = fread( $source_handle, 4096 ) ) {
-		ai1wm_write( $destination_handle, $buffer, $destination_file );
+	while ( $buffer = ai1wm_read( $source_handle, 4096 ) ) {
+		ai1wm_write( $destination_handle, $buffer );
 	}
 	ai1wm_close( $source_handle );
 	ai1wm_close( $destination_handle );

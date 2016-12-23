@@ -34,30 +34,24 @@ class Ai1wm_Import_Database {
 		}
 
 		// Read blogs.json file
-		$handle = fopen( ai1wm_blogs_path( $params ), 'r' );
-		if ( $handle === false ) {
-			throw new Ai1wm_Import_Exception( 'Unable to read blogs.json file' );
-		}
+		$handle = ai1wm_open( ai1wm_blogs_path( $params ), 'r' );
 
 		// Parse blogs.json file
-		$blogs = fread( $handle, filesize( ai1wm_blogs_path( $params ) ) );
+		$blogs = ai1wm_read( $handle, filesize( ai1wm_blogs_path( $params ) ) );
 		$blogs = json_decode( $blogs, true );
 
 		// Close handle
-		fclose( $handle );
+		ai1wm_close( $handle );
 
 		// Read package.json file
-		$handle = fopen( ai1wm_package_path( $params ), 'r' );
-		if ( $handle === false ) {
-			throw new Ai1wm_Import_Exception( 'Unable to read package.json file' );
-		}
+		$handle = ai1wm_open( ai1wm_package_path( $params ), 'r' );
 
 		// Parse package.json file
-		$config = fread( $handle, filesize( ai1wm_package_path( $params ) ) );
+		$config = ai1wm_read( $handle, filesize( ai1wm_package_path( $params ) ) );
 		$config = json_decode( $config, true );
 
 		// Close handle
-		fclose( $handle );
+		ai1wm_close( $handle );
 
 		// Set progress
 		Ai1wm_Status::info( __( 'Restoring database...', AI1WM_PLUGIN_NAME ) );
@@ -448,8 +442,11 @@ class Ai1wm_Import_Database {
 		// Flush WP cache
 		ai1wm_cache_flush();
 
+		// Set progress
+		Ai1wm_Status::info( __( 'Done restoring database...', AI1WM_PLUGIN_NAME ) );
+
 		// Activate plugins
-		activate_plugins( $active_servmask_plugins, null, is_multisite() );
+		activate_plugins( $active_servmask_plugins, null, false );
 
 		// Set the new URL IP
 		update_option( AI1WM_URL_IP, $url_ip );

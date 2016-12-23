@@ -111,8 +111,8 @@ class Ai1wm_Export_Database {
 			   ->set_table_prefix_columns( ai1wm_table_prefix() . 'options', array( 'option_name' ) )
 			   ->set_table_prefix_columns( ai1wm_table_prefix() . 'usermeta', array( 'meta_key' ) );
 
-		// Status options
-		$client->set_table_query_clauses( ai1wm_table_prefix() . 'options', sprintf( " WHERE option_name != '%s' ", AI1WM_STATUS ) );
+		// Exclude active plugins and status options
+		$client->set_table_query_clauses( ai1wm_table_prefix() . 'options', sprintf( " WHERE option_name NOT IN ('%s', '%s') ", AI1WM_ACTIVE_PLUGINS, AI1WM_STATUS ) );
 
 		// Set current table index
 		if ( isset( $params['current_table_index'] ) ) {
@@ -122,10 +122,8 @@ class Ai1wm_Export_Database {
 		}
 
 		// Export database
-		$completed = $client->export( ai1wm_database_path( $params ), $current_table_index, 10 );
+		if ( $client->export( ai1wm_database_path( $params ), $current_table_index, 10 ) ) {
 
-		// Export completed
-		if ( $completed ) {
 			// Get archive file
 			$archive = new Ai1wm_Compressor( ai1wm_archive_path( $params ) );
 
@@ -135,13 +133,22 @@ class Ai1wm_Export_Database {
 
 			// Set progress
 			Ai1wm_Status::info( __( 'Done exporting database.', AI1WM_PLUGIN_NAME ) );
+
+			// Unset current table index
+			unset( $params['current_table_index'] );
+
+			// Unset completed flag
+			unset( $params['completed'] );
+
+		} else {
+
+			// Set current table index
+			$params['current_table_index'] = $current_table_index;
+
+			// Set completed flag
+			$params['completed'] = false;
+
 		}
-
-		// Set current table index
-		$params['current_table_index'] = $current_table_index;
-
-		// Set completed flag
-		$params['completed'] = $completed;
 
 		return $params;
 	}

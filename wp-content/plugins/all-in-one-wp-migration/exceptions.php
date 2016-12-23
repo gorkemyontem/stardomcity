@@ -33,4 +33,5 @@ class Ai1wm_Not_Accesible_Exception extends Exception {}
 class Ai1wm_Not_Found_Exception extends Exception {}
 class Ai1wm_Not_Readable_Exception extends Exception {}
 class Ai1wm_Not_Writable_Exception extends Exception {}
+class Ai1wm_Quota_Exceeded_Exception extends Exception {}
 class Ai1wm_Storage_Exception extends Exception {}

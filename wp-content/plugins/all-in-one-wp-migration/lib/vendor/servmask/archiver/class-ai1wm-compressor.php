@@ -64,7 +64,7 @@ class Ai1wm_Compressor extends Ai1wm_Archiver {
 			$block = $this->get_file_block( $file, $new_filename );
 
 			// write file block header to our archive file
-			$this->write_to_handle( $this->file_handle, $block, $this->filename );
+			$this->write_to_handle( $this->file_handle, $block );
 		}
 
 		// set file size
@@ -79,13 +79,13 @@ class Ai1wm_Compressor extends Ai1wm_Archiver {
 			$chunk_size = $current_filesize > 512000 ? 512000 : $current_filesize;
 
 			// read the file in chunks of 512KB
-			$content = $this->read_from_handle( $handle, $chunk_size, $file );
+			$content = $this->read_from_handle( $handle, $chunk_size );
 
 			// remove the amount of bytes we read
 			$current_filesize -= $chunk_size;
 
 			// write file contents
-			$this->write_to_handle( $this->file_handle, $content, $this->filename );
+			$this->write_to_handle( $this->file_handle, $content );
 
 			// time elapsed
 			if ( $timeout ) {
@@ -94,7 +94,7 @@ class Ai1wm_Compressor extends Ai1wm_Archiver {
 					$offset = ftell( $handle );
 
 					// close the handle
-					fclose( $handle );
+					ai1wm_close( $handle );
 
 					// get file offset
 					return $offset;
@@ -103,7 +103,7 @@ class Ai1wm_Compressor extends Ai1wm_Archiver {
 		}
 
 		// close the handle
-		fclose( $handle );
+		ai1wm_close( $handle );
 	}
 
 	/**

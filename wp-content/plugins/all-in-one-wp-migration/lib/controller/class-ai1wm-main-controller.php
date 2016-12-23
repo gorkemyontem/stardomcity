@@ -101,6 +101,9 @@ class Ai1wm_Main_Controller {
 		// Add a links to plugin list page
 		add_filter( 'plugin_row_meta', array( $this, 'plugin_row_meta' ), 10, 2 );
 
+		// Add custom schedules
+		add_filter( 'cron_schedules', array( $this, 'add_cron_schedules' ) );
+
 		return $this;
 	}
 
@@ -111,6 +114,7 @@ class Ai1wm_Main_Controller {
 	 */
 	public function ai1wm_commands() {
 		// Add export commands
+		add_filter( 'ai1wm_export', 'Ai1wm_Export_Init::execute', 5 );
 		add_filter( 'ai1wm_export', 'Ai1wm_Export_Compatibility::execute', 5 );
 		add_filter( 'ai1wm_export', 'Ai1wm_Export_Resolve::execute', 5 );
 		add_filter( 'ai1wm_export', 'Ai1wm_Export_Archive::execute', 10 );
@@ -277,42 +281,9 @@ class Ai1wm_Main_Controller {
 
 		// Create .htaccess in backups folder
 		Ai1wm_File_Htaccess::create( AI1WM_BACKUPS_HTACCESS );
-	}
 
-	/**
-	 * Creates a index.php file in specific folder
-	 *
-	 * The method will create index.php file with contents '<?php // silence is golden' without the single quotes
-	 * at the path specified by the argument. The file is only created if it doesn't exist. If the file is unable to
-	 * be created, the method will call wp_die to notify the user and stop the execution
-	 *
-	 * @param  $path string Path to the folder where the index.php file needs to be created
-	 * @return void
-	 */
-	protected function create_index_file( $path ) {
-		// Name of the index file with the path
-		$file = $path . DIRECTORY_SEPARATOR . AI1WM_DIRECTORY_INDEX;
-
-		// Check if the file exists
-		if ( ! is_file( $file ) ) {
-
-			// File doesn't exist attempt to create ti
-			$handle = fopen( $file, 'w' );
-
-			// Check if we were able to open the file
-			if ( false === $handle ) {
-
-				// We couldn't create the folder, so let's tell the user
-				if ( is_multisite() ) {
-					return add_action( 'network_admin_notices', array( $this, 'index_notice' ) );
-				} else {
-					return add_action( 'admin_notices', array( $this, 'index_notice' ) );
-				}
-			}
-
-			fwrite( $handle, '<?php // silence is golden' );
-			fclose( $handle );
-		}
+		// Create web.config in backups folder
+		Ai1wm_File_Webconfig::create( AI1WM_BACKUPS_WEBCONFIG );
 	}
 
 	/**
@@ -641,5 +612,24 @@ class Ai1wm_Main_Controller {
 			add_action( 'wp_ajax_ai1wm_status', 'Ai1wm_Status_Controller::status' );
 			add_action( 'wp_ajax_ai1wm_resolve', 'Ai1wm_Resolve_Controller::resolve' );
 		}
+	}
+
+	/**
+	 * Add custom cron schedules
+	 *
+	 * @param  array $schedules List of schedules
+	 * @return array
+	 */
+	public function add_cron_schedules( $schedules ) {
+		$schedules['weekly'] = array(
+			'display'  => __( 'Weekly', AI1WM_PLUGIN_NAME ),
+			'interval' => 60 * 60 * 24 * 7,
+		);
+		$schedules['monthly'] = array(
+			'display'  => __( 'Monthly', AI1WM_PLUGIN_NAME ),
+			'interval' => ( strtotime( '+1 month' ) - time() ),
+		);
+
+		return $schedules;
 	}
 }

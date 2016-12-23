@@ -1,5 +1,5 @@
 <div class="ai1wm-report-problem">
-	<button id="ai1wm-report-problem-button" class="ai1wm-button-red">
+	<button type="button" id="ai1wm-report-problem-button" class="ai1wm-button-red">
 		<i class="ai1wm-icon-notification"></i> <?php _e( 'Report issue', AI1WM_PLUGIN_NAME ); ?>
 	</button>
 	<div class="ai1wm-report-problem-dialog">

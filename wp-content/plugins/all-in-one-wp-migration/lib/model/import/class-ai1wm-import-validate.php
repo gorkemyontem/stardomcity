@@ -27,11 +27,28 @@ class Ai1wm_Import_Validate {
 
 	public static function execute( $params ) {
 
+		// Set content offset
+		if ( isset( $params['content_offset'] ) ) {
+			$content_offset = (int) $params['content_offset'];
+		} else {
+			$content_offset = 0;
+		}
+
+		// Set archive offset
+		if ( isset( $params['archive_offset'] ) ) {
+			$archive_offset = (int) $params['archive_offset'];
+		} else {
+			$archive_offset = 0;
+		}
+
 		// Set progress
 		Ai1wm_Status::info( __( 'Unpacking archive...', AI1WM_PLUGIN_NAME ) );
 
 		// Open the archive file for reading
 		$archive = new Ai1wm_Extractor( ai1wm_archive_path( $params ) );
+
+		// Set the file pointer to the one that we have saved
+		$archive->set_file_pointer( null, $archive_offset );
 
 		// Validate the archive file consistency
 		if ( ! $archive->is_valid() ) {
@@ -74,25 +91,57 @@ class Ai1wm_Import_Validate {
 			);
 		}
 
-		// Unpack package.json, multisite.json and database.sql files
-		$archive->extract_by_files_array(
-			ai1wm_storage_path( $params ),
-			array(
-				AI1WM_PACKAGE_NAME,
-				AI1WM_MULTISITE_NAME,
-				AI1WM_DATABASE_NAME,
-			)
-		);
+		if ( $archive->has_not_reached_eof() ) {
+
+			// Unpack package.json, multisite.json and database.sql files
+			if ( ( $current_offset = $archive->extract_by_files_array( ai1wm_storage_path( $params ), array( AI1WM_PACKAGE_NAME, AI1WM_MULTISITE_NAME, AI1WM_DATABASE_NAME ), $content_offset, 10 ) ) ) {
+
+				// Set content offset
+				$content_offset = $current_offset;
+
+			} else {
+
+				// Set content offset
+				$content_offset = 0;
+
+				// Set archive offset
+				$archive_offset = $archive->get_file_pointer();
+			}
+		}
+
+		// End of the archive?
+		if ( $archive->has_reached_eof() ) {
+
+			// Check package.json file
+			if ( false === is_file( ai1wm_package_path( $params ) ) ) {
+				throw new Ai1wm_Import_Exception(
+					__( 'Invalid archive file. It should contain <strong>package.json</strong> file.', AI1WM_PLUGIN_NAME )
+				);
+			}
+
+			// Unset content offset
+			unset( $params['content_offset'] );
+
+			// Unset archive offset
+			unset( $params['archive_offset'] );
+
+			// Unset completed flag
+			unset( $params['completed'] );
+
+		} else {
+
+			// Set content offset
+			$params['content_offset'] = $content_offset;
+
+			// Set archive offset
+			$params['archive_offset'] = $archive_offset;
+
+			// Set completed flag
+			$params['completed'] = false;
+		}
 
 		// Close the archive file
 		$archive->close();
-
-		// Check package.json file
-		if ( false === is_file( ai1wm_package_path( $params ) ) ) {
-			throw new Ai1wm_Import_Exception(
-				__( 'Invalid archive file. It should contain <strong>package.json</strong> file.', AI1WM_PLUGIN_NAME )
-			);
-		}
 
 		return $params;
 	}

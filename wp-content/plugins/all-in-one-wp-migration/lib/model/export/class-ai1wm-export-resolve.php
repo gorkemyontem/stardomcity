@@ -31,16 +31,8 @@ class Ai1wm_Export_Resolve {
 		Ai1wm_Status::info( __( 'Resolving URL address...', AI1WM_PLUGIN_NAME ) );
 
 		// HTTP resolve
-		Ai1wm_Http::resolve( admin_url( 'admin-ajax.php?action=ai1wm_resolve' ) );
-
-		// Set archive
-		if ( empty( $params['archive'] ) ) {
-			$params['archive'] = ai1wm_archive_file();
-		}
-
-		// Set storage
-		if ( empty( $params['storage'] ) ) {
-			$params['storage'] = ai1wm_storage_folder();
+		if ( empty( $params['ai1wm_manual_export'] ) ) {
+			Ai1wm_Http::resolve( admin_url( 'admin-ajax.php?action=ai1wm_resolve' ) );
 		}
 
 		// Set progress

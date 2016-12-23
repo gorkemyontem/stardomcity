@@ -17,6 +17,6 @@
 	</li>
 </ul>
 
-<button class="ai1wm-button-gray" id="ai1wm-add-new-replace-button">
+<button type="button" class="ai1wm-button-gray" id="ai1wm-add-new-replace-button">
 	<i class="ai1wm-icon-plus2"></i><?php _e( 'Add', AI1WM_PLUGIN_NAME ); ?>
 </button>

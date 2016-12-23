@@ -27,27 +27,73 @@ class Ai1wm_Import_Done {
 
 	public static function execute( $params ) {
 
+		// Set shutdown handler
+		@register_shutdown_function( 'Ai1wm_Import_Done::shutdown' );
+
 		// Check multisite.json file
 		if ( true === is_file( ai1wm_multisite_path( $params ) ) ) {
 
 			// Read multisite.json file
-			$handle = fopen( ai1wm_multisite_path( $params ), 'r' );
-			if ( $handle === false ) {
-				throw new Ai1wm_Import_Exception( __( 'Unable to read multisite.json file', AI1WM_PLUGIN_NAME ) );
-			}
+			$handle = ai1wm_open( ai1wm_multisite_path( $params ), 'r' );
 
 			// Parse multisite.json file
-			$multisite = fread( $handle, filesize( ai1wm_multisite_path( $params ) ) );
+			$multisite = ai1wm_read( $handle, filesize( ai1wm_multisite_path( $params ) ) );
 			$multisite = json_decode( $multisite, true );
 
 			// Close handle
-			fclose( $handle );
+			ai1wm_close( $handle );
 
-			// Activate plugins
+			// Activate sitewide plugins
 			if ( isset( $multisite['Plugins'] ) && ( $active_sitewide_plugins = $multisite['Plugins'] ) ) {
-				activate_plugins( $active_sitewide_plugins, null, is_multisite(), true );
+				activate_plugins( $active_sitewide_plugins, null, false, true );
+			}
+		} else {
+
+			// Check package.json file
+			if ( true === is_file( ai1wm_package_path( $params ) ) ) {
+
+				// Read package.json file
+				$handle = ai1wm_open( ai1wm_package_path( $params ), 'r' );
+
+				// Parse package.json file
+				$package = ai1wm_read( $handle, filesize( ai1wm_package_path( $params ) ) );
+				$package = json_decode( $package, true );
+
+				// Close handle
+				ai1wm_close( $handle );
+
+				// Activate plugins
+				if ( isset( $package['Plugins'] ) && ( $active_plugins = $package['Plugins'] ) ) {
+					activate_plugins( $active_plugins, null, false, true );
+				}
 			}
 		}
+
+		// Check blogs.json file
+		if ( true === is_file( ai1wm_blogs_path( $params ) ) ) {
+
+			// Read blogs.json file
+			$handle = ai1wm_open( ai1wm_blogs_path( $params ), 'r' );
+
+			// Parse blogs.json file
+			$blogs = ai1wm_read( $handle, filesize( ai1wm_blogs_path( $params ) ) );
+			$blogs = json_decode( $blogs, true );
+
+			// Close handle
+			ai1wm_close( $handle );
+
+			// Activate plugins
+			foreach ( $blogs as $blog ) {
+				if ( isset( $blog['New']['Plugins'] ) && ( $active_plugins = $blog['New']['Plugins'] ) ) {
+					activate_plugins( $active_plugins, null, false, true );
+				}
+			}
+		}
+
+		return $params;
+	}
+
+	public static function shutdown() {
 
 		// Set progress
 		Ai1wm_Status::done(
@@ -65,7 +111,5 @@ class Ai1wm_Import_Done {
 				AI1WM_PLUGIN_NAME
 			)
 		);
-
-		return $params;
 	}
 }

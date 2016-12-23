@@ -83,24 +83,6 @@ class Ai1wm_Backups {
 	}
 
 	/**
-	 * Get free disk space
-	 *
-	 * @return integer
-	 */
-	public function get_free_space() {
-		return @disk_free_space( AI1WM_BACKUPS_PATH );
-	}
-
-	/**
-	 * Get total disk space
-	 *
-	 * @return integer
-	 */
-	public function get_total_space() {
-		return @disk_total_space( AI1WM_BACKUPS_PATH );
-	}
-
-	/**
 	 * Compare backup files by modified time
 	 *
 	 * @param  array $a File item A

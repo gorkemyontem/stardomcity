@@ -76,7 +76,13 @@ class Ai1wm_Export_Controller {
 				if ( $priority === key( $filters ) ) {
 					foreach ( $hooks as $hook ) {
 						try {
+
+							// Run function hook
 							$params = call_user_func_array( $hook['function'], array( $params ) );
+
+							// Log request
+							Ai1wm_Log::export( $params );
+
 						} catch ( Exception $e ) {
 							Ai1wm_Status::error( $e->getMessage(), __( 'Unable to export', AI1WM_PLUGIN_NAME ) );
 							exit;
@@ -89,16 +95,10 @@ class Ai1wm_Export_Controller {
 						$completed = (bool) $params['completed'];
 					}
 
-					// Log request
-					if ( empty( $params['priority'] ) || is_file( ai1wm_export_path( $params ) ) ) {
-						Ai1wm_Log::export( $params );
-					}
-
 					// Do request
 					if ( $completed === false || ( $next = next( $filters ) ) && ( $params['priority'] = key( $filters ) ) ) {
-
-						// Check the status, maybe we need to stop it
-						if ( ! is_file( ai1wm_export_path( $params ) ) ) {
+						if ( isset( $params['ai1wm_manual_export'] ) ) {
+							echo json_encode( $params );
 							exit;
 						}
 

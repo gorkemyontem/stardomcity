@@ -77,14 +77,11 @@ class Ai1wm_Export_Content {
 			Ai1wm_Status::info( sprintf( __( 'Archiving %d files...<br />%d%% complete', AI1WM_PLUGIN_NAME ), $total_files, $progress ) );
 		}
 
-		// Get map file
-		$filemap = fopen( ai1wm_filemap_path( $params ), 'r' );
-
 		// Start time
 		$start = microtime( true );
 
-		// Flag to hold if all files have been processed
-		$completed = true;
+		// Get map file
+		$filemap = ai1wm_open( ai1wm_filemap_path( $params ), 'r' );
 
 		// Set filemap pointer at the current index
 		if ( fseek( $filemap, $filemap_offset ) !== -1 ) {
@@ -107,24 +104,12 @@ class Ai1wm_Export_Content {
 						Ai1wm_Status::info( sprintf( __( 'Archiving %d files...<br />%d%% complete', AI1WM_PLUGIN_NAME ), $total_files, $progress ) );
 
 						// Set current filesize
-						$params['current_filesize'] = $archive->get_current_filesize();
+						$current_filesize = $archive->get_current_filesize();
 
 						// Set content offset
-						$params['content_offset'] = $current_offset;
+						$content_offset = $current_offset;
 
-						// Set filemap offset
-						$params['filemap_offset'] = $filemap_offset;
-
-						// Set processed files
-						$params['processed'] = $processed;
-
-						// Set completed flag
-						$params['completed'] = false;
-
-						// Close the filemap file
-						fclose( $filemap );
-
-						return $params;
+						break;
 					}
 
 					// Increment processed files
@@ -141,13 +126,14 @@ class Ai1wm_Export_Content {
 					// Set filemap offset
 					$filemap_offset = ftell( $filemap );
 
+				} catch ( Ai1wm_Quota_Exceeded_Exception $e ) {
+					throw new Exception( 'Out of disk space.' );
 				} catch ( Exception $e ) {
 					// Skip bad file permissions
 				}
 
 				// More than 10 seconds have passed, break and do another request
 				if ( ( microtime( true ) - $start ) > 10 ) {
-					$completed = false;
 					break;
 				}
 			}
@@ -156,23 +142,44 @@ class Ai1wm_Export_Content {
 			$archive->close();
 		}
 
-		// Set current filesize
-		$params['current_filesize'] = $current_filesize;
+		// End of the filemap?
+		if ( feof( $filemap ) ) {
 
-		// Set content offset
-		$params['content_offset'] = $content_offset;
+			// Unset current filesize
+			unset( $params['current_filesize'] );
 
-		// Set filemap offset
-		$params['filemap_offset'] = $filemap_offset;
+			// Unset content offset
+			unset( $params['content_offset'] );
 
-		// Set processed files
-		$params['processed'] = $processed;
+			// Unset filemap offset
+			unset( $params['filemap_offset'] );
 
-		// Set completed flag
-		$params['completed'] = $completed;
+			// Unset processed files
+			unset( $params['processed'] );
+
+			// Unset completed flag
+			unset( $params['completed'] );
+
+		} else {
+
+			// Set current filesize
+			$params['current_filesize'] = $current_filesize;
+
+			// Set content offset
+			$params['content_offset'] = $content_offset;
+
+			// Set filemap offset
+			$params['filemap_offset'] = $filemap_offset;
+
+			// Set processed files
+			$params['processed'] = $processed;
+
+			// Set completed flag
+			$params['completed'] = false;
+		}
 
 		// Close the filemap file
-		fclose( $filemap );
+		ai1wm_close( $filemap );
 
 		return $params;
 	}

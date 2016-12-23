@@ -23,31 +23,24 @@
  * ╚══════╝╚══════╝╚═╝  ╚═╝  ╚═══╝  ╚═╝     ╚═╝╚═╝  ╚═╝╚══════╝╚═╝  ╚═╝
  */
 
-$local = array(
-	'iliev.local',
-	'develop.servmask.com',
-	'Borislav-MacBook-Pro.local',
-);
-
-if ( function_exists( 'gethostname' ) && in_array( gethostname(), $local ) ) {
-	define( 'AI1WM_DEBUG', true );
-} else {
-	define( 'AI1WM_DEBUG', false );
-}
+// ================
+// = Plugin Debug =
+// ================
+define( 'AI1WM_DEBUG', false );
 
 // ==================
 // = Plugin Version =
 // ==================
-define( 'AI1WM_VERSION', '5.56' );
+define( 'AI1WM_VERSION', '6.38' );
 
 // ===============
 // = Plugin Name =
 // ===============
 define( 'AI1WM_PLUGIN_NAME', 'all-in-one-wp-migration' );
 
-// =================
+// ===================
 // = Directory Index =
-// =================
+// ===================
 define( 'AI1WM_DIRECTORY_INDEX', 'index.php' );
 
 // ================
@@ -287,14 +280,19 @@ define( 'AI1WM_STORAGE_INDEX', AI1WM_STORAGE_PATH . DIRECTORY_SEPARATOR . 'index
 // ======================
 define( 'AI1WM_BACKUPS_INDEX', AI1WM_BACKUPS_PATH . DIRECTORY_SEPARATOR . 'index.php' );
 
-// ======================
+// =========================
 // = Backups Htaccess File =
-// ======================
+// =========================
 define( 'AI1WM_BACKUPS_HTACCESS', AI1WM_BACKUPS_PATH . DIRECTORY_SEPARATOR . '.htaccess' );
 
-// ====================================
+// ==========================
+// = Backups Webconfig File =
+// ==========================
+define( 'AI1WM_BACKUPS_WEBCONFIG', AI1WM_BACKUPS_PATH . DIRECTORY_SEPARATOR . 'web.config' );
+
+// ================================
 // = WP Migration Plugin Base Dir =
-// ====================================
+// ================================
 if ( defined( 'AI1WM_PLUGIN_BASENAME' ) ) {
 	define( 'AI1WM_PLUGIN_BASEDIR', dirname( AI1WM_PLUGIN_BASENAME ) );
 } else {

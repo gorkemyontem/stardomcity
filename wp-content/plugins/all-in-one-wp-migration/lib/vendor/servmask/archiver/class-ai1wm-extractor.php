@@ -58,7 +58,7 @@ class Ai1wm_Extractor extends Ai1wm_Archiver {
 		// total files
 		$total_files = 0;
 
-		while ( $block = $this->read_from_handle( $this->file_handle, 4377, $this->filename ) ) {
+		while ( $block = $this->read_from_handle( $this->file_handle, 4377 ) ) {
 			// end block has been reached
 			if ( $block === $this->eof ) {
 				continue;
@@ -71,7 +71,7 @@ class Ai1wm_Extractor extends Ai1wm_Archiver {
 			$total_files++;
 
 			// skip file content so we can move forward to the next file
-			$this->set_file_pointer( $this->file_handle, $data['size'], $this->filename );
+			$this->set_file_pointer( $this->file_handle, $data['size'] );
 		}
 
 		return $total_files;
@@ -90,7 +90,7 @@ class Ai1wm_Extractor extends Ai1wm_Archiver {
 		// total size
 		$total_size = 0;
 
-		while ( $block = $this->read_from_handle( $this->file_handle, 4377, $this->filename ) ) {
+		while ( $block = $this->read_from_handle( $this->file_handle, 4377 ) ) {
 			// end block has been reached
 			if ( $block === $this->eof ) {
 				continue;
@@ -103,7 +103,7 @@ class Ai1wm_Extractor extends Ai1wm_Archiver {
 			$total_size += $data['size'];
 
 			// skip file content so we can move forward to the next file
-			$this->set_file_pointer( $this->file_handle, $data['size'], $this->filename );
+			$this->set_file_pointer( $this->file_handle, $data['size'] );
 		}
 
 		return $total_size;
@@ -114,7 +114,7 @@ class Ai1wm_Extractor extends Ai1wm_Archiver {
 			throw new Ai1wm_Not_Readable_Exception( sprintf( __( '%s doesn\'t exist', AI1WM_PLUGIN_NAME ), $location ) );
 		}
 
-		$block = $this->read_from_handle( $this->file_handle, 4377, $this->filename );
+		$block = $this->read_from_handle( $this->file_handle, 4377 );
 
 		// we reached end of file, set the pointer to the end of the file so that feof returns true
 		if ( $block === $this->eof ) {
@@ -142,7 +142,7 @@ class Ai1wm_Extractor extends Ai1wm_Archiver {
 		// should we skip this file?
 		for ( $i = 0; $i < count( $exclude ); $i++ ) {
 			if ( strpos( $filename . DIRECTORY_SEPARATOR, $exclude[$i] . DIRECTORY_SEPARATOR ) === 0 ) {
-				$this->set_file_pointer( $this->file_handle, $data['size'], $this->filename );
+				$this->set_file_pointer( $this->file_handle, $data['size'] );
 				return;
 			}
 		}
@@ -155,9 +155,12 @@ class Ai1wm_Extractor extends Ai1wm_Archiver {
 			}
 		}
 
+		$directory = $location . DIRECTORY_SEPARATOR . $path;
+
 		// check if location doesn't exist, then create it
-		if ( false === is_dir( $location . DIRECTORY_SEPARATOR . $path ) ) {
-			mkdir( $location . DIRECTORY_SEPARATOR . $path, 0755, true );
+		if ( false === is_dir( $directory ) ) {
+			$permissions = self::get_permissions_for_directory();
+			mkdir( $directory, $permissions, true );
 		}
 
 		try {
@@ -167,7 +170,7 @@ class Ai1wm_Extractor extends Ai1wm_Archiver {
 			}
 		} catch ( Exception $e ) {
 			// we don't have file permissions, skip file content
-			$this->set_file_pointer( $this->file_handle, $data['size'], $this->filename );
+			$this->set_file_pointer( $this->file_handle, $data['size'] );
 		}
 	}
 
@@ -184,8 +187,11 @@ class Ai1wm_Extractor extends Ai1wm_Archiver {
 			throw new Ai1wm_Not_Readable_Exception( sprintf( __( '%s doesn\'t exist', AI1WM_PLUGIN_NAME ), $location ) );
 		}
 
+		// start time
+		$start = microtime( true );
+
 		// we read until we reached the end of the file, or the files we were looking for were found
-		while ( ( $block = $this->read_from_handle( $this->file_handle, 4377, $this->filename ) ) ) {
+		while ( ( $block = $this->read_from_handle( $this->file_handle, 4377 ) ) ) {
 			// end block has been reached and we still have files to extract
 			// that means the files don't exist in the archive
 			if ( $block === $this->eof ) {
@@ -223,9 +229,12 @@ class Ai1wm_Extractor extends Ai1wm_Archiver {
 
 			// do we have a match?
 			if ( $include ) {
+				$directory = $location . DIRECTORY_SEPARATOR . $path;
+
 				// check if location doesn't exist, then create it
-				if ( false === is_dir( $location . DIRECTORY_SEPARATOR . $path ) ) {
-					mkdir( $location . DIRECTORY_SEPARATOR . $path, 0755, true );
+				if ( false === is_dir( $directory ) ) {
+					$permissions = self::get_permissions_for_directory();
+					mkdir( $directory, $permissions, true );
 				}
 
 				try {
@@ -235,39 +244,36 @@ class Ai1wm_Extractor extends Ai1wm_Archiver {
 					}
 				} catch ( Exception $e ) {
 					// we don't have file permissions, skip file content
-					$this->set_file_pointer( $this->file_handle, $data['size'], $this->filename );
+					$this->set_file_pointer( $this->file_handle, $data['size'] );
 				}
 			} else {
 				// we don't have a match, skip file content
-				$this->set_file_pointer( $this->file_handle, $data['size'], $this->filename );
+				$this->set_file_pointer( $this->file_handle, $data['size'] );
+			}
+
+			// time elapsed
+			if ( $timeout ) {
+				if ( ( microtime( true ) - $start ) > $timeout ) {
+					break;
+				}
 			}
 		}
 	}
 
-	public function set_file_pointer( $handle = null, $offset = 0, $file = '' ) {
+	public function set_file_pointer( $handle = null, $offset = 0 ) {
 		// if null is used, we use the archive handle
 		if ( is_null( $handle ) ) {
 			$handle = $this->file_handle;
-		}
-
-		// if filename is empty, we use archive filename
-		if ( empty( $file ) ) {
-			$file = $this->filename;
 		}
 
 		// do we have offset to apply?
 		if ( $offset > 0 ) {
 			// set position to current location plus offset
 			$result = fseek( $handle, $offset, SEEK_CUR );
-
 			if ( -1 === $result ) {
-				throw new Ai1wm_Not_Accesible_Exception(
-					sprintf(
-						__( 'Unable to seek to offset %d on %s', AI1WM_PLUGIN_NAME ),
-						$offset,
-						$file
-					)
-				);
+				if ( ( $meta = stream_get_meta_data( $handle ) ) ) {
+					throw new Ai1wm_Not_Accesible_Exception( sprintf( __( 'Unable to seek to offset %d on %s', AI1WM_PLUGIN_NAME ), $offset, $meta['uri'] ) );
+				}
 			}
 		}
 	}
@@ -284,7 +290,7 @@ class Ai1wm_Extractor extends Ai1wm_Archiver {
 		$data_file_pointer = $this->get_file_pointer();
 
 		// set data file pointer
-		$this->set_file_pointer( $this->file_handle, $offset, $this->filename );
+		$this->set_file_pointer( $this->file_handle, $offset );
 
 		// set file size
 		$data['size'] -= $offset;
@@ -298,13 +304,13 @@ class Ai1wm_Extractor extends Ai1wm_Archiver {
 			$chunk_size = $data['size'] > 512000 ? 512000 : $data['size'];
 
 			// read the file in chunks of 512KB from archiver
-			$content = $this->read_from_handle( $this->file_handle, $chunk_size, $this->filename );
+			$content = $this->read_from_handle( $this->file_handle, $chunk_size );
 
 			// remove the amount of bytes we read
 			$data['size'] -= $chunk_size;
 
 			// write file contents
-			$this->write_to_handle( $handle, $content, $file );
+			$this->write_to_handle( $handle, $content );
 
 			// time elapsed
 			if ( $timeout ) {
@@ -313,7 +319,7 @@ class Ai1wm_Extractor extends Ai1wm_Archiver {
 					$offset = $this->get_file_pointer() - $data_file_pointer;
 
 					// close the handle
-					fclose( $handle );
+					ai1wm_close( $handle );
 
 					// get file offset
 					return $offset;
@@ -322,13 +328,14 @@ class Ai1wm_Extractor extends Ai1wm_Archiver {
 		}
 
 		// close the handle
-		fclose( $handle );
+		ai1wm_close( $handle );
 
 		// let's apply last modified date
 		$this->set_mtime_of_file( $file, $data['mtime'] );
 
-		// all files should chmoded to 755
-		$this->set_file_mode( $file, 0644 );
+		// all files should chmoded to 644
+		$permissions = $this->get_permissions_for_file();
+		$this->set_file_mode( $file,  $permissions);
 	}
 
 	private function set_mtime_of_file( $file, $mtime ) {
@@ -364,6 +371,16 @@ class Ai1wm_Extractor extends Ai1wm_Archiver {
 
 	/**
 	 * Check if file has reached end of file
+	 * Returns true if file has reached eof, false otherwise
+	 *
+	 * @return bool
+	 */
+	public function has_reached_eof() {
+		return feof( $this->file_handle );
+	}
+
+	/**
+	 * Check if file has reached end of file
 	 * Returns true if file has NOT reached eof, false otherwise
 	 *
 	 * @return bool
@@ -391,4 +408,21 @@ class Ai1wm_Extractor extends Ai1wm_Archiver {
 
 		return $result;
 	}
+
+	public static function get_permissions_for_directory() {
+		if ( defined( 'FS_CHMOD_DIR' ) ) {
+			return FS_CHMOD_DIR;
+		}
+
+		return 0755;
+	}
+
+	public static function get_permissions_for_file() {
+		if ( defined( 'FS_CHMOD_FILE' ) ) {
+			return FS_CHMOD_FILE;
+		}
+
+		return 0644;
+	}
+
 }

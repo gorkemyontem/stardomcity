@@ -31,7 +31,9 @@ class Ai1wm_Import_Resolve {
 		Ai1wm_Status::info( __( 'Resolving URL address...', AI1WM_PLUGIN_NAME ) );
 
 		// HTTP resolve
-		Ai1wm_Http::resolve( admin_url( 'admin-ajax.php?action=ai1wm_resolve' ) );
+		if ( empty( $params['ai1wm_manual_import'] ) && empty( $params['ai1wm_manual_backups'] ) ) {
+			Ai1wm_Http::resolve( admin_url( 'admin-ajax.php?action=ai1wm_resolve' ) );
+		}
 
 		// Set progress
 		Ai1wm_Status::info( __( 'Done resolving URL address...', AI1WM_PLUGIN_NAME ) );

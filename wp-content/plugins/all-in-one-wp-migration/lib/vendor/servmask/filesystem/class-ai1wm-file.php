@@ -37,12 +37,12 @@ class Ai1wm_File {
 	 */
 	public static function create( $path, $contents ) {
 		if ( ! is_file( $path ) ) {
-			$handle = fopen( $path, 'w' );
+			$handle = ai1wm_open( $path, 'w' );
 			if ( false === $handle ) {
 				return false;
 			}
-			fwrite( $handle, $contents );
-			fclose( $handle );
+			ai1wm_write( $handle, $contents );
+			ai1wm_close( $handle );
 		}
 	}
 }

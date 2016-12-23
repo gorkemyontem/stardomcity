@@ -51,11 +51,12 @@ class Ai1wm_Feedback_Controller {
 			$terms = (bool) $_POST['ai1wm-terms'];
 		}
 
-		// Send Feedback
-		$model  = new Ai1wm_Feedback;
-		$result = $model->add( $type, $email, $message, $terms );
+		$model = new Ai1wm_Feedback;
 
-		echo json_encode( $result );
+		// Send Feedback
+		$response = $model->add( $type, $email, $message, $terms );
+
+		echo json_encode( $response );
 		exit;
 	}
 }

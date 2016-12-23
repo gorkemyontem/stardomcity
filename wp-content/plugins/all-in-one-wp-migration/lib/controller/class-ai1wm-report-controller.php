@@ -45,10 +45,12 @@ class Ai1wm_Report_Controller {
 			$terms = (bool) $_POST['ai1wm-terms'];
 		}
 
-		// Send Feedback
-		$model  = new Ai1wm_Report;
-		$result = $model->add( $email, $message, $terms );
-		echo json_encode( $result );
+		$model = new Ai1wm_Report;
+
+		// Send Report
+		$response = $model->add( $email, $message, $terms );
+
+		echo json_encode( $response );
 		exit;
 	}
 }

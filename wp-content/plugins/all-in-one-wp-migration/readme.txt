@@ -3,7 +3,7 @@ Contributors: yani.iliev, bangelov, pimjitsawang
 Tags: db migration, migration, wordpress migration, db backup, db restore, website backup, website restore, website migration, website deploy, wordpress deploy, db backup, database export, database serialization, database find replace
 Requires at least: 3.3
 Tested up to: 4.7
-Stable tag: 5.56
+Stable tag: 6.38
 License: GPLv2 or later
 
 All-in-One WP Migration is the only tool that you will ever need to migrate a WordPress site.
@@ -78,6 +78,18 @@ All in One WP Plugin is the first plugin to offer true mobile experience on Word
 3. Plugin Menu
 
 == Changelog ==
+= 6.38 =
+* Add support for HyperDB plugin
+* Add support for RevSlider plugin
+* Check available disk space during export/import
+* Support very restricted hosting environments
+* Add wpress mime-type to web.config when the server is IIS
+* Switch to AJAX from cURL on export/import
+* Respect WordPress constants FS_CHMOD_DIR and FS_CHMOD_FILE on import
+* Fix an issue related to generating archive and folder names
+* Fix an issue related to CSS styles on export page
+* Remove misleading available disk space information on "Backups" page
+
 = 5.56 =
 * Fix an issue with WP_Hook class introcuded in WP 4.7
 
