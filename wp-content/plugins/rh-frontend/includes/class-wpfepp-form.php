@@ -153,7 +153,7 @@ class WPFEPP_Form
 		}
 
 		if( ! is_user_logged_in() ) {
-			printf( __( "You need to %s first.", "wpfepp-plugin" ), sprintf( '<a href="%s" id="rh_login_trigger_url">%s</a>', wp_login_url(), __( "login", "wpfepp-plugin") ) );
+			printf( __( "You need to %s first.", "wpfepp-plugin" ), sprintf( '<a href="%s" id="rh_login_trigger_url" class="act-rehub-login-popup">%s</a>', wp_login_url(), __( "login", "wpfepp-plugin") ) );
 			return;
 		}
 		
@@ -183,7 +183,37 @@ class WPFEPP_Form
 
 		//Finally print the form
 		do_action( 'wpfepp_do_before_print_form' );
-		do_action( 'wpfepp_do_before_'. $this->id .'_print_form' );		
+		do_action( 'wpfepp_do_before_'. $this->id .'_print_form' );	
+
+		//Here we check if user has access to form if form has limits
+		if(!empty($this->extended['limit_number']) && $this->extended['limit_number']>0){
+			$currentuserid = get_current_user_id();
+			$user_numb_post_meta = '_rhf_user_submit_counter_form_'.$this->id;
+			$author_number_post_package = get_user_meta( $currentuserid, $user_numb_post_meta, true );
+
+			if (is_numeric($author_number_post_package) || $author_number_post_package === 0){
+				if ($author_number_post_package <= 0) {
+					$message = (!empty($this->extended['limit_number_message'])) ? esc_attr($this->extended['limit_number_message']) : __('You reached the limit for submit to this form', 'wpfepp-plugin');
+					echo '<div class="wpsm_box blue_type nonefloat_box rh_wpeff_noticebox">';					
+						echo do_shortcode($message);
+					echo '</div>';							
+					return;
+				}else{			
+					$message = (!empty($this->extended['pre_limit_message'])) ? esc_attr($this->extended['pre_limit_message']) : __('You have %%count%% available submissions', 'wpfepp-plugin');
+					$message = str_replace('%%count%%', $author_number_post_package, $message);
+					echo '<div class="wpsm_box blue_type nonefloat_box rh_wpeff_noticebox">';					
+						echo do_shortcode($message);
+					echo '</div>';										
+				}
+			}else{
+				$message = (!empty($this->extended['pre_limit_message'])) ? esc_attr($this->extended['pre_limit_message']) : __('You have %%count%% available submissions', 'wpfepp-plugin');
+				$message = str_replace('%%count%%', $this->extended['limit_number'], $message);
+				echo '<div class="wpsm_box blue_type nonefloat_box rh_wpeff_noticebox">';
+					echo do_shortcode($message);
+				echo '</div>';
+			}			
+		}				
+
 		$this->print_form( $current, $result );
 	}
 
@@ -360,6 +390,20 @@ class WPFEPP_Form
 			$final_link = ( $this->post_type_obj->public ) ? $final_link : '';
 
 			if( 'created' == $action ) {
+				//Here we save limit number to user meta to check if user has access to form later
+				if(!empty($post_data['form_id']) && !empty($post_data['form_limit_number']) && $post_data['form_limit_number']>0){
+					$currentuserid = get_current_user_id();
+					$default_counter = (int)$post_data['form_limit_number'] - 1;	
+					$user_numb_post_meta = '_rhf_user_submit_counter_form_'.$post_data['form_id'];
+					$author_number_post_package = get_user_meta( $currentuserid, $user_numb_post_meta, true );
+					
+					if ( !$author_number_post_package) {
+						update_user_meta( $currentuserid, $user_numb_post_meta, $default_counter );	
+					} else {
+						$author_number_post_package = (int)$author_number_post_package - 1;
+						update_user_meta( $currentuserid, $user_numb_post_meta, $author_number_post_package );	
+					}					
+				}
 				$display_message = __( "The post has been created successfully. %s %s", "wpfepp-plugin" );
 			}
 			else if( 'updated' == $action ){
@@ -529,6 +573,9 @@ class WPFEPP_Form
 		// hidden field for check if form is being paid
 		if(!empty($post_data['wpfepp_paid_post'])) $custom_fields['_wpfepp_paid_post'] = $this->sanitize($post_data['wpfepp_paid_post'], array('strip_tags' => 'all'));
 
+		// hidden field for check if form is limited form
+		if(!empty($post_data['form_limit_number'])) $custom_fields['_form_limit_number'] = $this->sanitize($post_data['form_limit_number'], array('strip_tags' => 'all'));		
+
 		if( $post_data['form_id'] > 0 ) {
 			$custom_fields['wpfepp_submit_with_form_id'] = $this->sanitize($post_data['form_id'], array('strip_tags' => 'all'));
 		}		
@@ -546,6 +593,8 @@ class WPFEPP_Form
 
 		$post_id = wp_insert_post( $post, true );
 		if( !is_wp_error( $post_id ) ) {
+
+
 			
 			$tax_attrs = array();
 			$wc_tax_attrs = wpfepp_get_attribute_taxonomies();

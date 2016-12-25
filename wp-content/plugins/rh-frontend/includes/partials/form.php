@@ -6,10 +6,10 @@
 ?>
 
 <form class="wpfepp wpfepp-form" method="POST" style="<?php echo $form_width ?>">
-	
+
 	<div class="wpfepp-message <?php echo ( $submission_status ) ? "success" : "error"; ?><?php echo isset( $form_errors['form'] ) ? 'display' : ''; ?>">
 		<?php echo ( isset( $form_errors['form'] ) ) ? $form_errors['form'] : ""; ?>
-	</div>
+	</div>	
 
 	<div class="wpfepp-form-fields">
 
@@ -299,6 +299,9 @@
 		<?php if($this->paid_on) { ?>
 			<input class="wpfepp-paid-id-field" type="hidden" name="wpfepp_paid_post" value="<?php echo $this->id; ?>" />
 		<?php } ?>
+		<?php  if(!empty($this->extended['limit_number']) && $this->extended['limit_number']>0): ?>
+			<input class="wpfepp-limit-number-field" type="hidden" name="form_limit_number" value="<?php echo $this->extended['limit_number']; ?>" />
+		<?php endif;?>
 		<input class="wpfepp-form-id-field" type="hidden" name="form_id" value="<?php echo $this->id; ?>" />
 		<input class="wpfepp-post-id-field" type="hidden" name="post_id" value="<?php echo $final_post_id; ?>" />
 		<?php wp_nonce_field( 'wpfepp-form-'.$this->id.'-nonce', '_wpnonce', false, true ); ?>

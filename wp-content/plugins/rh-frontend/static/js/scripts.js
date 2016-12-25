@@ -252,6 +252,9 @@ jQuery(document).ready(function($){
 		//Displays a success message and optionally hides the form.
 		this.show_success = function(messages, hide_form){
 			this.form_message.addClass('success').removeClass('error').html(messages.form).show();
+			if($('.rh_wpeff_noticebox').length > 0){
+				$('.rh_wpeff_noticebox').remove();
+			}
 			if(hide_form)
 				this.hide_form();
 			wpfepp_scroll_to(this.form_message);

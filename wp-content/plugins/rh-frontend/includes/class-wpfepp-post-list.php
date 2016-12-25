@@ -138,6 +138,20 @@ class WPFEPP_Post_List
 				break;
 			}
 
+			//Here we update user meta limit for this form if form has limits for submit
+			$post_author_id = get_post_field( 'post_author', $post_id );
+			$getlimitednumber = get_post_meta($post_id, '_form_limit_number', true);
+			$formid = get_post_meta($post_id, 'wpfepp_submit_with_form_id', true);
+			if($getlimitednumber && $post_author_id){
+				$user_numb_post_meta = '_rhf_user_submit_counter_form_'. $formid;
+				$author_number_post_package = get_user_meta( $post_author_id, $user_numb_post_meta, true );
+				if($author_number_post_package >=0){
+					$author_number_post_package = (int)$author_number_post_package + 1;
+					update_user_meta( $post_author_id, $user_numb_post_meta, $author_number_post_package );			
+				}
+
+			}
+
 			$result = wp_delete_post( $post_id, false );
 			if( ! $result ) {
 				$data['message'] = __( "The article could not be deleted", "wpfepp-plugin" );
