@@ -472,11 +472,11 @@ function _wp_ajax_add_hierarchical_term() {
 		$category_nicename = sanitize_title($cat_name);
 		if ( '' === $category_nicename )
 			continue;
-
-		$cat_id = wp_insert_term( $cat_name, $taxonomy->name, array( 'parent' => $parent ) );
-		if ( ! $cat_id || is_wp_error( $cat_id ) ) {
+		if ( !$cat_id = term_exists( $cat_name, $taxonomy->name, $parent ) )
+			$cat_id = wp_insert_term( $cat_name, $taxonomy->name, array( 'parent' => $parent ) );
+		if ( is_wp_error( $cat_id ) ) {
 			continue;
-		} else {
+		} elseif ( is_array( $cat_id ) ) {
 			$cat_id = $cat_id['term_id'];
 		}
 		$checked_categories[] = $cat_id;
@@ -806,11 +806,11 @@ function wp_ajax_add_link_category( $action ) {
 		$slug = sanitize_title($cat_name);
 		if ( '' === $slug )
 			continue;
-
-		$cat_id = wp_insert_term( $cat_name, 'link_category' );
-		if ( ! $cat_id || is_wp_error( $cat_id ) ) {
+		if ( !$cat_id = term_exists( $cat_name, 'link_category' ) )
+			$cat_id = wp_insert_term( $cat_name, 'link_category' );
+		if ( is_wp_error( $cat_id ) ) {
 			continue;
-		} else {
+		} elseif ( is_array( $cat_id ) ) {
 			$cat_id = $cat_id['term_id'];
 		}
 		$cat_name = esc_html( $cat_name );
@@ -2702,7 +2702,7 @@ function wp_ajax_send_link_to_editor() {
 			$type = $ext_type;
 
 	/** This filter is documented in wp-admin/includes/media.php */
-	$html = apply_filters( "{$type}_send_to_editor_url", $html, $src, $link_text );
+	$html = apply_filters( $type . '_send_to_editor_url', $html, $src, $link_text );
 
 	wp_send_json_success( $html );
 }

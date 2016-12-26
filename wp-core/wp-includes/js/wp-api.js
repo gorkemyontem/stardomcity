@@ -1234,9 +1234,7 @@
 						},
 
 						// Specify the model that this collection contains.
-						model: function( attrs, options ) {
-							return new loadingObjects.models[ modelClassName ]( attrs, options );
-						},
+						model: loadingObjects.models[ modelClassName ],
 
 						// Include a reference to the original class name.
 						name: collectionClassName,
@@ -1259,9 +1257,7 @@
 						url: routeModel.get( 'apiRoot' ) + routeModel.get( 'versionString' ) + routeName,
 
 						// Specify the model that this collection contains.
-						model: function( attrs, options ) {
-							return new loadingObjects.models[ modelClassName ]( attrs, options );
-						},
+						model: loadingObjects.models[ modelClassName ],
 
 						// Include a reference to the original class name.
 						name: collectionClassName,

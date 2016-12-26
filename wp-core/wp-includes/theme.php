@@ -1554,7 +1554,7 @@ function _custom_background_cb() {
 	$style = $color ? "background-color: #$color;" : '';
 
 	if ( $background ) {
-		$image = ' background-image: url("' . esc_url_raw( $background ) . '");';
+		$image = " background-image: url(" . wp_json_encode( $background ) . ");";
 
 		// Background Position.
 		$position_x = get_theme_mod( 'background_position_x', get_theme_support( 'custom-background', 'default-position-x' ) );
@@ -1965,12 +1965,7 @@ function get_theme_starter_content() {
 			) ),
 		),
 		'nav_menus' => array(
-			'link_home' => array(
-				'type' => 'custom',
-				'title' => _x( 'Home', 'Theme starter content' ),
-				'url' => home_url(),
-			),
-			'page_home' => array( // Deprecated in favor of home_link.
+			'page_home' => array(
 				'type' => 'post_type',
 				'object' => 'page',
 				'object_id' => '{{home}}',

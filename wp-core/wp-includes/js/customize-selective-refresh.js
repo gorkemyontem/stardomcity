@@ -121,12 +121,12 @@ wp.customize.selectiveRefresh = ( function( $, api ) {
 				return;
 			}
 			$shortcut = partial.createEditShortcut();
+			partial.addEditShortcutToPlacement( placement, $shortcut );
 			$shortcut.on( 'click', function( event ) {
 				event.preventDefault();
 				event.stopPropagation();
 				partial.showControl();
 			} );
-			partial.addEditShortcutToPlacement( placement, $shortcut );
 		},
 
 		/**
@@ -312,15 +312,14 @@ wp.customize.selectiveRefresh = ( function( $, api ) {
 		 * @since 4.5.0
 		 */
 		showControl: function() {
-			var partial = this, settingId = partial.params.primarySetting;
+			var partial = this, settingId = partial.params.primarySetting, menuSlug;
 			if ( ! settingId ) {
 				settingId = _.first( partial.settings() );
 			}
 			if ( partial.getType() === 'nav_menu' ) {
-				if ( partial.params.navMenuArgs.theme_location ) {
-					settingId = 'nav_menu_locations[' + partial.params.navMenuArgs.theme_location + ']';
-				} else if ( partial.params.navMenuArgs.menu )   {
-					settingId = 'nav_menu[' + String( partial.params.navMenuArgs.menu ) + ']';
+				menuSlug = partial.params.navMenuArgs.theme_location;
+				if ( menuSlug ) {
+					settingId = 'nav_menu_locations[' + menuSlug + ']';
 				}
 			}
 			api.preview.send( 'focus-control-for-setting', settingId );

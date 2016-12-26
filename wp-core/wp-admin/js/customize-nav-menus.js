@@ -665,19 +665,11 @@
 
 		// Opens the panel.
 		open: function( menuControl ) {
-			var panel = this, close;
-
 			this.currentMenuControl = menuControl;
 
 			this.itemSectionHeight();
 
 			$( 'body' ).addClass( 'adding-menu-items' );
-
-			close = function() {
-				panel.close();
-				$( this ).off( 'click', close );
-			};
-			$( '#customize-preview' ).on( 'click', close );
 
 			// Collapse all controls.
 			_( this.currentMenuControl.getMenuItemControls() ).each( function( control ) {
@@ -1177,11 +1169,7 @@
 
 			// @todo It would be better if this was added directly on the setting itself, as opposed to the control.
 			control.setting.validate = function( value ) {
-				if ( '' === value ) {
-					return 0;
-				} else {
-					return parseInt( value, 10 );
-				}
+				return parseInt( value, 10 );
 			};
 
 			// Edit menu button.
@@ -1331,7 +1319,6 @@
 			this.container.find( '.menu-item-handle' ).on( 'click', function( e ) {
 				e.preventDefault();
 				e.stopPropagation();
-				api.Menus.availableMenuItemsPanel.close();
 				var menuControl = control.getMenuControl();
 				if ( menuControl.isReordering || menuControl.isSorting ) {
 					return;
