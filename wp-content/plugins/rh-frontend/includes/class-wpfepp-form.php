@@ -193,20 +193,20 @@ class WPFEPP_Form
 
 			if (is_numeric($author_number_post_package) || $author_number_post_package === 0){
 				if ($author_number_post_package <= 0) {
-					$message = (!empty($this->extended['limit_number_message'])) ? esc_attr($this->extended['limit_number_message']) : __('You reached the limit for submit to this form', 'wpfepp-plugin');
+					$message = (!empty($this->extended['limit_number_message'])) ? $this->extended['limit_number_message'] : __('You reached the limit for submit to this form', 'wpfepp-plugin');
 					echo '<div class="wpsm_box blue_type nonefloat_box rh_wpeff_noticebox">';					
 						echo do_shortcode($message);
 					echo '</div>';							
 					return;
 				}else{			
-					$message = (!empty($this->extended['pre_limit_message'])) ? esc_attr($this->extended['pre_limit_message']) : __('You have %%count%% available submissions', 'wpfepp-plugin');
+					$message = (!empty($this->extended['pre_limit_message'])) ? $this->extended['pre_limit_message'] : __('You have %%count%% available submissions', 'wpfepp-plugin');
 					$message = str_replace('%%count%%', $author_number_post_package, $message);
 					echo '<div class="wpsm_box blue_type nonefloat_box rh_wpeff_noticebox">';					
 						echo do_shortcode($message);
 					echo '</div>';										
 				}
 			}else{
-				$message = (!empty($this->extended['pre_limit_message'])) ? esc_attr($this->extended['pre_limit_message']) : __('You have %%count%% available submissions', 'wpfepp-plugin');
+				$message = (!empty($this->extended['pre_limit_message'])) ? $this->extended['pre_limit_message'] : __('You have %%count%% available submissions', 'wpfepp-plugin');
 				$message = str_replace('%%count%%', $this->extended['limit_number'], $message);
 				echo '<div class="wpsm_box blue_type nonefloat_box rh_wpeff_noticebox">';
 					echo do_shortcode($message);
