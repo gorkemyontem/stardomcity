@@ -18,35 +18,47 @@
  * @package WordPress
  */
 
- if($_SERVER['Env'] == 'Test' || $_SERVER['Env'] == 'Prod'){
-	 define('DB_NAME', $_SERVER['RDS_DB_NAME']);
-	 define('DB_USER', $_SERVER['RDS_USERNAME']);
-	 define('DB_PASSWORD', $_SERVER['RDS_PASSWORD']);
-	 define('DB_HOST', $_SERVER['RDS_HOSTNAME']);
 
+if($_SERVER['Env'] == 'Prod'){
+  define('DB_NAME', $_SERVER['RDS_DB_NAME']);
+  define('DB_USER', $_SERVER['RDS_USERNAME']);
+  define('DB_PASSWORD', $_SERVER['RDS_PASSWORD']);
+  define('DB_HOST', $_SERVER['RDS_HOSTNAME']);
+
+  ini_set( 'display_errors', 0 );
+  define( 'WP_DEBUG_DISPLAY', false );
+
+} else if($_SERVER['Env'] == 'Test') {
+
+  define('DB_NAME', $_SERVER['RDS_DB_NAME']);
+  define('DB_USER', $_SERVER['RDS_USERNAME']);
+  define('DB_PASSWORD', $_SERVER['RDS_PASSWORD']);
+  define('DB_HOST', $_SERVER['RDS_HOSTNAME']);
+
+  define( 'SAVEQUERIES', true );
+  define( 'WP_DEBUG', true );
 } else {
+  define('DB_NAME', 'StardomCityTrTestDb');
+  define('DB_USER', 'root');
+  define('DB_PASSWORD', '');
+  define('DB_HOST', 'localhost');
 
-// ** MySQL settings - You can get this info from your web host ** //
-/** The name of the database for WordPress */
-	define('DB_NAME', 'StardomTestDb');
-
-	/** MySQL database username */
-	define('DB_USER', 'root');
-
-	/** MySQL database password */
-	define('DB_PASSWORD', '');
-
-	/** MySQL hostname */
-	define('DB_HOST', 'localhost');
-
+  define( 'SAVEQUERIES', true );
+  define( 'WP_DEBUG', true );
 }
 
-/** Database Charset to use in creating database tables. */
+
 define('DB_CHARSET', 'utf8mb4');
-
-/** The Database Collate type. Don't change this if in doubt. */
 define('DB_COLLATE', '');
+// ========================
+// Custom Content Directory
+// ========================
+define( 'WP_CONTENT_DIR', dirname( __FILE__ ) . '/content' );
+define( 'WP_CONTENT_URL', 'http://' . $_SERVER['HTTP_HOST'] . '/content' );
 
+define( 'WP_SITEURL', 'http://' . $_SERVER['SERVER_NAME'] . '/wp-core' );
+define( 'WP_HOME', 'http://' . $_SERVER['SERVER_NAME'] );
+define('WP_DEFAULT_THEME', 'rehub-vendor');
 /**#@+
  * Authentication Unique Keys and Salts.
  *
@@ -88,19 +100,11 @@ $table_prefix  = 'wp_str_';
  * @link https://codex.wordpress.org/Debugging_in_WordPress
  */
 define('WP_DEBUG', false);
-/* Multisite */
-define( 'WP_ALLOW_MULTISITE', true );
-define('MULTISITE', true);
-define('SUBDOMAIN_INSTALL', false);
-define('DOMAIN_CURRENT_SITE', 'dev.stardomcity.com');
-define('PATH_CURRENT_SITE', '/');
-define('SITE_ID_CURRENT_SITE', 1);
-define('BLOG_ID_CURRENT_SITE', 1);
 /* That's all, stop editing! Happy blogging. */
 
 /** Absolute path to the WordPress directory. */
 if ( !defined('ABSPATH') )
-	define('ABSPATH', dirname(__FILE__) . '/');
+	define('ABSPATH', dirname(__FILE__) . '/wp-core/');
 
 /** Sets up WordPress vars and included files. */
 require_once(ABSPATH . 'wp-settings.php');
