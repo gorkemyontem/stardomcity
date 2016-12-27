@@ -116,7 +116,6 @@ $table_prefix  = 'wp_str_';
  * @link https://codex.wordpress.org/Debugging_in_WordPress
  */
 define('WP_DEBUG', false);
-define('NOBLOGREDIRECT', 'http://' . $_SERVER['SERVER_NAME'] . '/' . $location);
 /* That's all, stop editing! Happy blogging. */
 
 /** Absolute path to the WordPress directory. */
