@@ -54,7 +54,7 @@ define('DB_COLLATE', '');
 // ========================
 // Custom Content Directory
 // ========================
-define( 'WP_CONTENT_DIR', dirname( __FILE__ ) . './../content' );
+define( 'WP_CONTENT_DIR', $_SERVER['DOCUMENT_ROOT'] . '/content' );
 define( 'WP_CONTENT_URL', 'http://' . $_SERVER['SERVER_NAME'] . '/content' );
 
 define('WP_SITEURL', 'http://' . $_SERVER['SERVER_NAME'] . '/wp-core' );
