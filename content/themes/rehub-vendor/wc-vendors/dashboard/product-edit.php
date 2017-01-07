@@ -37,8 +37,15 @@ $post_status				= ( isset($product) && null !== $product ) ? $product->post->pos
 		<?php WCVendors_Pro_Product_Form::title( $object_id, $product_title ); ?>
 		<!-- Product Description -->
 		<?php WCVendors_Pro_Product_Form::description( $object_id, $product_description );  ?>
-		<!-- Product Short Description -->
-		<?php WCVendors_Pro_Product_Form::short_description( $object_id, $product_short_description );  ?>
+
+	  <!-- Media uploader -->
+		<div class="wcv-product-media">
+			<?php do_action( 'wcv_before_media', $object_id ); ?>
+				<?php WCVendors_Pro_Form_helper::product_media_uploader( $object_id ); ?>
+			<?php do_action( 'wcv_after_media', $object_id ); ?>
+
+		</div>
+
 		<!-- Product Categories -->
 	    <?php WCVendors_Pro_Product_Form::categories( $object_id, true ); ?>
 	    <!-- Product Tags -->
@@ -58,19 +65,10 @@ $post_status				= ( isset($product) && null !== $product ) ? $product->post->pos
 		<?php do_action( 'wcv_after_attributes_tab', $object_id ); ?>
 
 		<!-- Price and Sale Price -->
-		<div class="show_if_simple show_if_external">
+		<div class="">
 			<?php WCVendors_Pro_Product_Form::prices( $object_id ); ?>
 		</div>
 
-		<div class="all-100">
-	    	<!-- Media uploader -->
-			<div class="wcv-product-media">
-				<?php do_action( 'wcv_before_media', $object_id ); ?>
-					<?php WCVendors_Pro_Form_helper::product_media_uploader( $object_id ); ?>
-				<?php do_action( 'wcv_after_media', $object_id ); ?>
-
-			</div>
-		</div>
 
 		<?php WCVendors_Pro_Product_Form::form_data( $object_id, $post_status ); ?>
 		<?php WCVendors_Pro_Product_Form::save_button( $title ); ?>
