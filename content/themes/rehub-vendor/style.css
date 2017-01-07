@@ -95,7 +95,17 @@ nav.top_menu > ul > li > a:hover, nav.top_menu > ul > li.current-menu-item a{bor
   content: '\f0ce';
   //content: '\f022';
 }
+.wcvendors-pro-dashboard-wrapper .wcv_product_attributes .wcv-column-group .align-right{
+  display: none;
+}
 
+.wcvendors-pro-dashboard-wrapper .wcv_product_attributes .wcv-column-group .all-80{
+  float: none;
+}
+
+.wcvendors-pro-dashboard-wrapper .wcv_attribute_data .all-30{
+  display: none;
+}
 .displayNone {
   display: none;
 }
