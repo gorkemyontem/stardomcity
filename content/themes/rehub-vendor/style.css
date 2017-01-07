@@ -96,6 +96,9 @@ nav.top_menu > ul > li > a:hover, nav.top_menu > ul > li.current-menu-item a{bor
   //content: '\f022';
 }
 
+.displayNone {
+  display: none;
+}
 //f219
 //006 star
 

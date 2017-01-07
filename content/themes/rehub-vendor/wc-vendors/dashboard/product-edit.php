@@ -59,7 +59,7 @@ $post_status				= ( isset($product) && null !== $product ) ? $product->post->pos
 
 	<div class="all-100">
 		<!-- Product Type -->
-		<div class="wcv-product-type">
+		<div class="wcv-product-type hidden">
 			<?php WCVendors_Pro_Product_Form::product_type( $object_id ); ?>
 		</div>
 	</div>
