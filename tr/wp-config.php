@@ -44,6 +44,7 @@ if($_SERVER['Env'] == 'Prod'){
   define('DB_PASSWORD', '');
   define('DB_HOST', 'localhost');
 
+  
   define( 'SAVEQUERIES', true );
   define( 'WP_DEBUG', true );
 }
