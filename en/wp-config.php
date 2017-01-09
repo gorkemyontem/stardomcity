@@ -18,7 +18,7 @@
  * @package WordPress
  */
 
- $location = 'en';
+$location = 'en';
 
 if($_SERVER['Env'] == 'Prod'){
   define('DB_NAME', $_SERVER['RDS_DB_NAME']);
@@ -55,6 +55,7 @@ define('DB_COLLATE', '');
 // Custom Content Directory
 // ========================
 //define( 'WP_CONTENT_DIR', dirname( __FILE__ ) . './../content' );
+define( 'VP_PUBLIC_URL', '/../content/themes/rehub/vafpress-framework/public');
 define( 'WP_CONTENT_DIR', $_SERVER['DOCUMENT_ROOT'] . '/content' );
 define( 'WP_CONTENT_URL', 'http://' . $_SERVER['SERVER_NAME'] . '/content' );
 
@@ -123,7 +124,7 @@ define('WP_DEBUG', false);
 if ( !defined('ABSPATH') )
 	define('ABSPATH', dirname(__FILE__) . './../wp-core/');
 
-define( 'UPLOADS', './../' . $location . '/uploads' );
+define( 'UPLOADS', 'tr/uploads' );
 
 /** Sets up WordPress vars and included files. */
 require_once(ABSPATH . 'wp-settings.php');

@@ -8,7 +8,8 @@ wp-content/upgrade/
 wp-content/uploads/
 wp-content/wp-cache-config.php
 wp-content/plugins/hello.php
-
+tr/uploads/
+en/uploads/
 /.htaccess
 /license.txt
 /readme.html

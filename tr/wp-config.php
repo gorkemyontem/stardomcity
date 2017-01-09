@@ -44,7 +44,6 @@ if($_SERVER['Env'] == 'Prod'){
   define('DB_PASSWORD', '');
   define('DB_HOST', 'localhost');
 
-  
   define( 'SAVEQUERIES', true );
   define( 'WP_DEBUG', true );
 }
@@ -55,12 +54,15 @@ define('DB_COLLATE', '');
 // ========================
 // Custom Content Directory
 // ========================
+
+define( 'VP_PUBLIC_URL', '/../content/themes/rehub/vafpress-framework/public');
 define( 'WP_CONTENT_DIR', $_SERVER['DOCUMENT_ROOT'] . '/content' );
 define( 'WP_CONTENT_URL', 'http://' . $_SERVER['SERVER_NAME'] . '/content' );
 
 define('WP_SITEURL', 'http://' . $_SERVER['SERVER_NAME'] . '/wp-core' );
 define('WP_HOME', 'http://' . $_SERVER['SERVER_NAME'] . '/' . $location );
 define('WP_DEFAULT_THEME', 'rehub-vendor');
+define('VP_PUBLIC_URL', $_SERVER['DOCUMENT_ROOT']);
 
 // ========================
 // Custom Cookie Settings
@@ -123,7 +125,7 @@ define('WP_DEBUG', false);
 if ( !defined('ABSPATH') )
 	define('ABSPATH', dirname(__FILE__) . './../wp-core/');
 
-define( 'UPLOADS', './../' . $location . '/uploads' );
+define( 'UPLOADS', 'tr/uploads' );
 
 /** Sets up WordPress vars and included files. */
 require_once(ABSPATH . 'wp-settings.php');
