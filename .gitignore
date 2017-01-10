@@ -1,4 +1,6 @@
 *.log
+*.local.php
+*.phar
 wp-content/advanced-cache.php
 wp-content/backup-db/
 wp-content/backups/
@@ -16,8 +18,8 @@ en/uploads/
 /sitemap.xml
 /sitemap.xml.gz
 
-
+
 # Elastic Beanstalk Files
 .elasticbeanstalk/*
 !.elasticbeanstalk/*.cfg.yml
-!.elasticbeanstalk/*.global.yml
+!.elasticbeanstalk/*.global.yml

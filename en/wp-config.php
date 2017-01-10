@@ -18,31 +18,51 @@
  * @package WordPress
  */
 
+ if ( file_exists( dirname( __FILE__ ) . '/wp-config.local.php' ) ) {
+   include( dirname( __FILE__ ) . '/wp-config.local.php' );
+ }
+
 $location = 'en';
 
-if($_SERVER['Env'] == 'Prod'){
+if (!defined('DB_NAME')) {
   define('DB_NAME', $_SERVER['RDS_DB_NAME']);
+}
+
+if (!defined('DB_USER')) {
   define('DB_USER', $_SERVER['RDS_USERNAME']);
+}
+
+if (!defined('DB_PASSWORD')) {
   define('DB_PASSWORD', $_SERVER['RDS_PASSWORD']);
+}
+
+if (!defined('DB_HOST') ) {
   define('DB_HOST', $_SERVER['RDS_HOSTNAME']);
+}
+
+if (!defined('S3_UPLOADS_BUCKET') ) {
+  define( 'S3_UPLOADS_BUCKET', $_SERVER['S3_BUCKET_NAME']);
+}
+
+if (!defined('S3_UPLOADS_KEY') ) {
+  define( 'S3_UPLOADS_KEY', $_SERVER['S3_BUCKET_KEY']);
+}
+
+if (!defined('S3_UPLOADS_SECRET') ) {
+  define( 'S3_UPLOADS_SECRET', $_SERVER['S3_BUCKET_SECRET']);
+}
+
+if (!defined('S3_UPLOADS_REGION') ) {
+  define( 'S3_UPLOADS_REGION', 'eu-central-1' );
+}
+
+
+if($_SERVER['Env'] == 'Prod'){
 
   ini_set( 'display_errors', 0 );
   define( 'WP_DEBUG_DISPLAY', false );
 
 } else if($_SERVER['Env'] == 'Test') {
-
-  define('DB_NAME', $_SERVER['RDS_DB_NAME']);
-  define('DB_USER', $_SERVER['RDS_USERNAME']);
-  define('DB_PASSWORD', $_SERVER['RDS_PASSWORD']);
-  define('DB_HOST', $_SERVER['RDS_HOSTNAME']);
-
-  define( 'SAVEQUERIES', true );
-  define( 'WP_DEBUG', true );
-} else {
-  define('DB_NAME', 'StardomCityEnTestDb');
-  define('DB_USER', 'root');
-  define('DB_PASSWORD', '');
-  define('DB_HOST', 'localhost');
 
   define( 'SAVEQUERIES', true );
   define( 'WP_DEBUG', true );
@@ -54,6 +74,7 @@ define('DB_COLLATE', '');
 // ========================
 // Custom Content Directory
 // ========================
+
 //define( 'WP_CONTENT_DIR', dirname( __FILE__ ) . './../content' );
 define( 'VP_PUBLIC_URL', '/../content/themes/rehub/vafpress-framework/public');
 define( 'WP_CONTENT_DIR', $_SERVER['DOCUMENT_ROOT'] . '/content' );
@@ -105,19 +126,6 @@ define('NONCE_SALT',       'G6xe:u[iQVuO!}Z<&c^)O!hoY`c$e4Gtvb}d$$mM=4.s)p@`#U-!
  */
 $table_prefix  = 'wp_str_';
 
-/**
- * For developers: WordPress debugging mode.
- *
- * Change this to true to enable the display of notices during development.
- * It is strongly recommended that plugin and theme developers use WP_DEBUG
- * in their development environments.
- *
- * For information on other constants that can be used for debugging,
- * visit the Codex.
- *
- * @link https://codex.wordpress.org/Debugging_in_WordPress
- */
-define('WP_DEBUG', false);
 /* That's all, stop editing! Happy blogging. */
 
 /** Absolute path to the WordPress directory. */
@@ -127,4 +135,4 @@ if ( !defined('ABSPATH') )
 define( 'UPLOADS', '../' . $location . '/uploads' );
 
 /** Sets up WordPress vars and included files. */
-require_once(ABSPATH . 'wp-settings.php');
+//require_once(ABSPATH . 'wp-settings.php');
