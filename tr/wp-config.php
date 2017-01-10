@@ -128,10 +128,8 @@ $table_prefix  = 'wp_str_';
 /* That's all, stop editing! Happy blogging. */
 
 /** Absolute path to the WordPress directory. */
-if ( !defined('ABSPATH') )
-	define('ABSPATH', dirname(__FILE__) . './../wp-core/');
+if(!defined('ABSPATH')){
+  define('ABSPATH', dirname(__FILE__) . './../wp-core/');
+}
 
-define( 'UPLOADS', '../' . $location . '/uploads' );
-
-/** Sets up WordPress vars and included files. */
-//require_once(ABSPATH . 'wp-settings.php');
+define('UPLOADS', '../' . $location . '/uploads');

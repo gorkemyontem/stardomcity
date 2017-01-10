@@ -62,4 +62,5 @@ if($location_url == null && $location_cookie == null){
 
 set_location_cookie($location_url);
 require_once( dirname(__FILE__) . '/' . $location_url . '/wp-config.php' );
+/** Sets up WordPress vars and included files. */
 require_once(ABSPATH . 'wp-settings.php');
