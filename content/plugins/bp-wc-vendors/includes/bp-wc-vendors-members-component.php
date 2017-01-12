@@ -110,8 +110,8 @@ class BuddyForms_WC_Vendors_Component extends BP_Component {
 			$sub_nav[] = array(
 				'name'            => __( 'Settings', 'wcvendors' ),
 				'slug'            => 'vendor-dashboard-settings',
-				'parent_slug'     => 'settings',
-				'parent_url'      => bp_displayed_user_domain() . 'settings/',
+				'parent_slug'     => 'vendor-dashboard',
+				'parent_url'      => bp_displayed_user_domain() . 'vendor-dashboard/',
 				'item_css_id'     => 'vendor-dashboard',
 				'screen_function' => array( $this, 'bp_wc_vendors_screen_settings' ),
 				'user_has_access' => bp_is_my_profile()

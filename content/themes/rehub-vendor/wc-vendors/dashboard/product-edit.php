@@ -11,7 +11,7 @@
  *   DO NOT EDIT ANY OF THE LINES BELOW UNLESS YOU KNOW WHAT YOU'RE DOING
  *
 */
-
+global $stardomBase;
 $title = 	( is_numeric( $object_id ) ) ? __('Save Changes', 'wcvendors-pro') : __('Add Product', 'wcvendors-pro');
 $product = 	( is_numeric( $object_id ) ) ? wc_get_product( $object_id ) : null;
 
@@ -46,13 +46,19 @@ $post_status				= ( isset($product) && null !== $product ) ? $product->post->pos
 
 		</div>
 
-		<!-- Product Categories -->
+			<!-- Product Categories -->
 	    <?php WCVendors_Pro_Product_Form::categories( $object_id, true ); ?>
+			<!-- Product Campaign Type -->
+			<?php $stardomBase->form_campaign_type( $object_id ); ?>
+			<!-- Product Social Media Channel -->
+			<?php $stardomBase->form_social_media_channel( $object_id ); ?>
 	    <!-- Product Tags -->
 	    <?php WCVendors_Pro_Product_Form::tags( $object_id, true ); ?>
 			<p class="tip">Virgül ile ayır ör: a,b,c,d</p>
+
 			<br/>
 	</div>
+
 
 	<div class="all-100">
 		<label for="wcv_product_attributes" class=""><?php _e( 'Attributes', 'woocommerce' ); ?></label>

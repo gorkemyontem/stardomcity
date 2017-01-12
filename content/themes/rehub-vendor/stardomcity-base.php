@@ -6,13 +6,79 @@ class StardomCityBase {
     }
 
     private function init(){
+      $this->create_custom_taxonomy_campaign_type();
+      $this->create_custom_taxonomy_social_media_channels();
       //   add_filter( 'login_redirect', array( $this, 'custom_user_login_redirect' ), 10, 3 );  //static
       add_filter( 'wcv_product_description', array( $this, 'make_required_fieldname' ), 10, 1);
-
+      add_action( 'wcv_save_product', array( $this, 'save_campaign_type' ));
+      add_action( 'wcv_save_product', array( $this, 'save_social_media_channel' ));
+    //  add_action( 'wcvendors_settings_after_social', array( $this,'wcv_store_bank_details_admin' ));
       // add_filter( 'media_upload_newtab', array( $this, 'media_upload_callback' ) );  //instance
       // add_filter( 'media_upload_newtab', array( 'My_Class', 'media_upload_callback' ) );  //static
       // add_filter( 'the_title', function( $title ) { return '<strong>' . $title . '</strong>'; } ); //anonymous
     }
+
+    private function create_custom_taxonomy_campaign_type()  {
+    $labels = array(
+        'name'                       => 'Campaign Types',
+        'singular_name'              => 'Campaign Type',
+        'menu_name'                  => 'Campaign Type',
+        'all_items'                  => 'All Campaign Types',
+        'parent_item'                => 'Parent Campaign Type',
+        'parent_item_colon'          => 'Parent Campaign Type:',
+        'new_item_name'              => 'New Campaign Type Name',
+        'add_new_item'               => 'Add New Campaign Type',
+        'edit_item'                  => 'Edit Campaign Type',
+        'update_item'                => 'Update Campaign Type',
+        'separate_items_with_commas' => 'Separate Campaign Type with commas',
+        'search_items'               => 'Search Campaign Types',
+        'add_or_remove_items'        => 'Add or remove Campaign Types',
+        'choose_from_most_used'      => 'Choose from the most used Campaign Types',
+    );
+    $args = array(
+        'labels'                     => $labels,
+        'hierarchical'               => true,
+        'public'                     => true,
+        'show_ui'                    => true,
+        'show_admin_column'          => true,
+        'show_in_nav_menus'          => true,
+        'show_tagcloud'              => true,
+    );
+    register_taxonomy( 'campaign_type', 'product', $args );
+    register_taxonomy_for_object_type( 'campaign_type', 'product' );
+    }
+
+
+    private function create_custom_taxonomy_social_media_channels()  {
+      $labels = array(
+          'name'                       => 'Social Media Channels',
+          'singular_name'              => 'Social Media Channel',
+          'menu_name'                  => 'Social Media Channel',
+          'all_items'                  => 'All Social Media Channels',
+          'parent_item'                => 'Parent Social Media Channel',
+          'parent_item_colon'          => 'Parent Social Media Channel:',
+          'new_item_name'              => 'New Social Media Channel Name',
+          'add_new_item'               => 'Add New Social Media Channel',
+          'edit_item'                  => 'Edit Social Media Channel',
+          'update_item'                => 'Update Social Media Channel',
+          'separate_items_with_commas' => 'Separate Social Media Channel with commas',
+          'search_items'               => 'Search Social Media Channels',
+          'add_or_remove_items'        => 'Add or remove Social Media Channels',
+          'choose_from_most_used'      => 'Choose from the most used Social Media Channels',
+      );
+      $args = array(
+          'labels'                     => $labels,
+          'hierarchical'               => true,
+          'public'                     => true,
+          'show_ui'                    => true,
+          'show_admin_column'          => true,
+          'show_in_nav_menus'          => true,
+          'show_tagcloud'              => true,
+      );
+      register_taxonomy( 'social_media_channel', 'product', $args );
+      register_taxonomy_for_object_type( 'social_media_channel', 'product' );
+    }
+
 
 
 function make_required_fieldname( $args ) {
@@ -183,9 +249,88 @@ function make_required_fieldname( $args ) {
 //  }
 // }
 
+//WC vendors Social Settings
+public function profile_twitch_username( ){
+   if ( class_exists( 'WCVendors_Pro' ) ){
+     $value = get_user_meta( get_current_user_id(), '_wcv_custom_settings_twitch_url', true );
+     WCVendors_Pro_Form_Helper::input( array(
+       'id' 				=> '_wcv_custom_settings_twitch_url',
+       'label' 			=> __( 'Twitch Name', 'wcvendors-pro' ),
+       'placeholder' 			=> __( 'First Bank', 'wcvendors-pro' ),
+       'desc_tip' 			=> 'true',
+       'description' 			=> __( 'Your Twitch Name', 'wcvendors-pro' ),
+       'type' 				=> 'text',
+       'value'				=> $value,
+       )
+     );
+   }
+ }
 
+ public function profile_scorp_username( ){
+    if ( class_exists( 'WCVendors_Pro' ) ){
+      $value = get_user_meta( get_current_user_id(), '_wcv_custom_settings_scorp_url', true );
+      WCVendors_Pro_Form_Helper::input( array(
+        'id' 				=> '_wcv_custom_settings_scorp_url',
+        'label' 			=> __( 'Scorp Username', 'wcvendors-pro' ),
+        'placeholder' 			=> __( 'Scorp Username', 'wcvendors-pro' ),
+        'desc_tip' 			=> 'true',
+        'description' 			=> __( 'Your Scorp Username', 'wcvendors-pro' ),
+        'type' 				=> 'text',
+        'value'				=> $value,
+        )
+      );
+    }
+  }
+  //WC Vendors Product Edit
+  public function form_campaign_type( $object_id ) {
+   WCVendors_Pro_Form_helper::select2( array(
+  			'post_id'			=> $object_id,
+  			'id'				=> 'wcv_custom_product_campaign_type[]',
+  			'class'				=> 'select2',
+  			'label'				=> __('Campaign Type', 'wcvendors-pro'),
+  			'show_option_none'	=> __('Select a Campaign Type', 'wcvendors-pro'),
+  			'taxonomy'			=>	'campaign_type',
+  			'taxonomy_args'		=> array(
+  									'hide_empty'	=> 0,
+                    'orderby'		=> 'order',
+                    'exclude'		=> '',
+  								),
+  			'custom_attributes'	=> array( 'multiple' => 'multiple' ),
+  			)
+  	);
+  }
+  public function save_campaign_type( $post_id ){
+  	$term = $_POST[ 'wcv_custom_product_campaign_type' ];
+  	$terms = implode(',', $term );
+  	wp_set_post_terms( $post_id, $term, 'Campaign Type' );
+  }
 
-
-
+  public function form_social_media_channel( $object_id ) {
+   WCVendors_Pro_Form_helper::select2( array(
+        'post_id'			=> $object_id,
+        'id'				=> 'wcv_custom_product_social_media_channel[]',
+        'class'				=> 'select2',
+        'label'				=> __('Social Media Channel', 'wcvendors-pro'),
+        'show_option_none'	=> __('Select a Social Media Channel', 'wcvendors-pro'),
+        'taxonomy'			=>	'social_media_channel',
+        'taxonomy_args'		=> array(
+                    'hide_empty'	=> 0,
+                    'orderby'		=> 'order',
+                    'exclude'		=> '',
+                  ),
+        'custom_attributes'	=> array( 'multiple' => 'multiple' ),
+        'options' 			=> array(
+					''            	=> __( 'Standard Product', 'wcvendors-pro' ),
+					'application' 	=> __( 'Application/Software', 'wcvendors-pro' ),
+					'music'       	=> __( 'Music', 'wcvendors-pro' ),
+					)
+        )
+    );
+  }
+  public function save_social_media_channel( $post_id ){
+    $term = $_POST[ 'wcv_custom_product_social_media_channel' ];
+    $terms = implode(',', $term );
+    wp_set_post_terms( $post_id, $term, 'Social Media Channel' );
+  }
 
 }

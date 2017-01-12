@@ -326,9 +326,12 @@ function rh_custom_message_placeholder_in_bp_message(){
 
 
 
-///// STARDOM
+///// STARDOMCITY
 add_filter( 'bp_after_has_members_parse_args', 'exclude_users_by_role');
 add_filter( 'bp_get_total_member_count', 'get_active_member_count' );
+add_action( 'bp_setup_nav', 'bpex_primary_nav_tabs_position', 999 );
+add_action( 'bp_setup_nav', 'profile_tab_favorites' );
+add_action( 'bp_setup_nav', 'profile_tab_vendor_dashboard_settings' );
 
 // add_action( 'wp', 'hide_admins_profile', 1 );
 
@@ -339,9 +342,6 @@ add_filter( 'bp_get_total_member_count', 'get_active_member_count' );
 //     }
 //   }
 // }
-
-// add_action( 'bp_has_activities', 'hide_admin_activity', 10, 2 );
-
 
 global $roles_to_exclude;
 $roles_to_exclude =  [ 'administrator', 'test'];
@@ -369,28 +369,6 @@ function get_active_member_count($bp_core_get_active_member_count ){
 }
 
 
-// Hide admin's activities from all activity feeds
-function hide_admin_activity( $a, $activities ) {
-
-  // ... but allow admin to see his activities!
-  if ( is_super_admin() ){
-    return $activities;
-  }
-  foreach ( $activities->activities as $key => $activity ) {
-      // ID's to exclude, separated by commas. ID 1 is always the superadmin
-      if ( $activity->user_id == 1  ) {
-        unset( $activities->activities[$key] );
-        $activities->activity_count = $activities->activity_count-1;
-        $activities->total_activity_count = $activities->total_activity_count-1;
-        $activities->pag_num = $activities->pag_num -1;
-      }
-    }
-    // Renumber the array keys to account for missing items
-    $activities_new = array_values( $activities->activities );
-    $activities->activities = $activities_new;
-    return $activities;
-}
-
 function bpex_primary_nav_tabs_position() {
   //change_buddypress_profile_nav
   if( bp_is_members_component() || bp_is_user() ) {
@@ -410,8 +388,6 @@ function bpex_primary_nav_tabs_position() {
   buddypress()->members->nav->edit_nav( array( 'position' => 70,), 'followers');
   buddypress()->members->nav->edit_nav( array( 'position' => 80,), 'settings');
 }
-add_action( 'bp_setup_nav', 'bpex_primary_nav_tabs_position', 999 );
-
 
 function profile_tab_favorites() {
       global $bp;
@@ -440,7 +416,6 @@ function profile_tab_favorites() {
       	'position'        => 60,
     	) );
 }
-add_action( 'bp_setup_nav', 'profile_tab_favorites' );
 
 function favorites_screen() {
     add_action( 'bp_template_content', 'favorites_content' );
@@ -452,6 +427,377 @@ function favorites_content() {
     echo do_shortcode( '[rh_get_favorite_shops]');
     echo '</article>';
 }
+
+
+
+function profile_tab_vendor_dashboard_settings() {
+
+
+    bp_core_remove_subnav_item( 'settings', 'notifications' );
+    bp_core_remove_subnav_item( 'settings', 'profile' );
+    //  bp_core_remove_subnav_item( 'vendor-dashboard', 'vendor-dashboard-settings' );
+
+    bp_core_new_subnav_item( array(
+    	'name'            => 'Store',
+    	'slug'            => 'store',
+    	'parent_url'      => bp_displayed_user_domain() . '/settings/',
+    	'parent_slug'     => 'settings',
+    	'screen_function' => 'store_screen',
+    	'position'        => 10,
+      'user_has_access' => bp_is_my_profile()
+  	) );
+
+    bp_core_new_subnav_item( array(
+      'name'            => 'Payment',
+      'slug'            => 'payment',
+      'parent_url'      => bp_displayed_user_domain() . '/settings/',
+      'parent_slug'     => 'settings',
+      'screen_function' => 'payment_screen',
+      'position'        => 20,
+      'user_has_access' => bp_is_my_profile()
+    ) );
+
+    bp_core_new_subnav_item( array(
+      'name'            => 'Branding',
+      'slug'            => 'branding',
+      'parent_url'      => bp_displayed_user_domain() . '/settings/',
+      'parent_slug'     => 'settings',
+      'screen_function' => 'branding_screen',
+      'position'        => 30,
+      'user_has_access' => bp_is_my_profile()
+    ) );
+
+    bp_core_new_subnav_item( array(
+      'name'            => 'Social',
+      'slug'            => 'social',
+      'parent_url'      => bp_displayed_user_domain() . '/settings/',
+      'parent_slug'     => 'settings',
+      'screen_function' => 'social_screen',
+      'position'        => 40,
+      'user_has_access' => bp_is_my_profile()
+    ) );
+
+
+}
+
+
+function store_screen() {
+    add_action( 'bp_template_content', 'custom_all_settings');
+    bp_core_load_template( 'members/single/plugins' );
+}
+
+function payment_screen() {
+    add_action( 'bp_template_content', 'custom_all_settings' );
+    bp_core_load_template( 'members/single/plugins' );
+}
+
+function branding_screen() {
+    add_action( 'bp_template_content', 'custom_all_settings' );
+    bp_core_load_template( 'members/single/plugins' );
+}
+
+function social_screen() {
+    add_action( 'bp_template_content', 'custom_all_settings' );
+    bp_core_load_template( 'members/single/plugins' );
+}
+
+function custom_all_settings(){
+  global $bp;
+  global $stardomBase;
+  $vendor_id = get_current_user_id();
+  $store_name = get_user_meta( $vendor_id, 'pv_shop_name', true );
+  $store_description = get_user_meta( $vendor_id, 'pv_shop_description', true );
+  ?>
+
+  <form method="post" action="" class="wcv-form wcv-formvalidator">
+
+  <?php WCVendors_Pro_Store_Form::form_data(); ?>
+
+    <div class="wcv-tabs top" data-prevent-url-change="true">
+
+
+  	<!-- Store Settings Form -->
+      <?php
+      if($bp->current_action  != 'store'){
+        echo '<span style="visibility: hidden; position:absolute; bottom:9999px;">';
+      }
+      ?>
+  		<!-- Store Name -->
+  		<?php WCVendors_Pro_Store_Form::store_name( $store_name ); ?>
+
+  		<?php do_action( 'wcvendors_settings_after_shop_name' ); ?>
+
+  		<!-- Store Description -->
+  		<?php WCVendors_Pro_Store_Form::store_description( $store_description ); ?>
+
+  		<?php do_action( 'wcvendors_settings_after_shop_description' ); ?>
+  		<br />
+
+  		<!-- Seller Info -->
+  		<?php WCVendors_Pro_Store_Form::seller_info( ); ?>
+
+  		<?php do_action( 'wcvendors_settings_after_seller_info' ); ?>
+
+  		<br />
+
+  		<!-- Company URL -->
+  		<?php do_action( 'wcvendors_settings_before_company_url' ); ?>
+  		<?php WCVendors_Pro_Store_Form::company_url( ); ?>
+  		<?php do_action(  'wcvendors_settings_after_company_url' ); ?>
+
+  		<!-- Store Phone -->
+  		<?php do_action( 'wcvendors_settings_before_store_phone' ); ?>
+  		<?php WCVendors_Pro_Store_Form::store_phone( ); ?>
+  		<?php do_action(  'wcvendors_settings_after_store_phone' ); ?>
+
+  		<!-- Store Address -->
+  		<?php //do_action( 'wcvendors_settings_before_address' ); ?>
+  		<?php //WCVendors_Pro_Store_Form::store_address_country( ); ?>
+  		<?php //WCVendors_Pro_Store_Form::store_address1( ); ?>
+  		<?php //WCVendors_Pro_Store_Form::store_address2( ); ?>
+  		<?php //WCVendors_Pro_Store_Form::store_address_city( ); ?>
+  		<?php //WCVendors_Pro_Store_Form::store_address_state( ); ?>
+  		<?php //WCVendors_Pro_Store_Form::store_address_postcode( ); ?>
+  		<?php //do_action(  'wcvendors_settings_after_address' ); ?>
+
+  		<!-- Store Vacation Mode -->
+  		<?php do_action( 'wcvendors_settings_before_vacation_mode' ); ?>
+  		<?php WCVendors_Pro_Store_Form::vacation_mode( ); ?>
+  		<?php do_action(  'wcvendors_settings_after_vacation_mode' ); ?>
+
+      <?php
+      if($bp->current_action  != 'store'){
+        echo "</span>";
+      }
+      ?>
+
+      <?php
+      if($bp->current_action  != 'payment'){
+        echo '<span style="visibility: hidden; position:absolute; bottom:9999px;">';
+      }
+      ?>
+  		<!-- Paypal address -->
+  		<?php do_action( 'wcvendors_settings_before_paypal' ); ?>
+
+  		<?php WCVendors_Pro_Store_Form::paypal_address( ); ?>
+
+  		<?php do_action( 'wcvendors_settings_after_paypal' ); ?>
+      <?php
+      if($bp->current_action  != 'payment'){
+        echo "</span>";
+      }
+      ?>
+
+      <?php
+      if($bp->current_action  != 'branding'){
+        echo '<span style="visibility: hidden; position:absolute; bottom:9999px;">';
+      }
+      ?>
+  		<?php do_action( 'wcvendors_settings_before_branding' ); ?>
+
+  		<!-- Store Banner -->
+  		<?php WCVendors_Pro_Store_Form::store_banner( ); ?>
+
+  		<!-- Store Icon -->
+  		<?php WCVendors_Pro_Store_Form::store_icon( ); ?>
+
+  		<?php do_action( 'wcvendors_settings_after_branding' ); ?>
+      <?php
+      if($bp->current_action  != 'branding'){
+        echo "</span>";
+      }
+      ?>
+
+
+      <?php
+      if($bp->current_action  != 'social'){
+        echo '<span style="visibility: hidden; position:absolute; bottom:9999px;">';
+      }
+      ?>
+  	<?php
+    $settings_social 		= (array) WC_Vendors::$pv_options->get_option( 'hide_settings_social' );
+    $social_total 		= count( $settings_social );
+    $social_count = 0;
+    foreach ( $settings_social as $value) { if ( 1 == $value ) $social_count +=1;  }
+
+    if ( $social_count != $social_total ) :  ?>
+
+
+  			<?php do_action( 'wcvendors_settings_before_social' ); ?>
+
+        <!-- Scorp -->
+        <?php $stardomBase->profile_scorp_username(); ?>
+        <!-- Snapchat -->
+        <?php WCVendors_Pro_Store_Form::snapchat_username( ); ?>
+  			<!-- Instagram -->
+  			<?php WCVendors_Pro_Store_Form::instagram_username( ); ?>
+        <!-- Twitter -->
+        <?php WCVendors_Pro_Store_Form::twitter_username( ); ?>
+        <!-- Twitch -->
+        <?php $stardomBase->profile_twitch_username(); ?>
+  			<!-- Facebook -->
+  			<?php WCVendors_Pro_Store_Form::facebook_url( ); ?>
+        <!-- Youtube URL -->
+        <?php WCVendors_Pro_Store_Form::youtube_url( ); ?>
+  			<!-- Linked in -->
+  			<?php WCVendors_Pro_Store_Form::linkedin_url( ); ?>
+  			<!-- Pinterest URL -->
+  			<?php WCVendors_Pro_Store_Form::pinterest_url( ); ?>
+  			<!-- Google+ URL -->
+  			<?php WCVendors_Pro_Store_Form::googleplus_url( ); ?>
+
+  			<?php do_action(  'wcvendors_settings_after_social' ); ?>
+
+  	<?php endif; ?>
+
+    <?php
+    if($bp->current_action  != 'store'){
+      echo "</span>";
+    }
+    ?>
+  	</div>
+  		<!-- Submit Button -->
+  		<!-- DO NOT REMOVE THE FOLLOWING TWO LINES -->
+  		<?php WCVendors_Pro_Store_Form::save_button( __( 'Save Changes', 'wcvendors-pro') ); ?>
+  	</form>
+ <?php
+}
+
+
+
+
+function custom_store_settings() {
+  $vendor_id = get_current_user_id();
+  $store_name = get_user_meta( $vendor_id, 'pv_shop_name', true );
+  $store_description = get_user_meta( $vendor_id, 'pv_shop_description', true );
+  ?>
+  <form method="post" action="" class="wcv-form wcv-formvalidator">
+
+  <?php WCVendors_Pro_Store_Form::form_data();
+
+  WCVendors_Pro_Store_Form::store_name( $store_name );
+
+  do_action( 'wcvendors_settings_after_shop_name' );
+
+  WCVendors_Pro_Store_Form::store_description( $store_description );
+
+  do_action( 'wcvendors_settings_after_shop_description' );
+  ?>
+  <br />
+  <?php
+  WCVendors_Pro_Store_Form::seller_info( );
+
+
+  do_action( 'wcvendors_settings_after_seller_info' );
+  ?>
+  <br />
+  <?php
+  do_action( 'wcvendors_settings_before_company_url' );
+  WCVendors_Pro_Store_Form::company_url( );
+  do_action(  'wcvendors_settings_after_company_url' );
+
+  do_action( 'wcvendors_settings_before_store_phone' );
+  WCVendors_Pro_Store_Form::store_phone( );
+  do_action(  'wcvendors_settings_after_store_phone' );
+
+  do_action( 'wcvendors_settings_before_address' );
+  WCVendors_Pro_Store_Form::store_address_country( );
+  WCVendors_Pro_Store_Form::store_address1( );
+  WCVendors_Pro_Store_Form::store_address2( );
+  WCVendors_Pro_Store_Form::store_address_city( );
+  WCVendors_Pro_Store_Form::store_address_state( );
+  WCVendors_Pro_Store_Form::store_address_postcode( );
+  do_action(  'wcvendors_settings_after_address' );
+
+  do_action( 'wcvendors_settings_before_vacation_mode' );
+  WCVendors_Pro_Store_Form::vacation_mode( );
+  do_action(  'wcvendors_settings_after_vacation_mode' );
+  WCVendors_Pro_Store_Form::save_button( __( 'Save Changes', 'wcvendors-pro') );
+  ?>
+  </div>
+  </form>
+  <?php
+}
+function custom_payment_settings() {
+  ?>
+  <form method="post" action="" class="wcv-form wcv-formvalidator">
+
+  <?php WCVendors_Pro_Store_Form::form_data();
+
+  do_action( 'wcvendors_settings_before_paypal' );
+
+  WCVendors_Pro_Store_Form::paypal_address( );
+
+  do_action( 'wcvendors_settings_after_paypal' );
+
+  WCVendors_Pro_Store_Form::save_button( __( 'Save Changes', 'wcvendors-pro') ); ?>
+  </div>
+  	</form>
+  <?php
+}
+function custom_branding_settings() {
+  ?>
+  <form method="post" action="" class="wcv-form wcv-formvalidator">
+
+  <?php WCVendors_Pro_Store_Form::form_data();
+
+  do_action( 'wcvendors_settings_before_branding' );
+
+  WCVendors_Pro_Store_Form::store_banner( );
+
+  WCVendors_Pro_Store_Form::store_icon( );
+
+  do_action( 'wcvendors_settings_after_branding' );
+
+  WCVendors_Pro_Store_Form::save_button( __( 'Save Changes', 'wcvendors-pro') ); ?>
+  </div>
+  	</form>
+  <?php
+}
+function custom_social_settings() {
+  $vendor_id = get_current_user_id();
+  $store_name = get_user_meta( $vendor_id, 'pv_shop_name', true );
+
+  ?>
+  <form method="post" action="" class="wcv-form wcv-formvalidator">
+
+  <?php WCVendors_Pro_Store_Form::form_data();
+  $settings_social 		= (array) WC_Vendors::$pv_options->get_option( 'hide_settings_social' );
+  $social_total 		= count( $settings_social );
+  $social_count = 0;
+  foreach ( $settings_social as $value) {
+    if ( 1 == $value )
+    $social_count +=1;
+  }
+
+  echo "<div style=\"visibility: hidden;height: 0px;\">";
+    WCVendors_Pro_Store_Form::store_name( $store_name );
+  echo "</div>";
+  if ( $social_count != $social_total ) :
+
+      do_action( 'wcvendors_settings_before_social' );
+      WCVendors_Pro_Store_Form::youtube_url( );
+      WCVendors_Pro_Store_Form::snapchat_username( );
+      WCVendors_Pro_Store_Form::instagram_username( );
+      WCVendors_Pro_Store_Form::facebook_url( );
+      WCVendors_Pro_Store_Form::twitter_username( );
+      WCVendors_Pro_Store_Form::pinterest_url( );
+      WCVendors_Pro_Store_Form::linkedin_url( );
+      WCVendors_Pro_Store_Form::googleplus_url( );
+      do_action( 'wcvendors_settings_after_social' ); ?>
+  <?php endif; ?>
+  <?php WCVendors_Pro_Store_Form::save_button( __( 'Save Changes', 'wcvendors-pro') ); ?>
+  </div>
+  	</form>
+  <?php
+}
+
+
+
+
+
+
+
 
 
 
