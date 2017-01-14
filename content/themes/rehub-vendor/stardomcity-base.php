@@ -10,42 +10,46 @@ class StardomCityBase {
       $this->create_custom_taxonomy_social_media_channels();
       //   add_filter( 'login_redirect', array( $this, 'custom_user_login_redirect' ), 10, 3 );  //static
       add_filter( 'wcv_product_description', array( $this, 'make_required_fieldname' ), 10, 1);
-      add_action( 'wcv_save_product', array( $this, 'save_campaign_type' ));
-      add_action( 'wcv_save_product', array( $this, 'save_social_media_channel' ));
-    //  add_action( 'wcvendors_settings_after_social', array( $this,'wcv_store_bank_details_admin' ));
-      // add_filter( 'media_upload_newtab', array( $this, 'media_upload_callback' ) );  //instance
-      // add_filter( 'media_upload_newtab', array( 'My_Class', 'media_upload_callback' ) );  //static
-      // add_filter( 'the_title', function( $title ) { return '<strong>' . $title . '</strong>'; } ); //anonymous
+      add_action( 'wcv_save_product', array( $this, 'save_campaign_type' ), 10, 1);
+      add_action( 'wcv_save_product', array( $this, 'save_social_media_channel' ), 10, 1);
+      add_action( 'wcv_save_product_meta', array( $this, 'save_product_type_virtual' ), 10, 1);
+      add_filter( 'wcv_product_categories', array( $this, 'wcv_product_categories_required' ));
+      add_filter( 'wcv_product_price', array( $this, 'wcv_product_price_required' ));
+    }
+
+    public function save_product_type_virtual($post_id)  {
+       update_post_meta( $post_id, '_downloadable', 'no' );
+       update_post_meta( $post_id, '_virtual', 'yes' );
     }
 
     private function create_custom_taxonomy_campaign_type()  {
-    $labels = array(
-        'name'                       => 'Campaign Types',
-        'singular_name'              => 'Campaign Type',
-        'menu_name'                  => 'Campaign Type',
-        'all_items'                  => 'All Campaign Types',
-        'parent_item'                => 'Parent Campaign Type',
-        'parent_item_colon'          => 'Parent Campaign Type:',
-        'new_item_name'              => 'New Campaign Type Name',
-        'add_new_item'               => 'Add New Campaign Type',
-        'edit_item'                  => 'Edit Campaign Type',
-        'update_item'                => 'Update Campaign Type',
-        'separate_items_with_commas' => 'Separate Campaign Type with commas',
-        'search_items'               => 'Search Campaign Types',
-        'add_or_remove_items'        => 'Add or remove Campaign Types',
-        'choose_from_most_used'      => 'Choose from the most used Campaign Types',
-    );
-    $args = array(
-        'labels'                     => $labels,
-        'hierarchical'               => true,
-        'public'                     => true,
-        'show_ui'                    => true,
-        'show_admin_column'          => true,
-        'show_in_nav_menus'          => true,
-        'show_tagcloud'              => true,
-    );
-    register_taxonomy( 'campaign_type', 'product', $args );
-    register_taxonomy_for_object_type( 'campaign_type', 'product' );
+      $labels = array(
+          'name'                       => 'Campaign Types',
+          'singular_name'              => 'Campaign Type',
+          'menu_name'                  => 'Campaign Type',
+          'all_items'                  => 'All Campaign Types',
+          'parent_item'                => 'Parent Campaign Type',
+          'parent_item_colon'          => 'Parent Campaign Type:',
+          'new_item_name'              => 'New Campaign Type Name',
+          'add_new_item'               => 'Add New Campaign Type',
+          'edit_item'                  => 'Edit Campaign Type',
+          'update_item'                => 'Update Campaign Type',
+          'separate_items_with_commas' => 'Separate Campaign Type with commas',
+          'search_items'               => 'Search Campaign Types',
+          'add_or_remove_items'        => 'Add or remove Campaign Types',
+          'choose_from_most_used'      => 'Choose from the most used Campaign Types',
+      );
+      $args = array(
+          'labels'                     => $labels,
+          'hierarchical'               => true,
+          'public'                     => true,
+          'show_ui'                    => true,
+          'show_admin_column'          => true,
+          'show_in_nav_menus'          => true,
+          'show_tagcloud'              => true,
+      );
+      register_taxonomy( 'campaign_type', 'product', $args );
+      register_taxonomy_for_object_type( 'campaign_type', 'product' );
     }
 
 
@@ -116,88 +120,12 @@ function make_required_fieldname( $args ) {
       //      'data-label' => __( 'Product Name', 'wcvendors-pro' ),
       //
       //    )
-
-
-      // 'wcv_product_categories',
-      //   array(
-      //     'post_id'			=> $post_id,
-      //     'id' 				=> 'product_cat[]',
-      //     'taxonomy'			=> 'product_cat',
-      //     'show_option_none'	=> $show_option_none,
-      //     'taxonomy_args'		=> array(
-      //                 'hide_empty'	=> 0,
-      //                 'orderby'		=> 'order',
-      //                 'exclude'		=> $exclude,
-      //               ),
-      //     'label'	 			=> ( $multiple ) ? __( 'Categories', 'wcvendors-pro' ) : __( 'Category', 'wcvendors-pro' ),
-      //     'custom_attributes' => $custom_attributes,
-      //     )
-      //   )
-
-
-        //
-        // WCVendors_Pro_Form_Helper::input( apply_filters( 'wcv_product_tags', array(
-        //     'id' 					=> 'product_tags',
-        //     'label' 				=> __( 'Tags', 'wcvendors-pro' ),
-        //     'value' 				=> implode( ',', array_keys( $tag_ids ) ),
-        //     'style'					=> 'width: 100%;',
-        //     'class'					=> 'wcv-tag-search',
-        //     'type'					=> 'hidden',
-        //     'show_label'			=> 'true',
-        //     'custom_attributes' 	=> array(
-        //         'data-placeholder' 	=> __( 'Search or add a tag&hellip;', 'wcvendors-pro' ),
-        //         'data-action'		=> 'wcv_json_search_tags',
-        //         'data-multiple' 	=> 'true',
-        //         'data-tags'			=> 'true',
-        //         'data-selected'		=> esc_attr( json_encode( $tag_ids ) )
-        //       ),
-        //   ) )
-        // );
-
-        // WCVendors_Pro_Form_Helper::input( apply_filters( 'wcv_product_price', array(
-        //   'post_id'		=> $post_id,
-        //   'id' 			=> '_regular_price',
-        //   'label' 		=> __( 'Regular Price', 'wcvendors-pro' ) . ' (' . get_woocommerce_currency_symbol() . ')',
-        //   'data_type' 	=> 'price',
-        //   'wrapper_start' => $wrapper_start,
-        //   'wrapper_end' 	=> '</div>',
-        //   'custom_attributes' => array(
-        //     'data-rules' => 'decimal',
-        //     'data-error' => __( 'Price should be a number.', 'wcvendors-pro' )
-        //
-        //   )
-
-
-
-      // 'wcv_product_sale_price', array(
-			// 	'post_id'		=> $post_id,
-			// 	'id' 			=> '_sale_price',
-			// 	'data_type' 	=> 'price',
-			// 	'label' 		=> __( 'Sale Price', 'wcvendors-pro' ) . ' ('.get_woocommerce_currency_symbol().')',
-			// 	'desc_tip' 		=> 'true',
-			// 	'description' 	=> '<a href="#" class="sale_schedule right">' . __( 'Schedule', 'wcvendors-pro' ) . '</a>',
-			// 	'wrapper_start' => '<div class="all-50 small-100">',
-			// 	'wrapper_end' 	=>  '</div></div>',
-			// 	'custom_attributes' => array(
-		 // 			'data-rules' => 'decimal',
-		 // 			'data-error' => __( 'Sale price should be a number.', 'wcvendors-pro' )
-      //
-      //
-
-
-
 }
-
-// Using description as an example
-
-
-
-
 
   private function custom_user_login_redirect( $redirect_to, $request, $user ) {
   	//is there a user to check?
   	if ( isset( $user->roles ) && is_array( $user->roles ) ) {
-      var_dump($user->roles);exit;
+      //var_dump($user->roles);exit;
       if ( in_array( 'vendor', $user->roles ) ) {
         // redirect them to the default place
         return '/kanal-paneli/';
@@ -293,16 +221,19 @@ public function profile_twitch_username( ){
   			'taxonomy_args'		=> array(
   									'hide_empty'	=> 0,
                     'orderby'		=> 'order',
-                    'exclude'		=> '',
-  								),
-  			'custom_attributes'	=> array( 'multiple' => 'multiple' ),
+                    'exclude'		=> ''),
+  			'custom_attributes' => array(
+            	 			'data-rules' => 'required',
+            	 			'data-error' => __( 'This is a required field.', 'wcvendors-pro' )
+            	 		)
   			)
   	);
   }
+
   public function save_campaign_type( $post_id ){
   	$term = $_POST[ 'wcv_custom_product_campaign_type' ];
   	$terms = implode(',', $term );
-  	wp_set_post_terms( $post_id, $term, 'Campaign Type' );
+  	wp_set_post_terms( $post_id, $term, 'campaign_type' );
   }
 
   public function form_social_media_channel( $object_id ) {
@@ -316,21 +247,51 @@ public function profile_twitch_username( ){
         'taxonomy_args'		=> array(
                     'hide_empty'	=> 0,
                     'orderby'		=> 'order',
-                    'exclude'		=> '',
-                  ),
-        'custom_attributes'	=> array( 'multiple' => 'multiple' ),
-        'options' 			=> array(
-					''            	=> __( 'Standard Product', 'wcvendors-pro' ),
-					'application' 	=> __( 'Application/Software', 'wcvendors-pro' ),
-					'music'       	=> __( 'Music', 'wcvendors-pro' ),
-					)
+                    'exclude'		=> ''),
+        'custom_attributes' => array(
+                    'data-rules' => 'required',
+                    'data-error' => __( 'This is a required field.', 'wcvendors-pro' )
+                  )
         )
     );
   }
   public function save_social_media_channel( $post_id ){
     $term = $_POST[ 'wcv_custom_product_social_media_channel' ];
     $terms = implode(',', $term );
-    wp_set_post_terms( $post_id, $term, 'Social Media Channel' );
+    wp_set_post_terms( $post_id, $term, 'social_media_channel' );
   }
+
+  public function wcv_product_categories_required( $args ) {
+      $args[ 'custom_attributes' ] = array(
+      	'data-rules' => 'required',
+        'data-error' => __( 'This field is required.', 'wcvendors-pro' ),
+        'multiple' => 'multiple',
+
+    	);
+      return $args;
+  }
+
+  public function wcv_product_price_required( $args ) {
+      $args[ 'custom_attributes' ] = array(
+      	'data-rules' => 'required|decimal',
+        'data-error' => __( 'Price should be a number.', 'wcvendors-pro' )
+    	);
+      return $args;
+  }
+
+  public function show_store_name_alert(){
+
+    $author_id = get_current_user_id();
+    $shop_name_set = WCV_Vendors::get_vendor_shop_name( $author_id );
+    $vendor_login = get_userdata($author_id);
+    if ($shop_name_set == $vendor_login->user_login) {
+      $this->print_woocommerce_message('Kanalınızın ismini değiştirmeyi unutmayın!');
+    }
+  }
+
+  public function print_woocommerce_message($message){
+    echo '<div class="woocommerce-message">' . $message . '</div>';
+  }
+
 
 }

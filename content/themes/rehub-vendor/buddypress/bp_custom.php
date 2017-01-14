@@ -521,6 +521,7 @@ function custom_all_settings(){
       if($bp->current_action  != 'store'){
         echo '<span style="visibility: hidden; position:absolute; bottom:9999px;">';
       }
+      $stardomBase->show_store_name_alert();
       ?>
   		<!-- Store Name -->
   		<?php WCVendors_Pro_Store_Form::store_name( $store_name ); ?>
