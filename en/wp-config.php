@@ -44,18 +44,17 @@ if (!defined('S3_UPLOADS_BUCKET') ) {
   define( 'S3_UPLOADS_BUCKET', $_SERVER['S3_BUCKET_NAME']);
 }
 
-if (!defined('S3_UPLOADS_KEY') ) {
-  define( 'S3_UPLOADS_KEY', $_SERVER['S3_BUCKET_KEY']);
+if (!defined('DBI_AWS_ACCESS_KEY_ID') ) {
+  define( 'DBI_AWS_ACCESS_KEY_ID', $_SERVER['S3_BUCKET_KEY']);
 }
 
-if (!defined('S3_UPLOADS_SECRET') ) {
-  define( 'S3_UPLOADS_SECRET', $_SERVER['S3_BUCKET_SECRET']);
+if (!defined('DBI_AWS_SECRET_ACCESS_KEY') ) {
+  define( 'DBI_AWS_SECRET_ACCESS_KEY', $_SERVER['S3_BUCKET_SECRET']);
 }
 
 if (!defined('S3_UPLOADS_REGION') ) {
   define( 'S3_UPLOADS_REGION', 'eu-central-1' );
 }
-
 
 if($_SERVER['Env'] == 'Prod'){
 
