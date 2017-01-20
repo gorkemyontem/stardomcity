@@ -5,24 +5,48 @@ class StardomCityBase {
       $this->init();
     }
 
-    private function init(){
+    public function init(){
       $this->create_custom_taxonomy_campaign_type();
       $this->create_custom_taxonomy_social_media_channels();
       //   add_filter( 'login_redirect', array( $this, 'custom_user_login_redirect' ), 10, 3 );  //static
-      add_filter( 'wcv_product_description', array( $this, 'make_required_fieldname' ), 10, 1);
-      add_action( 'wcv_save_product', array( $this, 'save_campaign_type' ), 10, 1);
-      add_action( 'wcv_save_product', array( $this, 'save_social_media_channel' ), 10, 1);
-      add_action( 'wcv_save_product_meta', array( $this, 'save_product_type_virtual' ), 10, 1);
-      add_filter( 'wcv_product_categories', array( $this, 'wcv_product_categories_required' ));
-      add_filter( 'wcv_product_price', array( $this, 'wcv_product_price_required' ));
+      if($_SERVER['Env'] == 'Prod'){
+        add_action('wp_head', array($this, 'add_google_tag_manager'), 10);
+        add_action('wp_footer', array($this, 'add_google_tag_manager_noscript'), 10);
+      }
+
+      add_filter('bp_init', array($this, 'bp_custom_set_avatar_constants'), 10);
+      add_filter('wcv_product_description', array($this, 'make_required_fieldname'), 10, 1);
+      add_action('wcv_save_product', array($this, 'save_campaign_type'), 10, 1);
+      add_action('wcv_save_product', array($this, 'save_social_media_channel'), 10, 1);
+      add_action('wcv_save_product_meta', array($this, 'save_product_type_virtual'), 10, 1);
+      add_filter('wcv_product_categories', array($this, 'wcv_product_categories_required'));
+      add_filter('wcv_product_price', array($this, 'wcv_product_price_required'));
     }
+    public function bp_custom_set_avatar_constants() {
+       define('BP_AVATAR_DEFAULT', S3_IMAGES_BUCKET_URL . 'default-user.jpg');
+      // define( 'BP_AVATAR_DEFAULT_THUMB', S3_IMAGES_BUCKET_URL . 'mystery-man-50.jpg' );
+    }
+
+    public function add_google_tag_manager() { ?>
+      <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+      new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+      j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+      'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+      })(window,document,'script','dataLayer','GTM-WGN894M');</script>
+    <?php }
+
+    public function add_google_tag_manager_noscript() { ?>
+      <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-WGN894M" height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+    <?php }
+
+
 
     public function save_product_type_virtual($post_id)  {
        update_post_meta( $post_id, '_downloadable', 'no' );
        update_post_meta( $post_id, '_virtual', 'yes' );
     }
 
-    private function create_custom_taxonomy_campaign_type()  {
+    public function create_custom_taxonomy_campaign_type()  {
       $labels = array(
           'name'                       => 'Campaign Types',
           'singular_name'              => 'Campaign Type',
@@ -52,8 +76,7 @@ class StardomCityBase {
       register_taxonomy_for_object_type( 'campaign_type', 'product' );
     }
 
-
-    private function create_custom_taxonomy_social_media_channels()  {
+    public function create_custom_taxonomy_social_media_channels()  {
       $labels = array(
           'name'                       => 'Social Media Channels',
           'singular_name'              => 'Social Media Channel',
@@ -85,7 +108,7 @@ class StardomCityBase {
 
 
 
-function make_required_fieldname( $args ) {
+public function make_required_fieldname( $args ) {
   return $args;
   // 'product_type_options', array(
   //  'virtual' => array(
@@ -122,7 +145,7 @@ function make_required_fieldname( $args ) {
       //    )
 }
 
-  private function custom_user_login_redirect( $redirect_to, $request, $user ) {
+  public function custom_user_login_redirect( $redirect_to, $request, $user ) {
   	//is there a user to check?
   	if ( isset( $user->roles ) && is_array( $user->roles ) ) {
       //var_dump($user->roles);exit;

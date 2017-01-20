@@ -1,5 +1,6 @@
 <?php
 require_once('stardomcity-base.php');
+
 $stardomBase = new StardomCityBase;
 if ( defined( 'RH_GRANDCHILD_DIR' ) ) {
 	include( RH_GRANDCHILD_DIR . 'rh-grandchild-func.php' );

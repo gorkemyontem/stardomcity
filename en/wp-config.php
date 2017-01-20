@@ -41,30 +41,36 @@ if (!defined('DB_HOST') ) {
 }
 
 if (!defined('S3_UPLOADS_BUCKET') ) {
-  define( 'S3_UPLOADS_BUCKET', $_SERVER['S3_BUCKET_NAME']);
+  define('S3_UPLOADS_BUCKET', $_SERVER['S3_BUCKET_NAME']);
 }
 
 if (!defined('DBI_AWS_ACCESS_KEY_ID') ) {
-  define( 'DBI_AWS_ACCESS_KEY_ID', $_SERVER['S3_BUCKET_KEY']);
+  define('DBI_AWS_ACCESS_KEY_ID', $_SERVER['S3_BUCKET_KEY']);
 }
 
 if (!defined('DBI_AWS_SECRET_ACCESS_KEY') ) {
-  define( 'DBI_AWS_SECRET_ACCESS_KEY', $_SERVER['S3_BUCKET_SECRET']);
+  define('DBI_AWS_SECRET_ACCESS_KEY', $_SERVER['S3_BUCKET_SECRET']);
 }
 
 if (!defined('S3_UPLOADS_REGION') ) {
-  define( 'S3_UPLOADS_REGION', 'eu-central-1' );
+  define('S3_UPLOADS_REGION', 'eu-central-1');
 }
+
+if (!defined('S3_IMAGES_BUCKET_URL') ) {
+  define('S3_IMAGES_BUCKET_URL', 'https://' . S3_UPLOADS_BUCKET . '/images/');
+}
+
+
 
 if($_SERVER['Env'] == 'Prod'){
 
-  ini_set( 'display_errors', 0 );
-  define( 'WP_DEBUG_DISPLAY', false );
+  ini_set('display_errors', 0);
+  define('WP_DEBUG_DISPLAY', false);
 
 } else if($_SERVER['Env'] == 'Test') {
 
-  define( 'SAVEQUERIES', true );
-  define( 'WP_DEBUG', true );
+  define('SAVEQUERIES', true);
+  define('WP_DEBUG', true);
 }
 
 define('DB_CHARSET', 'utf8mb4');
@@ -75,12 +81,12 @@ define('DB_COLLATE', '');
 // ========================
 
 //define( 'WP_CONTENT_DIR', dirname( __FILE__ ) . './../content' );
-define( 'VP_PUBLIC_URL', '/../content/themes/rehub/vafpress-framework/public');
-define( 'WP_CONTENT_DIR', $_SERVER['DOCUMENT_ROOT'] . '/content' );
-define( 'WP_CONTENT_URL', 'http://' . $_SERVER['SERVER_NAME'] . '/content' );
+define('VP_PUBLIC_URL', '/../content/themes/rehub/vafpress-framework/public');
+define('WP_CONTENT_DIR', $_SERVER['DOCUMENT_ROOT'] . '/content');
+define('WP_CONTENT_URL', 'http://' . $_SERVER['SERVER_NAME'] . '/content');
 
-define('WP_SITEURL', 'http://' . $_SERVER['SERVER_NAME'] . '/wp-core' );
-define('WP_HOME', 'http://' . $_SERVER['SERVER_NAME'] . '/' . $location );
+define('WP_SITEURL', 'http://' . $_SERVER['SERVER_NAME'] . '/wp-core');
+define('WP_HOME', 'http://' . $_SERVER['SERVER_NAME'] . '/' . $location);
 define('WP_DEFAULT_THEME', 'rehub-vendor');
 
 // ========================
