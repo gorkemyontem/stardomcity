@@ -2,6 +2,14 @@
 require_once('stardomcity-base.php');
 
 $stardomBase = new StardomCityBase;
+
+function yazdir($obj, $exit = true){
+		var_dump($obj);
+		if($exit){
+			exit;
+		}
+}
+
 if ( defined( 'RH_GRANDCHILD_DIR' ) ) {
 	include( RH_GRANDCHILD_DIR . 'rh-grandchild-func.php' );
 }

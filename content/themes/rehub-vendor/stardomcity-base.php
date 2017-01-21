@@ -8,13 +8,15 @@ class StardomCityBase {
     public function init(){
       $this->create_custom_taxonomy_campaign_type();
       $this->create_custom_taxonomy_social_media_channels();
-      //   add_filter( 'login_redirect', array( $this, 'custom_user_login_redirect' ), 10, 3 );  //static
+
+
+
       if($_SERVER['Env'] == 'Prod'){
         add_action('wp_head', array($this, 'add_google_tag_manager'), 10);
         add_action('wp_footer', array($this, 'add_google_tag_manager_noscript'), 10);
       }
 
-      add_filter('bp_init', array($this, 'bp_custom_set_avatar_constants'), 10);
+      add_filter('wcv_admin_lockout_capability', array($this, 'allow_editors_to_login_admin_panel'), 10, 1);
       add_filter('wcv_product_description', array($this, 'make_required_fieldname'), 10, 1);
       add_action('wcv_save_product', array($this, 'save_campaign_type'), 10, 1);
       add_action('wcv_save_product', array($this, 'save_social_media_channel'), 10, 1);
@@ -22,10 +24,45 @@ class StardomCityBase {
       add_filter('wcv_product_categories', array($this, 'wcv_product_categories_required'));
       add_filter('wcv_product_price', array($this, 'wcv_product_price_required'));
     }
-    public function bp_custom_set_avatar_constants() {
-       define('BP_AVATAR_DEFAULT', S3_IMAGES_BUCKET_URL . 'default-user.jpg');
-      // define( 'BP_AVATAR_DEFAULT_THUMB', S3_IMAGES_BUCKET_URL . 'mystery-man-50.jpg' );
+
+    public function allow_editors_to_login_admin_panel( $capability ) {
+      return 'edit_pages'; //because editors and admins have this capability in common
     }
+
+
+
+    //   // Hook the appropriate WordPress action
+    //   add_action('init', 'prevent_wp_login');
+    //
+    //   function prevent_wp_login() {
+    //       // WP tracks the current page - global the variable to access it
+    //       global $pagenow;
+    //       // Check if a $_GET['action'] is set, and if so, load it into $action variable
+    //       $action = (isset($_GET['action'])) ? $_GET['action'] : '';
+    //       // Check if we're on the login page, and ensure the action is not 'logout'
+    //       if( $pagenow == 'wp-login.php' && ( ! $action || ( $action && ! in_array($action, array('logout', 'lostpassword', 'rp'))))) {
+    //           // Load the home page url
+    //           $page = get_bloginfo('url');
+    //           // Redirect to the home page
+    //           wp_redirect($page);
+    //           // Stop execution to prevent the page loading for any reason
+    //           exit();
+    //       }
+    //   }
+    //
+    //
+    //   add_action('init','custom_login');
+    //
+    // function custom_login(){
+    //  global $pagenow;
+    //  if( 'wp-login.php' == $pagenow ) {
+    //   wp_redirect('http://yoursite.com/');
+    //   exit();
+    //  }
+    // }
+
+
+
 
     public function add_google_tag_manager() { ?>
       <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
@@ -105,100 +142,6 @@ class StardomCityBase {
       register_taxonomy( 'social_media_channel', 'product', $args );
       register_taxonomy_for_object_type( 'social_media_channel', 'product' );
     }
-
-
-
-public function make_required_fieldname( $args ) {
-  return $args;
-  // 'product_type_options', array(
-  //  'virtual' => array(
-  //    'id'            => '_virtual',
-  //    'wrapper_class' => 'show_if_simple',
-  //    'label'         => __( 'Virtual', 'wcvendors-pro' ),
-  //    'description'   => __( 'Virtual products are intangible and aren\'t shipped.', 'wcvendors-pro' ),
-  //    'default'       => 'no'
-  //  ),
-
-
-    // $args[ 'custom_attributes' ] = array(
-    //   'post_id'	=> $post_id,
-    //   'id' 		=> 'post_content',
-    //   'label'	 	=> __( 'Product Description', 'wcvendors-pro' ),
-    //   'value' 	=> $product_description,
-    //   'placeholder' 		=> __( 'Please add a full description of your product here', 'wcvendors-pro' ),
-    //   'custom_attributes' => array(
-    //     'data-rules' => 'required',
-    //     'data-error' => __( 'Product description is required.', 'wcvendors-pro' )
-    //
-    //   ));
-
-      // 'wcv_product_title', array(
-      //  'post_id' 			=> $post_id,
-      //  'id'	 			=> 'post_title',
-      //  'label' 			=> __( 'Product Name', 'wcvendors-pro' ),
-      //  'value' 			=> $product_title,
-      //  'custom_attributes' => array(
-      //      'data-rules' => 'required|max_length[100]',
-      //      'data-error' => __( 'Product name is required or is too long.', 'wcvendors-pro' ),
-      //      'data-label' => __( 'Product Name', 'wcvendors-pro' ),
-      //
-      //    )
-}
-
-  public function custom_user_login_redirect( $redirect_to, $request, $user ) {
-  	//is there a user to check?
-  	if ( isset( $user->roles ) && is_array( $user->roles ) ) {
-      //var_dump($user->roles);exit;
-      if ( in_array( 'vendor', $user->roles ) ) {
-        // redirect them to the default place
-        return '/kanal-paneli/';
-      }
-
-
-  		if ( in_array( 'administrator', $user->roles ) ) {
-  			// redirect them to the default place
-  			return $redirect_to;
-  		} else {
-  			return home_url();
-  		}
-  	} else {
-  		return $redirect_to;
-  	}
-  }
-
-
-
-
-
-//   // Hook the appropriate WordPress action
-//   add_action('init', 'prevent_wp_login');
-//
-//   function prevent_wp_login() {
-//       // WP tracks the current page - global the variable to access it
-//       global $pagenow;
-//       // Check if a $_GET['action'] is set, and if so, load it into $action variable
-//       $action = (isset($_GET['action'])) ? $_GET['action'] : '';
-//       // Check if we're on the login page, and ensure the action is not 'logout'
-//       if( $pagenow == 'wp-login.php' && ( ! $action || ( $action && ! in_array($action, array('logout', 'lostpassword', 'rp'))))) {
-//           // Load the home page url
-//           $page = get_bloginfo('url');
-//           // Redirect to the home page
-//           wp_redirect($page);
-//           // Stop execution to prevent the page loading for any reason
-//           exit();
-//       }
-//   }
-//
-//
-//   add_action('init','custom_login');
-//
-// function custom_login(){
-//  global $pagenow;
-//  if( 'wp-login.php' == $pagenow ) {
-//   wp_redirect('http://yoursite.com/');
-//   exit();
-//  }
-// }
 
 //WC vendors Social Settings
 public function profile_twitch_username( ){

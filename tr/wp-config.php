@@ -57,7 +57,7 @@ if (!defined('S3_UPLOADS_REGION') ) {
 }
 
 if (!defined('S3_IMAGES_BUCKET_URL') ) {
-  define('S3_IMAGES_BUCKET_URL', 'https://' . S3_UPLOADS_BUCKET . '/images/');
+  define('S3_IMAGES_BUCKET_URL', 'http://' . S3_UPLOADS_BUCKET . '/images/');
 }
 
 if($_SERVER['Env'] == 'Prod'){

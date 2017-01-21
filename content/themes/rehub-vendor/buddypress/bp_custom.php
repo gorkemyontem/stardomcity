@@ -3,6 +3,7 @@
 /*
  * Default size of avatar
  */
+
 define ( 'BP_AVATAR_THUMB_WIDTH', 55 );
 define ( 'BP_AVATAR_THUMB_HEIGHT', 55 );
 define ( 'BP_AVATAR_FULL_WIDTH', 110 );
@@ -323,28 +324,66 @@ function rh_custom_message_placeholder_in_bp_message(){
 
 
 
-
-
-
 ///// STARDOMCITY
-add_filter( 'bp_after_has_members_parse_args', 'exclude_users_by_role');
-add_filter( 'bp_get_total_member_count', 'get_active_member_count' );
-add_action( 'bp_setup_nav', 'bpex_primary_nav_tabs_position', 999 );
-add_action( 'bp_setup_nav', 'profile_tab_favorites' );
-add_action( 'bp_setup_nav', 'profile_tab_vendor_dashboard_settings' );
 
-// add_action( 'wp', 'hide_admins_profile', 1 );
+//Avatars
+add_filter('bp_core_fetch_avatar_no_grav', '__return_true' );
+add_filter('bp_core_default_avatar_user', create_function( '', 'return "' . S3_IMAGES_BUCKET_URL . 'default-user.jpg";' ) );
 
-// function hide_admins_profile() {
-//   if( bp_is_user() ){
-//     if ( bp_displayed_user_id() == 1 && bp_loggedin_user_id() != 1 ){
-//       bp_core_redirect( home_url() );
-//     }
-//   }
-// }
+//Visibility
+add_filter('bp_xprofile_get_visibility_levels', 'modify_levels');
+add_filter('bp_after_has_members_parse_args', 'exclude_users_by_role');
+add_filter('bp_get_total_member_count', 'get_active_member_count');
+
+//Navigation
+add_action('bp_setup_nav', 'bpex_primary_nav_tabs_position', 999);
+add_action('bp_setup_nav', 'profile_tab_favorites');
+add_action('bp_setup_nav', 'profile_tab_vendor_dashboard_settings');
+
+//Cover image
+add_filter( 'bp_before_xprofile_cover_image_settings_parse_args', 'stardom_cover_image_css', 10, 1 );
+add_filter( 'bp_before_groups_cover_image_settings_parse_args', 'stardom_cover_image_css', 10, 1 );
+
+
+function modify_levels( $levels ) {
+	// Add a new 'Admins Only' level
+	if ( !isset( $levels['admins-only'] ) ) {
+		$levels['admins-only'] = array(
+			'id' => 'admins-only',
+			'label' => __( 'Admins Only', 'textdomain' )
+		);
+	}
+
+	return $levels;
+}
+
+
+	function stardom_cover_image_callback( $params = array() ) {
+		if ( empty( $params ) ) {
+			return;
+		}
+
+		$cover_image = !empty( $params['cover_image'] ) ? 'background-image:url(' . $params['cover_image'] . ')' : 'background-image: url('. S3_IMAGES_BUCKET_URL . 'default-cover.jpg); background-size: inherit;';
+		return '
+			/* Cover image */
+			#rh-header-cover-image {'. $cover_image .'}';
+	}
+
+	function stardom_cover_image_css( $settings = array() ) {
+
+		$theme_handle = (is_rtl()) ? 'bp-parent-css-rtl' : 'bp-parent-css';
+
+		$settings['theme_handle'] = $theme_handle;
+		$settings['callback'] = 'stardom_cover_image_callback';
+
+		return $settings;
+	}
+
+
+
 
 global $roles_to_exclude;
-$roles_to_exclude =  [ 'administrator', 'test'];
+$roles_to_exclude =  [ 'administrator', 'editor'];
 
 function exclude_users_by_role( $args ) {
   //do not exclude in admin
@@ -356,28 +395,56 @@ function exclude_users_by_role( $args ) {
       $excluded = explode(',', $excluded );
   }
   global $roles_to_exclude;
-  $user_ids =  get_users( array( 'role__in' => $roles_to_exclude ,'fields'=>'ID') );
-  $excluded = array_merge( $excluded, $user_ids );
-  $args['exclude'] = $excluded;
+  $user_ids =  get_users( array( 'role__in' => $roles_to_exclude, 'fields'=>'ID') );
+  $excluded = array_unique(array_merge($excluded, $user_ids), SORT_REGULAR);
+  $excluded_ids = array_unique(array_merge($excluded, get_excluded_ids()), SORT_REGULAR);
+  $args['exclude'] = $excluded_ids;
   return $args;
 }
 
 function get_active_member_count($bp_core_get_active_member_count ){
+
   global $roles_to_exclude;
-  $user_ids =  get_users( array( 'role__in' => $roles_to_exclude ,'fields'=>'ID') );
-  return $bp_core_get_active_member_count - count($user_ids);
+  $user_ids =  get_users( array( 'role__in' => $roles_to_exclude, 'fields'=>'ID') );
+  $excluded_ids = array_unique(array_merge($user_ids, get_excluded_ids()), SORT_REGULAR);
+  $count =  $bp_core_get_active_member_count - count($excluded_ids);
+
+  return ($count < 0) ? 0 : $count;
+}
+
+
+function get_excluded_ids(){
+  global $wpdb;
+  global $bp;
+  $user_ids = $wpdb->get_col( 'SELECT user_id FROM ' . $bp->profile->table_name_data . ' WHERE field_id = ' . '(SELECT id FROM ' . $bp->profile->table_name_fields . '  WHERE name = "Exclude" LIMIT 1)' . ' AND value = "true";');
+
+  if($user_ids == null || $user_ids == ''){
+    return 0;
+  }
+  return $user_ids;
+}
+
+function get_admins_only_field_ids(){
+  global $wpdb;
+  global $bp;
+  $field_id = $wpdb->get_col('SELECT object_id FROM ' . $bp->profile->table_name_meta . ' WHERE meta_value = "admins-only" AND meta_key = "default_visibility" AND object_type = "field"');
+
+  if($field_id == null || $field_id == ''){
+    return 0;
+  }
+  return $field_id;
 }
 
 
 function bpex_primary_nav_tabs_position() {
-  //change_buddypress_profile_nav
-  if( bp_is_members_component() || bp_is_user() ) {
-    $wcv_profile_id   = bp_displayed_user_id();
-    $wcv_profile_info = get_userdata( bp_displayed_user_id() );
-    if ( isset($wcv_profile_info->roles[0]) && $wcv_profile_info->roles[0] != "vendor" ) {
-      bp_core_remove_nav_item('posts');
-    }
+//change_buddypress_profile_nav
+if( bp_is_members_component() || bp_is_user() ) {
+  $wcv_profile_id   = bp_displayed_user_id();
+  $wcv_profile_info = get_userdata( bp_displayed_user_id() );
+  if ( isset($wcv_profile_info->roles[0]) && $wcv_profile_info->roles[0] != "vendor" ) {
+    bp_core_remove_nav_item('posts');
   }
+}
 
 	buddypress()->members->nav->edit_nav( array( 'position' => 10,), 'profile');
   buddypress()->members->nav->edit_nav( array( 'position' => 20,), 'vendor-dashboard');
