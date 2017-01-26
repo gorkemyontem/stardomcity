@@ -330,6 +330,10 @@ function rh_custom_message_placeholder_in_bp_message(){
 add_filter('bp_core_fetch_avatar_no_grav', '__return_true' );
 add_filter('bp_core_default_avatar_user', create_function( '', 'return "' . S3_IMAGES_BUCKET_URL . 'default-user.jpg";' ) );
 
+//Cover image
+add_filter( 'bp_before_xprofile_cover_image_settings_parse_args', 'stardom_cover_image_css', 10, 1 );
+add_filter( 'bp_before_groups_cover_image_settings_parse_args', 'stardom_cover_image_css', 10, 1 );
+
 //Visibility
 add_filter('bp_xprofile_get_visibility_levels', 'modify_levels');
 add_filter('bp_after_has_members_parse_args', 'exclude_users_by_role');
@@ -340,9 +344,27 @@ add_action('bp_setup_nav', 'bpex_primary_nav_tabs_position', 999);
 add_action('bp_setup_nav', 'profile_tab_favorites');
 add_action('bp_setup_nav', 'profile_tab_vendor_dashboard_settings');
 
-//Cover image
-add_filter( 'bp_before_xprofile_cover_image_settings_parse_args', 'stardom_cover_image_css', 10, 1 );
-add_filter( 'bp_before_groups_cover_image_settings_parse_args', 'stardom_cover_image_css', 10, 1 );
+function stardom_cover_image_callback( $params = array() ) {
+	if ( empty( $params ) ) {
+		return;
+	}
+
+	$cover_image = !empty( $params['cover_image'] ) ? 'background-image:url(' . $params['cover_image'] . ')' : 'background-image: url('. S3_IMAGES_BUCKET_URL . 'default-cover.jpg); background-size: inherit;';
+	return '
+		/* Cover image */
+		#rh-header-cover-image {'. $cover_image .'}';
+}
+
+function stardom_cover_image_css( $settings = array() ) {
+
+	$theme_handle = (is_rtl()) ? 'bp-parent-css-rtl' : 'bp-parent-css';
+
+	$settings['theme_handle'] = $theme_handle;
+	$settings['callback'] = 'stardom_cover_image_callback';
+
+	return $settings;
+}
+
 
 
 function modify_levels( $levels ) {
@@ -356,30 +378,6 @@ function modify_levels( $levels ) {
 
 	return $levels;
 }
-
-
-	function stardom_cover_image_callback( $params = array() ) {
-		if ( empty( $params ) ) {
-			return;
-		}
-
-		$cover_image = !empty( $params['cover_image'] ) ? 'background-image:url(' . $params['cover_image'] . ')' : 'background-image: url('. S3_IMAGES_BUCKET_URL . 'default-cover.jpg); background-size: inherit;';
-		return '
-			/* Cover image */
-			#rh-header-cover-image {'. $cover_image .'}';
-	}
-
-	function stardom_cover_image_css( $settings = array() ) {
-
-		$theme_handle = (is_rtl()) ? 'bp-parent-css-rtl' : 'bp-parent-css';
-
-		$settings['theme_handle'] = $theme_handle;
-		$settings['callback'] = 'stardom_cover_image_callback';
-
-		return $settings;
-	}
-
-
 
 
 global $roles_to_exclude;
@@ -495,10 +493,7 @@ function favorites_content() {
     echo '</article>';
 }
 
-
-
 function profile_tab_vendor_dashboard_settings() {
-
 
     bp_core_remove_subnav_item( 'settings', 'notifications' );
     bp_core_remove_subnav_item( 'settings', 'profile' );
@@ -732,8 +727,6 @@ function custom_all_settings(){
 }
 
 
-
-
 function custom_store_settings() {
   $vendor_id = get_current_user_id();
   $store_name = get_user_meta( $vendor_id, 'pv_shop_name', true );
@@ -859,15 +852,6 @@ function custom_social_settings() {
   	</form>
   <?php
 }
-
-
-
-
-
-
-
-
-
 
 
   // define( 'BP_FOLLOWING_SLUG', 'takip-ettiklerim' );

@@ -9,8 +9,6 @@ class StardomCityBase {
       $this->create_custom_taxonomy_campaign_type();
       $this->create_custom_taxonomy_social_media_channels();
 
-
-
       if($_SERVER['Env'] == 'Prod'){
         add_action('wp_head', array($this, 'add_google_tag_manager'), 10);
         add_action('wp_footer', array($this, 'add_google_tag_manager_noscript'), 10);

@@ -17,6 +17,8 @@
  *
  * @package WordPress
  */
+ header("Location: " . 'http://' . $_SERVER['SERVER_NAME'] . "/tr/");
+ die();
 
  if ( file_exists( dirname( __FILE__ ) . '/wp-config.local.php' ) ) {
    include( dirname( __FILE__ ) . '/wp-config.local.php' );
@@ -129,7 +131,7 @@ define('NONCE_SALT',       'G6xe:u[iQVuO!}Z<&c^)O!hoY`c$e4Gtvb}d$$mM=4.s)p@`#U-!
  * You can have multiple installations in one database if you give each
  * a unique prefix. Only numbers, letters, and underscores please!
  */
-$table_prefix  = 'wp_str_';
+$table_prefix = 'wp_str_';
 
 /* That's all, stop editing! Happy blogging. */
 
