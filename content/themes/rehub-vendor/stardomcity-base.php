@@ -21,19 +21,20 @@ class StardomCityBase {
       add_action('wcv_save_product_meta',        array($this, 'save_product_type_virtual'), 10, 1);
       add_filter('wcv_product_categories',       array($this, 'wcv_product_categories_required'));
       add_filter('wcv_product_price',            array($this, 'wcv_product_price_required'));
+
+      // Determine if it's an email using the WooCommerce email header
+      add_action( 'woocommerce_email_header', function(){ add_filter( "better_wc_email", "__return_true" ); } );
+      // Hide the WooCommerce Email header and footer
+      add_action( 'woocommerce_email_header', function(){ ob_start(); }, 1 );
+      add_action( 'woocommerce_email_header', function(){ ob_get_clean(); }, 100 );
+      add_action( 'woocommerce_email_footer', function(){ ob_start(); }, 1 );
+      add_action( 'woocommerce_email_footer', function(){ ob_get_clean(); }, 100 );
+      add_filter('phpmailer_init',            array($this, 'better_phpmailer_init'),20);
+
     }
 
-    // Determine if it's an email using the WooCommerce email header
-    add_action( 'woocommerce_email_header', function(){ add_filter( "better_wc_email", "__return_true" ); } );
-    // Hide the WooCommerce Email header and footer
-    add_action( 'woocommerce_email_header', function(){ ob_start(); }, 1 );
-    add_action( 'woocommerce_email_header', function(){ ob_get_clean(); }, 100 );
-    add_action( 'woocommerce_email_footer', function(){ ob_start(); }, 1 );
-    add_action( 'woocommerce_email_footer', function(){ ob_get_clean(); }, 100 );
-
     // Selectively apply WPBE template if it's a WooCommerce email
-    add_action( 'phpmailer_init', 'better_phpmailer_init', 20 );
-    function better_phpmailer_init( $phpmailer ){
+    public function better_phpmailer_init( $phpmailer ){
         // this filter will return true if the woocommerce_email_header action has run
         if ( apply_filters( 'better_wc_email', false ) ){
             global $wp_better_emails;
