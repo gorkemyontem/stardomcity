@@ -9,7 +9,7 @@ function is_location_cookie_exist(){
 }
 
 function set_location_cookie($location){
-  setcookie('stardom-wp-location', $location, time() + 3600  * 24 * 365, '/');
+  setcookie('stardom-wp-location', $location, time() + 3600  * 24 * 365, '/', '.stardomcity.com');
   $_COOKIE['stardom-wp-location'] = $location;
 }
 

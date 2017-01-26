@@ -38,7 +38,7 @@ if($_SERVER['Env'] == 'Prod'){
 
 } else if($_SERVER['Env'] == 'Test') {
 
-  define('DB_NAME', $_SERVER['RDS_NAME']);
+  define('DB_NAME', $_SERVER['RDS_DB_NAME']);
   define('DB_USER', $_SERVER['RDS_USERNAME']);
   define('DB_PASSWORD', $_SERVER['RDS_PASSWORD']);
   define('DB_HOST', $_SERVER['RDS_HOSTNAME']);
@@ -87,10 +87,13 @@ define('WP_DEFAULT_THEME', 'rehub-vendor');
 // Custom Cookie Settings
 // ========================
 define('COOKIEHASH', 'g5ca99bac8d');
-define('COOKIE_DOMAIN', $_SERVER['SERVER_NAME']);
+// 26 01 2017 admin paneline giremedigim icin degistirdim
+// define('COOKIE_DOMAIN', $_SERVER['SERVER_NAME']);
+define('COOKIE_DOMAIN', '.stardomcity.com');
 define('SITECOOKIEPATH', '/' . $location . '/');
 define('COOKIEPATH', '/wp-core/');
 define('ADMIN_COOKIE_PATH', COOKIEPATH . 'wp-admin');
+
 
 // define('ADMIN_COOKIE_PATH', '/');
 // define('COOKIE_DOMAIN', '');
