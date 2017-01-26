@@ -26,20 +26,25 @@
 
 $location = 'en';
 
-if (!defined('DB_NAME')) {
-  define('DB_NAME', $_SERVER['RDS_DB_NAME']);
-}
+if($_SERVER['Env'] == 'Prod'){
 
-if (!defined('DB_USER')) {
+  define('DB_NAME', $_SERVER['DB_NAME']);
+  define('DB_USER', $_SERVER['DB_USERNAME']);
+  define('DB_PASSWORD', $_SERVER['DB_PASSWORD']);
+  define('DB_HOST', $_SERVER['DB_HOSTNAME']);
+
+  ini_set('display_errors', 0);
+  define('WP_DEBUG_DISPLAY', false);
+
+} else if($_SERVER['Env'] == 'Test') {
+
+  define('DB_NAME', $_SERVER['RDS_NAME']);
   define('DB_USER', $_SERVER['RDS_USERNAME']);
-}
-
-if (!defined('DB_PASSWORD')) {
   define('DB_PASSWORD', $_SERVER['RDS_PASSWORD']);
-}
-
-if (!defined('DB_HOST') ) {
   define('DB_HOST', $_SERVER['RDS_HOSTNAME']);
+
+  define('SAVEQUERIES', true);
+  define('WP_DEBUG', true);
 }
 
 if (!defined('S3_UPLOADS_BUCKET') ) {
@@ -60,19 +65,6 @@ if (!defined('S3_UPLOADS_REGION') ) {
 
 if (!defined('S3_IMAGES_BUCKET_URL') ) {
   define('S3_IMAGES_BUCKET_URL', 'http://' . S3_UPLOADS_BUCKET . '/images/');
-}
-
-
-
-if($_SERVER['Env'] == 'Prod'){
-
-  ini_set('display_errors', 0);
-  define('WP_DEBUG_DISPLAY', false);
-
-} else if($_SERVER['Env'] == 'Test') {
-
-  define('SAVEQUERIES', true);
-  define('WP_DEBUG', true);
 }
 
 define('DB_CHARSET', 'utf8mb4');
