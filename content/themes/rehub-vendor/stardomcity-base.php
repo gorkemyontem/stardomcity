@@ -15,13 +15,37 @@ class StardomCityBase {
       }
 
       add_filter('wcv_admin_lockout_capability', array($this, 'allow_editors_to_login_admin_panel'), 10, 1);
-      add_filter('wcv_product_description', array($this, 'make_required_fieldname'), 10, 1);
-      add_action('wcv_save_product', array($this, 'save_campaign_type'), 10, 1);
-      add_action('wcv_save_product', array($this, 'save_social_media_channel'), 10, 1);
-      add_action('wcv_save_product_meta', array($this, 'save_product_type_virtual'), 10, 1);
-      add_filter('wcv_product_categories', array($this, 'wcv_product_categories_required'));
-      add_filter('wcv_product_price', array($this, 'wcv_product_price_required'));
+      add_filter('wcv_product_description',      array($this, 'make_required_fieldname'), 10, 1);
+      add_action('wcv_save_product',             array($this, 'save_campaign_type'), 10, 1);
+      add_action('wcv_save_product',             array($this, 'save_social_media_channel'), 10, 1);
+      add_action('wcv_save_product_meta',        array($this, 'save_product_type_virtual'), 10, 1);
+      add_filter('wcv_product_categories',       array($this, 'wcv_product_categories_required'));
+      add_filter('wcv_product_price',            array($this, 'wcv_product_price_required'));
     }
+
+    // Determine if it's an email using the WooCommerce email header
+    add_action( 'woocommerce_email_header', function(){ add_filter( "better_wc_email", "__return_true" ); } );
+    // Hide the WooCommerce Email header and footer
+    add_action( 'woocommerce_email_header', function(){ ob_start(); }, 1 );
+    add_action( 'woocommerce_email_header', function(){ ob_get_clean(); }, 100 );
+    add_action( 'woocommerce_email_footer', function(){ ob_start(); }, 1 );
+    add_action( 'woocommerce_email_footer', function(){ ob_get_clean(); }, 100 );
+
+    // Selectively apply WPBE template if it's a WooCommerce email
+    add_action( 'phpmailer_init', 'better_phpmailer_init', 20 );
+    function better_phpmailer_init( $phpmailer ){
+        // this filter will return true if the woocommerce_email_header action has run
+        if ( apply_filters( 'better_wc_email', false ) ){
+            global $wp_better_emails;
+
+            // Add template to message
+            $phpmailer->Body = $wp_better_emails->set_email_template( $phpmailer->Body );
+
+            // Replace variables in email
+            $phpmailer->Body = apply_filters( 'wpbe_html_body', $wp_better_emails->template_vars_replacement( $phpmailer->Body ) );
+        }
+    }
+
 
     public function allow_editors_to_login_admin_panel( $capability ) {
       return 'edit_pages'; //because editors and admins have this capability in common
