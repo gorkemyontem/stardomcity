@@ -15,7 +15,6 @@ class StardomCityBase {
       }
 
       add_filter('wcv_admin_lockout_capability', array($this, 'allow_editors_to_login_admin_panel'), 10, 1);
-      add_filter('wcv_product_description',      array($this, 'make_required_fieldname'), 10, 1);
       add_action('wcv_save_product',             array($this, 'save_campaign_type'), 10, 1);
       add_action('wcv_save_product',             array($this, 'save_social_media_channel'), 10, 1);
       add_action('wcv_save_product_meta',        array($this, 'save_product_type_virtual'), 10, 1);
