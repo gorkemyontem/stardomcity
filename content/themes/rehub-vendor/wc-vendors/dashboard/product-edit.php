@@ -51,7 +51,7 @@ $post_status				= ( isset($product) && null !== $product ) ? $product->post->pos
 			<!-- Product Campaign Type -->
 			<?php $stardomBase->form_campaign_type( $object_id ); ?>
 			<!-- Product Social Media Channel -->
-			<?php $stardomBase->form_save_social_media_channel( $object_id ); ?>
+			<?php $stardomBase->form_social_media_channel( $object_id ); ?>
 	    <!-- Product Tags -->
 	    <?php WCVendors_Pro_Product_Form::tags( $object_id, true ); ?>
 			<p class="tip">Virgül ile ayır ör: a,b,c,d</p>
