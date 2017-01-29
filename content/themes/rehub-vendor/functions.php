@@ -1,7 +1,9 @@
 <?php
 require_once('stardomcity-base.php');
+require_once('stardomcity-payment.php');
 
 $stardomBase = new StardomCityBase;
+$stardomPayment = new StardomCityPayment;
 
 function yazdir($obj, $exit = true){
 		var_dump($obj);

@@ -506,7 +506,7 @@ function profile_tab_vendor_dashboard_settings() {
     	'parent_slug'     => 'settings',
     	'screen_function' => 'store_screen',
     	'position'        => 10,
-      'user_has_access' => bp_is_my_profile()
+      'user_has_access' => WCV_Vendors::is_vendor(get_current_user_id())
   	) );
 
     bp_core_new_subnav_item( array(
@@ -516,7 +516,7 @@ function profile_tab_vendor_dashboard_settings() {
       'parent_slug'     => 'settings',
       'screen_function' => 'payment_screen',
       'position'        => 20,
-      'user_has_access' => bp_is_my_profile()
+      'user_has_access' => WCV_Vendors::is_vendor(get_current_user_id())
     ) );
 
     bp_core_new_subnav_item( array(
@@ -526,7 +526,7 @@ function profile_tab_vendor_dashboard_settings() {
       'parent_slug'     => 'settings',
       'screen_function' => 'branding_screen',
       'position'        => 30,
-      'user_has_access' => bp_is_my_profile()
+      'user_has_access' => WCV_Vendors::is_vendor(get_current_user_id())
     ) );
 
     bp_core_new_subnav_item( array(
@@ -536,7 +536,7 @@ function profile_tab_vendor_dashboard_settings() {
       'parent_slug'     => 'settings',
       'screen_function' => 'social_screen',
       'position'        => 40,
-      'user_has_access' => bp_is_my_profile()
+      'user_has_access' => WCV_Vendors::is_vendor(get_current_user_id())
     ) );
 
 
@@ -724,133 +724,6 @@ function custom_all_settings(){
   		<?php WCVendors_Pro_Store_Form::save_button( __( 'Save Changes', 'wcvendors-pro') ); ?>
   	</form>
  <?php
-}
-
-
-function custom_store_settings() {
-  $vendor_id = get_current_user_id();
-  $store_name = get_user_meta( $vendor_id, 'pv_shop_name', true );
-  $store_description = get_user_meta( $vendor_id, 'pv_shop_description', true );
-  ?>
-  <form method="post" action="" class="wcv-form wcv-formvalidator">
-
-  <?php WCVendors_Pro_Store_Form::form_data();
-
-  WCVendors_Pro_Store_Form::store_name( $store_name );
-
-  do_action( 'wcvendors_settings_after_shop_name' );
-
-  WCVendors_Pro_Store_Form::store_description( $store_description );
-
-  do_action( 'wcvendors_settings_after_shop_description' );
-  ?>
-  <br />
-  <?php
-  WCVendors_Pro_Store_Form::seller_info( );
-
-
-  do_action( 'wcvendors_settings_after_seller_info' );
-  ?>
-  <br />
-  <?php
-  do_action( 'wcvendors_settings_before_company_url' );
-  WCVendors_Pro_Store_Form::company_url( );
-  do_action(  'wcvendors_settings_after_company_url' );
-
-  do_action( 'wcvendors_settings_before_store_phone' );
-  WCVendors_Pro_Store_Form::store_phone( );
-  do_action(  'wcvendors_settings_after_store_phone' );
-
-  do_action( 'wcvendors_settings_before_address' );
-  WCVendors_Pro_Store_Form::store_address_country( );
-  WCVendors_Pro_Store_Form::store_address1( );
-  WCVendors_Pro_Store_Form::store_address2( );
-  WCVendors_Pro_Store_Form::store_address_city( );
-  WCVendors_Pro_Store_Form::store_address_state( );
-  WCVendors_Pro_Store_Form::store_address_postcode( );
-  do_action(  'wcvendors_settings_after_address' );
-
-  do_action( 'wcvendors_settings_before_vacation_mode' );
-  WCVendors_Pro_Store_Form::vacation_mode( );
-  do_action(  'wcvendors_settings_after_vacation_mode' );
-  WCVendors_Pro_Store_Form::save_button( __( 'Save Changes', 'wcvendors-pro') );
-  ?>
-  </div>
-  </form>
-  <?php
-}
-function custom_payment_settings() {
-  ?>
-  <form method="post" action="" class="wcv-form wcv-formvalidator">
-
-  <?php WCVendors_Pro_Store_Form::form_data();
-
-  do_action( 'wcvendors_settings_before_paypal' );
-
-  WCVendors_Pro_Store_Form::paypal_address( );
-
-  do_action( 'wcvendors_settings_after_paypal' );
-
-  WCVendors_Pro_Store_Form::save_button( __( 'Save Changes', 'wcvendors-pro') ); ?>
-  </div>
-  	</form>
-  <?php
-}
-function custom_branding_settings() {
-  ?>
-  <form method="post" action="" class="wcv-form wcv-formvalidator">
-
-  <?php WCVendors_Pro_Store_Form::form_data();
-
-  do_action( 'wcvendors_settings_before_branding' );
-
-  WCVendors_Pro_Store_Form::store_banner( );
-
-  WCVendors_Pro_Store_Form::store_icon( );
-
-  do_action( 'wcvendors_settings_after_branding' );
-
-  WCVendors_Pro_Store_Form::save_button( __( 'Save Changes', 'wcvendors-pro') ); ?>
-  </div>
-  	</form>
-  <?php
-}
-function custom_social_settings() {
-  $vendor_id = get_current_user_id();
-  $store_name = get_user_meta( $vendor_id, 'pv_shop_name', true );
-
-  ?>
-  <form method="post" action="" class="wcv-form wcv-formvalidator">
-
-  <?php WCVendors_Pro_Store_Form::form_data();
-  $settings_social 		= (array) WC_Vendors::$pv_options->get_option( 'hide_settings_social' );
-  $social_total 		= count( $settings_social );
-  $social_count = 0;
-  foreach ( $settings_social as $value) {
-    if ( 1 == $value )
-    $social_count +=1;
-  }
-
-  echo "<div style=\"visibility: hidden;height: 0px;\">";
-    WCVendors_Pro_Store_Form::store_name( $store_name );
-  echo "</div>";
-  if ( $social_count != $social_total ) :
-
-      do_action( 'wcvendors_settings_before_social' );
-      WCVendors_Pro_Store_Form::youtube_url( );
-      WCVendors_Pro_Store_Form::snapchat_username( );
-      WCVendors_Pro_Store_Form::instagram_username( );
-      WCVendors_Pro_Store_Form::facebook_url( );
-      WCVendors_Pro_Store_Form::twitter_username( );
-      WCVendors_Pro_Store_Form::pinterest_url( );
-      WCVendors_Pro_Store_Form::linkedin_url( );
-      WCVendors_Pro_Store_Form::googleplus_url( );
-      do_action( 'wcvendors_settings_after_social' ); ?>
-  <?php endif; ?>
-  <?php WCVendors_Pro_Store_Form::save_button( __( 'Save Changes', 'wcvendors-pro') ); ?>
-  </div>
-  	</form>
-  <?php
 }
 
 

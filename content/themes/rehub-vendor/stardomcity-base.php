@@ -32,6 +32,9 @@ class StardomCityBase {
       add_action( 'woocommerce_email_footer', function(){ ob_start(); }, 1 );
       add_action( 'woocommerce_email_footer', function(){ ob_get_clean(); }, 100 );
     }
+
+
+
     // Selectively apply WPBE template if it's a WooCommerce email
     public function better_phpmailer_init( $phpmailer ){
         // this filter will return true if the woocommerce_email_header action has run
