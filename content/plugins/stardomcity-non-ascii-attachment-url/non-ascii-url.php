@@ -1,6 +1,6 @@
 <?php
 /*
-Plugin Name: Non ASCII Attachment URL
+Plugin Name: StardomCity Non ASCII Attachment URL
 Description: convert attachment url non ASCII.
 Version:     1.0
 Author:      Gorkem Yontem

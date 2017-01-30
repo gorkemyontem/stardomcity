@@ -1,8 +1,10 @@
 <?php
 require_once('stardomcity-base.php');
+require_once('stardomcity-custom-emails.php');
 require_once('stardomcity-payment.php');
 
 $stardomBase = new StardomCityBase;
+$stardomCustomEmails = new StardomCityCustomEmails;
 $stardomPayment = new StardomCityPayment;
 
 function yazdir($obj, $exit = true){
