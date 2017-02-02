@@ -2,7 +2,7 @@
 # This file is distributed under the same license as the Plugins - Akismet - Stable (latest release) package.
 msgid ""
 msgstr ""
-"PO-Revision-Date: 2016-05-12 18:06:32+0000\n"
+"PO-Revision-Date: 2016-11-06 11:02:23+0000\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -21,6 +21,12 @@ msgid_plural "%d comments could not be checked."
 msgstr[0] "%d yorum kontrol edilemedi."
 msgstr[1] "%d yorum kontrol edilemedi."
 
+#: class.akismet-cli.php:85
+msgid "%d comment moved to Spam."
+msgid_plural "%d comments moved to Spam."
+msgstr[0] "%d yorum istenmeyene taşındı."
+msgstr[1] "%d yorum istenmeyene taşındı."
+
 #: views/config.php:32
 msgid "%s false positive"
 msgid_plural "%s false positives"
@@ -30,12 +36,12 @@ msgstr[1] "%s yanlış alarm"
 #: views/config.php:30
 msgid "%s missed spam"
 msgid_plural "%s missed spam"
-msgstr[0] "%s yakalanamayan istenmeyen"
-msgstr[1] "%s yakalanamayan istenmeyen"
+msgstr[0] "%s kaçırılan istenmeyen"
+msgstr[1] "%s kaçırılan istenmeyen"
 
 #: views/start.php:80
 msgid "Log in or sign up now."
-msgstr "Şimdi giriş yap ya da kaydol."
+msgstr "Giriş yap ya da şimdi kaydol."
 
 #: views/start.php:66
 msgid "Already have your key? Enter it here."
@@ -75,11 +81,11 @@ msgstr "Akismet için kaydol"
 
 #: views/start.php:4
 msgid "Akismet eliminates spam from your site. Register below to get started."
-msgstr "Akismet sitenizden spamları yok eder. Başlamak için aşağıdan kaydolun."
+msgstr "Akismet sitenizden istenmeyenleri yok eder. Başlamak için aşağıdan kaydolun."
 
 #: views/notice.php:90
 msgid "Akismet is now activated. Happy blogging!"
-msgstr "Akismet şimdi etkin. Mutlu bloglamalar!"
+msgstr "Akismet şimdi etkinleştirildi. Mutlu bloglamalar!"
 
 #: views/notice.php:81
 msgid "You don&#8217;t have an Akismet plan."
