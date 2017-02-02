@@ -59,7 +59,7 @@ class WCVendors_Pro_Activator {
 			wp_die( __( 'WC Vendors Pro requires WC Vendors to run. Please install WC Vendors and activate before attempting to activate again.', 'wcvendors-pro' ) );
 		}
 
-		$db_version = get_option( 'wcvendors_pro_db_version' ); 	
+		$db_version = get_option( 'wcvendors_pro_db_version', '0.1' ); 	
 		self::$feedback_tbl_name  = 'wcv_feedback'; 
 
 		// Initial Install 

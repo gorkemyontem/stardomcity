@@ -1,6 +1,6 @@
 <?php
 /**
- * The template for displaying the Product edit form
+ * The template for displaying the Product edit form  
  *
  * Override this template by copying it to yourtheme/wc-vendors/dashboard/
  *
@@ -8,18 +8,18 @@
  * @version    1.3.2
  */
 /**
- *   DO NOT EDIT ANY OF THE LINES BELOW UNLESS YOU KNOW WHAT YOU'RE DOING
- *
+ *   DO NOT EDIT ANY OF THE LINES BELOW UNLESS YOU KNOW WHAT YOU'RE DOING 
+ *   
 */
 
-$title = 	( is_numeric( $object_id ) ) ? __('Save Changes', 'wcvendors-pro') : __('Add Product', 'wcvendors-pro');
+$title = 	( is_numeric( $object_id ) ) ? __('Save Changes', 'wcvendors-pro') : __('Add Product', 'wcvendors-pro'); 
 $product = 	( is_numeric( $object_id ) ) ? wc_get_product( $object_id ) : null;
 
-// Get basic information for the product
-$product_title     			= ( isset($product) && null !== $product ) ? $product->post->post_title    : '';
-$product_description        = ( isset($product) && null !== $product ) ? $product->post->post_content  : '';
-$product_short_description  = ( isset($product) && null !== $product ) ? $product->post->post_excerpt  : '';
-$post_status				= ( isset($product) && null !== $product ) ? $product->post->post_status   : '';
+// Get basic information for the product 
+$product_title     			= ( isset($product) && null !== $product ) ? $product->post->post_title    : ''; 
+$product_description        = ( isset($product) && null !== $product ) ? $product->post->post_content  : ''; 
+$product_short_description  = ( isset($product) && null !== $product ) ? $product->post->post_excerpt  : ''; 
+$post_status				= ( isset($product) && null !== $product ) ? $product->post->post_status   : ''; 
 
 /**
  *  Ok, You can edit the template below but be careful!
@@ -29,10 +29,10 @@ $post_status				= ( isset($product) && null !== $product ) ? $product->post->pos
 <h2><?php echo $title; ?></h2>
 
 <!-- Product Edit Form -->
-<form method="post" action="" id="wcv-product-edit" class="wcv-form wcv-formvalidator">
+<form method="post" action="" id="wcv-product-edit" class="wcv-form wcv-formvalidator"> 
 
 	<!-- Basic Product Details -->
-	<div class="wcv-product-basic wcv-product">
+	<div class="wcv-product-basic wcv-product"> 
 		<!-- Product Title -->
 		<?php WCVendors_Pro_Product_Form::title( $object_id, $product_title ); ?>
 		<!-- Product Description -->
@@ -45,7 +45,7 @@ $post_status				= ( isset($product) && null !== $product ) ? $product->post->pos
 	    <?php WCVendors_Pro_Product_Form::tags( $object_id, true ); ?>
 	</div>
 
-	<div class="all-100">
+	<div class="all-100"> 
     	<!-- Media uploader -->
 		<div class="wcv-product-media">
 			<?php do_action( 'wcv_before_media', $object_id ); ?>
@@ -56,10 +56,11 @@ $post_status				= ( isset($product) && null !== $product ) ? $product->post->pos
 	</div>
 
 	<hr />
-
+	
 	<div class="all-100">
+  <?php do_action( 'wcv_before_product_type', $object_id ); ?>
 		<!-- Product Type -->
-		<div class="wcv-product-type">
+		<div class="wcv-product-type"> 
 			<?php WCVendors_Pro_Product_Form::product_type( $object_id ); ?>
 		</div>
 	</div>
@@ -70,10 +71,10 @@ $post_status				= ( isset($product) && null !== $product ) ? $product->post->pos
 			<?php WCVendors_Pro_Product_Form::product_meta_tabs( ); ?>
 
 			<?php do_action( 'wcv_before_general_tab', $object_id ); ?>
-
+	
 			<!-- General Product Options -->
 			<div class="wcv-product-general tabs-content" id="general">
-
+			
 				<div class="hide_if_grouped">
 					<!-- SKU  -->
 					<?php WCVendors_Pro_Product_Form::sku( $object_id ); ?>
@@ -92,7 +93,7 @@ $post_status				= ( isset($product) && null !== $product ) ? $product->post->pos
 					<?php WCVendors_Pro_Product_Form::prices( $object_id ); ?>
 				</div>
 
-				<div class="show_if_simple show_if_external show_if_variable">
+				<div class="show_if_simple show_if_external show_if_variable"> 
 					<!-- Tax -->
 					<?php WCVendors_Pro_Product_Form::tax( $object_id ); ?>
 				</div>
@@ -115,11 +116,11 @@ $post_status				= ( isset($product) && null !== $product ) ? $product->post->pos
 
 			<!-- Inventory -->
 			<div class="wcv-product-inventory inventory_product_data tabs-content" id="inventory">
-
+				
 				<?php WCVendors_Pro_Product_Form::manage_stock( $object_id ); ?>
-
+				
 				<?php do_action( 'wcv_product_options_stock' ); ?>
-
+				
 				<div class="stock_fields show_if_simple show_if_variable">
 					<?php WCVendors_Pro_Product_Form::stock_qty( $object_id ); ?>
 					<?php WCVendors_Pro_Product_Form::backorders( $object_id ); ?>
@@ -146,7 +147,7 @@ $post_status				= ( isset($product) && null !== $product ) ? $product->post->pos
 				<div class="hide_if_grouped hide_if_external">
 
 					<!-- Shipping rates  -->
-					<?php WCVendors_Pro_Product_Form::shipping_rates( $object_id ); ?>
+					<?php WCVendors_Pro_Product_Form::shipping_rates( $object_id ); ?>	
 					<!-- weight  -->
 					<?php WCVendors_Pro_Product_Form::weight( $object_id ); ?>
 					<!-- Dimensions -->
@@ -156,7 +157,7 @@ $post_status				= ( isset($product) && null !== $product ) ? $product->post->pos
 					<?php WCVendors_Pro_Product_Form::shipping_class( $object_id ); ?>
 					<?php do_action( 'wcv_product_options_shipping' ); ?>
 				</div>
-
+			
 			</div>
 
 			<?php do_action( 'wcv_after_shipping_tab', $object_id ); ?>
@@ -164,10 +165,10 @@ $post_status				= ( isset($product) && null !== $product ) ? $product->post->pos
 			<?php do_action( 'wcv_before_linked_tab', $object_id ); ?>
 
 			<!-- Upsells and grouping -->
-			<div class="wcv-product-upsells tabs-content" id="linked_product">
+			<div class="wcv-product-upsells tabs-content" id="linked_product"> 
 
 				<?php WCVendors_Pro_Product_Form::up_sells( $object_id ); ?>
-
+				
 				<?php WCVendors_Pro_Product_Form::crosssells( $object_id ); ?>
 
 				<div class="hide_if_grouped hide_if_external">
@@ -183,19 +184,19 @@ $post_status				= ( isset($product) && null !== $product ) ? $product->post->pos
 
 			<?php do_action( 'wcv_before_attributes_tab', $object_id ); ?>
 
-			<div class="wcv_product_attributes tabs-content" id="attributes">
+			<div class="wcv_product_attributes tabs-content" id="attributes"> 
 
 				<?php WCVendors_Pro_Product_Form::product_attributes( $object_id ); ?>
 
 			</div>
-
+			
 			<?php do_action( 'wcv_after_attributes_tab', $object_id ); ?>
 
 			<!-- Variations -->
 
 			<?php do_action( 'wcv_before_variations_tab', $object_id ); ?>
 
-			<div class="wcv_product_variations tabs-content" id="variations">
+			<div class="wcv_product_variations tabs-content" id="variations"> 
 
 				<?php WCVendors_Pro_Product_Form::product_variations( $object_id ); ?>
 

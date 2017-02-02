@@ -560,51 +560,51 @@ class WCVendors_Pro_Vendor_Controller {
 		wc_add_notice( __( 'Store Settings Saved', 'wcvendors-pro' ), 'success' ); 
 
 		// Maybe server side validation 
-		$paypal_address		= ( isset( $_POST[ '_wcv_paypal_address' ] ) )		? trim( $_POST[ '_wcv_paypal_address' ] ) 		: ''; 
-		$store_name 		= ( isset( $_POST[ '_wcv_store_name' ] ) )			? trim( $_POST[ '_wcv_store_name' ] )			: ''; 
-		$store_phone		= ( isset( $_POST[ '_wcv_store_phone' ] ) )			? trim( $_POST[ '_wcv_store_phone' ] )			: '';
+		$paypal_address		= ( isset( $_POST[ '_wcv_paypal_address' ] ) )		? sanitize_email( $_POST[ '_wcv_paypal_address' ] ) 		: ''; 
+		$store_name 		= ( isset( $_POST[ '_wcv_store_name' ] ) )			? sanitize_text_field( trim( $_POST[ '_wcv_store_name' ] ) )	: ''; 
+		$store_phone		= ( isset( $_POST[ '_wcv_store_phone' ] ) )			? sanitize_text_field( trim( $_POST[ '_wcv_store_phone' ] )	)	: '';
 		$seller_info 		= ( isset( $_POST[ 'pv_seller_info' ] ) )			? trim( $_POST[ 'pv_seller_info' ] )			: ''; 
 		$store_description 	= ( isset( $_POST[ 'pv_shop_description' ]) )		? trim( $_POST[ 'pv_shop_description' ] )		: ''; 
-		$store_banner_id 	= ( isset( $_POST[ '_wcv_store_banner_id' ] ) ) 	? trim( $_POST[ '_wcv_store_banner_id' ] )		: ''; 
-		$store_icon_id 		= ( isset( $_POST[ '_wcv_store_icon_id' ] ) ) 		? trim( $_POST[ '_wcv_store_icon_id' ] )		: ''; 
-		$twitter_username 	= ( isset( $_POST[ '_wcv_twitter_username' ] ) ) 	? trim( $_POST[ '_wcv_twitter_username' ] )		: ''; 
-		$instagram_username = ( isset( $_POST[ '_wcv_instagram_username' ] ) ) 	? trim( $_POST[ '_wcv_instagram_username' ] )	: ''; 
-		$facebook_url 		= ( isset( $_POST[ '_wcv_facebook_url' ] ) ) 		? trim( $_POST[ '_wcv_facebook_url' ] )			: ''; 
-		$linkedin_url 		= ( isset( $_POST[ '_wcv_linkedin_url' ] ) ) 		? trim( $_POST[ '_wcv_linkedin_url' ] )			: ''; 
-		$youtube_url 		= ( isset( $_POST[ '_wcv_youtube_url' ] ) ) 		? trim( $_POST[ '_wcv_youtube_url' ] )			: ''; 
-		$pinterest_url 		= ( isset( $_POST[ '_wcv_pinterest_url' ] ) ) 		? trim( $_POST[ '_wcv_pinterest_url' ] )		: ''; 
-		$googleplus_url 	= ( isset( $_POST[ '_wcv_googleplus_url' ] ) ) 		? trim( $_POST[ '_wcv_googleplus_url' ] )		: ''; 
-		$snapchat_username 	= ( isset( $_POST[ '_wcv_snapchat_username' ] ) ) 	? trim( $_POST[ '_wcv_snapchat_username' ] )		: ''; 
-		$address1 			= ( isset( $_POST[ '_wcv_store_address1' ] ) ) 		? trim( $_POST[ '_wcv_store_address1' ] ) 		: '';
-		$address2 			= ( isset( $_POST[ '_wcv_store_address2' ] ) ) 		? trim( $_POST[ '_wcv_store_address2' ] ) 		: '';
-		$city	 			= ( isset( $_POST[ '_wcv_store_city' ] ) ) 			? trim( $_POST[ '_wcv_store_city' ] ) 			: '';
-		$state	 			= ( isset( $_POST[ '_wcv_store_state' ]	 ) ) 		? trim( $_POST[ '_wcv_store_state' ] )	  		: '';
-		$country			= ( isset( $_POST[ '_wcv_store_country' ] ) )  		? trim( $_POST[ '_wcv_store_country' ] )  		: '';
-		$postcode			= ( isset( $_POST[ '_wcv_store_postcode' ] ) ) 	 	? trim( $_POST[ '_wcv_store_postcode' ] ) 		: '';
-		$company_url		= ( isset( $_POST[ '_wcv_company_url' ] ) ) 	 	? trim( $_POST[ '_wcv_company_url' ] ) 			: '';
-		$vacation_mode		= ( isset( $_POST[ '_wcv_vacation_mode' ] ) ) 	 	? trim( $_POST[ '_wcv_vacation_mode' ] ) 		: '';
-		$vacation_msg		= ( isset( $_POST[ '_wcv_vacation_mode_msg' ] ) ) 	? trim( $_POST[ '_wcv_vacation_mode_msg' ] ) 	: '';
+		$store_banner_id 	= ( isset( $_POST[ '_wcv_store_banner_id' ] ) ) 	? sanitize_text_field( $_POST[ '_wcv_store_banner_id' ] )		: ''; 
+		$store_icon_id 		= ( isset( $_POST[ '_wcv_store_icon_id' ] ) ) 		? sanitize_text_field( $_POST[ '_wcv_store_icon_id' ] )			: ''; 
+		$twitter_username 	= ( isset( $_POST[ '_wcv_twitter_username' ] ) ) 	? sanitize_text_field( $_POST[ '_wcv_twitter_username' ] )		: ''; 
+		$instagram_username = ( isset( $_POST[ '_wcv_instagram_username' ] ) ) 	? sanitize_text_field( $_POST[ '_wcv_instagram_username' ] )	: ''; 
+		$facebook_url 		= ( isset( $_POST[ '_wcv_facebook_url' ] ) ) 		? sanitize_text_field( $_POST[ '_wcv_facebook_url' ] )			: ''; 
+		$linkedin_url 		= ( isset( $_POST[ '_wcv_linkedin_url' ] ) ) 		? sanitize_text_field( $_POST[ '_wcv_linkedin_url' ] )			: ''; 
+		$youtube_url 		= ( isset( $_POST[ '_wcv_youtube_url' ] ) ) 		? sanitize_text_field( $_POST[ '_wcv_youtube_url' ] )			: ''; 
+		$pinterest_url 		= ( isset( $_POST[ '_wcv_pinterest_url' ] ) ) 		? sanitize_text_field( $_POST[ '_wcv_pinterest_url' ] )		: ''; 
+		$googleplus_url 	= ( isset( $_POST[ '_wcv_googleplus_url' ] ) ) 		? sanitize_text_field( $_POST[ '_wcv_googleplus_url' ] )		: ''; 
+		$snapchat_username 	= ( isset( $_POST[ '_wcv_snapchat_username' ] ) ) 	? sanitize_text_field( $_POST[ '_wcv_snapchat_username' ] )		: ''; 
+		$address1 			= ( isset( $_POST[ '_wcv_store_address1' ] ) ) 		? sanitize_text_field( $_POST[ '_wcv_store_address1' ] ) 		: '';
+		$address2 			= ( isset( $_POST[ '_wcv_store_address2' ] ) ) 		? sanitize_text_field( $_POST[ '_wcv_store_address2' ] ) 		: '';
+		$city	 			= ( isset( $_POST[ '_wcv_store_city' ] ) ) 			? sanitize_text_field( $_POST[ '_wcv_store_city' ] ) 			: '';
+		$state	 			= ( isset( $_POST[ '_wcv_store_state' ]	 ) ) 		? sanitize_text_field( $_POST[ '_wcv_store_state' ] )	  		: '';
+		$country			= ( isset( $_POST[ '_wcv_store_country' ] ) )  		? sanitize_text_field( $_POST[ '_wcv_store_country' ] )  		: '';
+		$postcode			= ( isset( $_POST[ '_wcv_store_postcode' ] ) ) 	 	? sanitize_text_field( $_POST[ '_wcv_store_postcode' ] ) 		: '';
+		$company_url		= ( isset( $_POST[ '_wcv_company_url' ] ) ) 	 	? sanitize_text_field( $_POST[ '_wcv_company_url' ] ) 			: '';
+		$vacation_mode		= ( isset( $_POST[ '_wcv_vacation_mode' ] ) ) 	 	? sanitize_text_field( $_POST[ '_wcv_vacation_mode' ] ) 		: '';
+		$vacation_msg		= ( isset( $_POST[ '_wcv_vacation_mode_msg' ] ) ) 	? sanitize_text_field( $_POST[ '_wcv_vacation_mode_msg' ] ) 	: '';
 
 
-		$shipping_fee_national				= ( isset( $_POST[ '_wcv_shipping_fee_national' ] ) ) 				? trim( $_POST[ '_wcv_shipping_fee_national' ] ) 				: '';
-		$shipping_fee_international			= ( isset( $_POST[ '_wcv_shipping_fee_international' ] ) ) 			? trim( $_POST[ '_wcv_shipping_fee_international' ] ) 			: '';
+		$shipping_fee_national				= ( isset( $_POST[ '_wcv_shipping_fee_national' ] ) ) 				? sanitize_text_field( $_POST[ '_wcv_shipping_fee_national' ] ) 				: '';
+		$shipping_fee_international			= ( isset( $_POST[ '_wcv_shipping_fee_international' ] ) ) 			? sanitize_text_field( $_POST[ '_wcv_shipping_fee_international' ] ) 			: '';
 		$shipping_fee_national_qty			= ( isset( $_POST[ '_wcv_shipping_fee_national_qty' ] ) ) 			? 'yes' 	: '';
 		$shipping_fee_international_qty		= ( isset( $_POST[ '_wcv_shipping_fee_international_qty' ] ) ) 		? 'yes' 	: '';
 		$shipping_fee_national_free			= ( isset( $_POST[ '_wcv_shipping_fee_national_free' ] ) ) 			? 'yes'		: '';
 		$shipping_fee_international_free	= ( isset( $_POST[ '_wcv_shipping_fee_international_free' ] ) ) 	? 'yes'		: '';
 		$shipping_fee_national_disable		= ( isset( $_POST[ '_wcv_shipping_fee_national_disable' ] ) ) 		? 'yes'		: '';
 		$shipping_fee_international_disable	= ( isset( $_POST[ '_wcv_shipping_fee_international_disable' ] ) ) 	? 'yes' 	: '';
-		$product_handling_fee   			= ( isset( $_POST[ '_wcv_shipping_product_handling_fee' ] ) ) 		? trim( $_POST[ '_wcv_shipping_product_handling_fee' ] ) 		: '';
-		$shipping_policy					= ( isset( $_POST[ '_wcv_shipping_policy' ] ) ) 					? trim( $_POST[ '_wcv_shipping_policy' ] ) 						: '';
-		$return_policy						= ( isset( $_POST[ '_wcv_shipping_return_policy' ] ) ) 				? trim( $_POST[ '_wcv_shipping_return_policy' ] ) 				: '';
-		$shipping_from						= ( isset( $_POST[ '_wcv_shipping_from' ] ) ) 						? trim( $_POST[ '_wcv_shipping_from' ] ) 						: '';
+		$product_handling_fee   			= ( isset( $_POST[ '_wcv_shipping_product_handling_fee' ] ) ) 		? sanitize_text_field( $_POST[ '_wcv_shipping_product_handling_fee' ] ) 		: '';
+		$shipping_policy					= ( isset( $_POST[ '_wcv_shipping_policy' ] ) ) 					? sanitize_text_field( $_POST[ '_wcv_shipping_policy' ] ) 						: '';
+		$return_policy						= ( isset( $_POST[ '_wcv_shipping_return_policy' ] ) ) 				? sanitize_text_field( $_POST[ '_wcv_shipping_return_policy' ] ) 				: '';
+		$shipping_from						= ( isset( $_POST[ '_wcv_shipping_from' ] ) ) 						? sanitize_text_field( $_POST[ '_wcv_shipping_from' ] ) 						: '';
 		
-		$shipping_address1 					= ( isset( $_POST[ '_wcv_shipping_address1' ] ) ) 		? trim( $_POST[ '_wcv_shipping_address1' ] ) 		: '';
-		$shipping_address2 					= ( isset( $_POST[ '_wcv_shipping_address2' ] ) ) 		? trim( $_POST[ '_wcv_shipping_address2' ] ) 		: '';
-		$shipping_city	 					= ( isset( $_POST[ '_wcv_shipping_city' ] ) ) 			? trim( $_POST[ '_wcv_shipping_city' ] ) 			: '';
-		$shipping_state	 					= ( isset( $_POST[ '_wcv_shipping_state' ]	 ) ) 		? trim( $_POST[ '_wcv_shipping_state' ]	)  			: '';
-		$shipping_country					= ( isset( $_POST[ '_wcv_shipping_country' ] ) )  		? trim( $_POST[ '_wcv_shipping_country' ] ) 		: '';
-		$shipping_postcode					= ( isset( $_POST[ '_wcv_shipping_postcode' ] ) ) 	 	? trim( $_POST[ '_wcv_shipping_postcode' ] ) 		: '';
+		$shipping_address1 					= ( isset( $_POST[ '_wcv_shipping_address1' ] ) ) 		? sanitize_text_field( $_POST[ '_wcv_shipping_address1' ] ) 		: '';
+		$shipping_address2 					= ( isset( $_POST[ '_wcv_shipping_address2' ] ) ) 		? sanitize_text_field( $_POST[ '_wcv_shipping_address2' ] ) 		: '';
+		$shipping_city	 					= ( isset( $_POST[ '_wcv_shipping_city' ] ) ) 			? sanitize_text_field( $_POST[ '_wcv_shipping_city' ] ) 			: '';
+		$shipping_state	 					= ( isset( $_POST[ '_wcv_shipping_state' ]	 ) ) 		? sanitize_text_field( $_POST[ '_wcv_shipping_state' ]	)  			: '';
+		$shipping_country					= ( isset( $_POST[ '_wcv_shipping_country' ] ) )  		? sanitize_text_field( $_POST[ '_wcv_shipping_country' ] ) 		: '';
+		$shipping_postcode					= ( isset( $_POST[ '_wcv_shipping_postcode' ] ) ) 	 	? sanitize_text_field( $_POST[ '_wcv_shipping_postcode' ] ) 		: '';
 
 		// Save free user meta 
 		update_user_meta( $vendor_id, 'pv_paypal', 				$paypal_address );

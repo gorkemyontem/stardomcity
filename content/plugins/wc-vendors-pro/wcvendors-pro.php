@@ -3,7 +3,7 @@
  * Plugin Name:       WC Vendors Pro
  * Plugin URI:        https://www.wcvendors.com/product/wc-vendors-pro/
  * Description:       The WC Vendors Pro plugin 
- * Version:           1.3.8
+ * Version:           1.3.9
  * Author:            WC Vendors
  * Author URI:        http://www.wcvendors.com/
  * License:           GPL-2.0+
@@ -40,54 +40,74 @@ if ( ! defined( 'WPINC' ) ) {
 	die;
 }
 
-define('WCV_PRO_VERSION', '1.3.8' ); 
-
 /**
- * The code that runs during plugin activation.
+ * Required functions
  */
-function activate_wcvendors_pro() {
-	require_once plugin_dir_path( __FILE__ ) . 'includes/class-wcvendors-pro-activator.php';
-	WCVendors_Pro_Activator::activate( __FILE__ );
+require_once( 'includes/wcv-functions.php' );
+
+if ( is_woocommerce_active() ){ 
+
+	if ( is_wcvendors_active() ) {
+
+	define('WCV_PRO_VERSION', '1.3.9' ); 
+
+	/**
+	 * The code that runs during plugin activation.
+	 */
+	function activate_wcvendors_pro() {
+		require_once plugin_dir_path( __FILE__ ) . 'includes/class-wcvendors-pro-activator.php';
+		WCVendors_Pro_Activator::activate( __FILE__ );
+	}
+
+	/**
+	 * The code that runs during plugin deactivation.
+	 */
+	function deactivate_wcvendors_pro() {
+		require_once plugin_dir_path( __FILE__ ) . 'includes/class-wcvendors-pro-deactivator.php';
+		WCVendors_Pro_Deactivator::deactivate();
+	}
+
+	register_activation_hook( __FILE__, 'activate_wcvendors_pro' );
+	register_deactivation_hook( __FILE__, 'deactivate_wcvendors_pro' );
+
+	/**
+	 * Include the update and support system 
+	 */
+	require_once plugin_dir_path( __FILE__ ) . 'includes/lib/class-wc-software-license-client.php'; 
+	function wcslc_instance(){ 	
+	 	return WC_Software_License_Client::get_instance( 'https://wcvendors.com/', WCV_PRO_VERSION, 'wc-vendors-pro', __FILE__, 'WC Vendors Pro', 'wc-vendors-pro' );  
+	} // wcslc_instance()
+	 
+	wcslc_instance(); 
+
+	/**
+	 * The core plugin class that is used to define internationalization,
+	 * admin-specific hooks, and public-facing site hooks.
+	 */
+	require plugin_dir_path( __FILE__ ) . 'includes/class-wcvendors-pro.php';
+
+	/**
+	 * Begins execution of the plugin.
+	 *
+	 * Since everything within the plugin is registered via hooks,
+	 * then kicking off the plugin from this point in the file does
+	 * not affect the page life cycle.
+	 *
+	 * @since    1.0.0
+	 */
+	function run_wcvendors_pro() {
+
+		$plugin = new WCVendors_Pro();
+		$plugin->run();
+		return $plugin;
+
+	}
+	$wcvendors_pro = run_wcvendors_pro();
+
+	} else { 
+		add_action( 'admin_notices', 'wcvendors_required_notice' ); 
+	}
+
+} else { 
+	add_action( 'admin_notices', 'woocommerce_required_notice' ); 
 }
-
-/**
- * The code that runs during plugin deactivation.
- */
-function deactivate_wcvendors_pro() {
-	require_once plugin_dir_path( __FILE__ ) . 'includes/class-wcvendors-pro-deactivator.php';
-	WCVendors_Pro_Deactivator::deactivate();
-}
-
-/**
- * Include the update and support system 
- */
-require_once plugin_dir_path( __FILE__ ) . 'includes/lib/class-wc-software-license-client.php'; 
-function wcslc_instance(){ 	
- 	return WC_Software_License_Client::get_instance( 'https://wcvendors.com/', WCV_PRO_VERSION, 'wc-vendors-pro', __FILE__, 'WC Vendors Pro', 'wc-vendors-pro' );  
-} // wcslc_instance()
- 
-wcslc_instance(); 
-
-/**
- * The core plugin class that is used to define internationalization,
- * admin-specific hooks, and public-facing site hooks.
- */
-require plugin_dir_path( __FILE__ ) . 'includes/class-wcvendors-pro.php';
-
-/**
- * Begins execution of the plugin.
- *
- * Since everything within the plugin is registered via hooks,
- * then kicking off the plugin from this point in the file does
- * not affect the page life cycle.
- *
- * @since    1.0.0
- */
-function run_wcvendors_pro() {
-
-	$plugin = new WCVendors_Pro();
-	$plugin->run();
-	return $plugin;
-
-}
-$wcvendors_pro = run_wcvendors_pro();

@@ -353,11 +353,15 @@ class WCVendors_Pro_Shipping_Method extends WC_Shipping_Method {
 
 			if ( $customer_country == $store_country ) { 
 
-				if ( ( is_array( $product_rates ) && array_key_exists( 'national_disable', $product_rates ) && 'yes' === $product_rates[ 'national_disable'] ) || ( is_array( $store_rates ) && array_key_exists('national_disable', $store_rates ) && 'yes' ===  $store_rates['national_disable'] ) ) { 
+				// if ( ( is_array( $product_rates ) && array_key_exists( 'national_disable', $product_rates ) && 'yes' === $product_rates[ 'national_disable'] ) || ( is_array( $store_rates ) && array_key_exists('national_disable', $store_rates ) && 'yes' ===  $store_rates['national_disable'] ) ) { 
+				// 	return $shipping_rate = false;
+				// }
+
+				if ( ( is_array( $product_rates ) && array_key_exists( 'national_disable', $product_rates ) && 'yes' === $product_rates[ 'national_disable'] ) ) { 
+					
 					return $shipping_rate = false;
-				}
-				
-				if ( is_array( $product_rates ) && ( strlen( $product_rates['national_disable'] ) === 0 && ( strlen( trim( $product_rates['national'] ) ) > 0 || strlen( trim( $product_rates[ 'national_free' ] ) ) > 0 ) ) ) {
+
+				} elseif ( is_array( $product_rates ) && ( strlen( $product_rates['national_disable'] ) === 0 && ( strlen( trim( $product_rates['national'] ) ) > 0 || strlen( trim( $product_rates[ 'national_free' ] ) ) > 0 ) ) ) {
 					// Is free shipping enabled ?
 					if ( 'yes' === $product_rates[ 'national_free' ] ){ 
 						$shipping_rate->fee 			= 0; 
@@ -367,6 +371,13 @@ class WCVendors_Pro_Shipping_Method extends WC_Shipping_Method {
 					$shipping_rate->product_fee 	= $product_rates[ 'handling_fee' ]; 
 					$shipping_rate->qty_override 	= $product_rates[ 'national_qty_override' ]; 
 
+					if ( ( is_array( $product_rates ) && array_key_exists( 'national_disable', $product_rates ) && 'yes' === $product_rates[ 'national_disable'] ) ) { 
+						return $shipping_rate = false;
+					}
+
+				} elseif ( ( is_array( $store_rates ) && array_key_exists('national_disable', $store_rates ) && 'yes' ===  $store_rates['national_disable'] ) ) { 
+
+					return $shipping_rate = false;
 
 				} elseif( is_array( $store_rates ) && ( strlen( $store_rates[ 'national_disable' ] ) === 0 && ( strlen( trim( $store_rates['national'] ) ) > 0 || strlen( $store_rates[ 'national_free' ] ) > 0 ) ) ) {
 
@@ -389,11 +400,11 @@ class WCVendors_Pro_Shipping_Method extends WC_Shipping_Method {
 			} else { 
 
 				// International shipping 
-				if ( ( is_array( $product_rates ) && array_key_exists('international_disable', $product_rates ) && 'yes' === $product_rates['international_disable'] ) || ( is_array( $store_rates ) && array_key_exists('international_disable', $store_rates ) &&  'yes' ===  $store_rates['international_disable'] ) ) { 
+				if ( ( is_array( $product_rates ) && array_key_exists( 'international_disable', $product_rates ) && 'yes' === $product_rates['international_disable'] ) ) {
+					
 					return $shipping_rate = false;
-				}
-
-				if ( is_array( $product_rates ) && ( strlen( $product_rates['international_disable'] ) === 0 && ( strlen( trim( $product_rates['international'] ) ) > 0 || strlen( $product_rates[ 'international_free' ] ) > 0 ) ) ) {
+				
+				} elseif ( is_array( $product_rates ) && ( strlen( $product_rates['international_disable'] ) === 0 && ( strlen( trim( $product_rates['international'] ) ) > 0 || strlen( $product_rates[ 'international_free' ] ) > 0 ) ) ) {
 					// Is free shipping enabled ?
 					if ( 'yes' === $product_rates[ 'international_free' ] ){  
 						$shipping_rate->fee 			= 0; 
@@ -402,6 +413,11 @@ class WCVendors_Pro_Shipping_Method extends WC_Shipping_Method {
 					}
 					$shipping_rate->product_fee 	= $product_rates[ 'handling_fee' ];
 					$shipping_rate->qty_override 	= $product_rates[ 'international_qty_override' ]; 
+
+				} elseif ( is_array( $store_rates ) && array_key_exists( 'international_disable', $store_rates ) &&  'yes' ===  $store_rates['international_disable'] )  { 
+
+					return $shipping_rate = false;
+
 				} elseif( is_array( $store_rates ) && ( strlen( $store_rates['international_disable'] ) === 0 && ( strlen( trim( $store_rates['international'] ) ) > 0 || strlen( $store_rates[ 'international_free' ] ) > 0 ) ) ) {
 
 					if ( 'yes' === $store_rates[ 'international_free' ] ){ 

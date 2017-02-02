@@ -375,7 +375,7 @@ class WCVendors_Pro {
 
 		if ( 'pro' === $pro_store_header  ) { 
 
-			$this->loader->add_action( 'init', 										$this->wcvendors_pro_vendor_controller, 	'remove_free_headers' );
+			$this->loader->add_action( 'init', 									$this->wcvendors_pro_vendor_controller, 	'remove_free_headers' );
 
 			if ( $shop_store_header ){ 
 				
@@ -383,9 +383,9 @@ class WCVendors_Pro {
 				$this->loader->add_action( 'wcv_after_vendor_store_header',			$this->wcvendors_pro_vendor_controller, 	'vacation_mode' );
 
 				if ( $single_store_header ) { 
-					$this->loader->add_action( 'woocommerce_before_single_product',			$this->wcvendors_pro_vendor_controller, 	'store_single_header');
+					$this->loader->add_action( 'woocommerce_before_single_product',		$this->wcvendors_pro_vendor_controller, 	'store_single_header');
 				} else { 
-					$this->loader->add_action( 'woocommerce_before_single_product',			$this->wcvendors_pro_vendor_controller, 	'vacation_mode');
+					$this->loader->add_action( 'woocommerce_before_single_product',		$this->wcvendors_pro_vendor_controller, 	'vacation_mode');
 				}	
 			} else { 
 				$this->loader->add_action( 'woocommerce_before_main_content',			$this->wcvendors_pro_vendor_controller, 	'vacation_mode', 30);
@@ -424,6 +424,10 @@ class WCVendors_Pro {
 		$ratings_disabled		= ( isset( $wc_prd_vendor_options[ 'ratings_management_cap' ] ) ) ? $wc_prd_vendor_options[ 'ratings_management_cap' ] : true;
 
 		$pro_store_header		= ( isset( $wc_prd_vendor_options[ 'vendor_store_header_type' ] ) && $wc_prd_vendor_options[ 'vendor_store_header_type' ] ) ? true : false; 
+
+		// Filter all uploads to include an md5 of the guid. 
+		$this->loader->add_filter( 'wp_update_attachment_metadata', 'WCVendors_Pro', 'add_md5_to_attachment', 10, 2); 
+
 
 		if ( !$ratings_disabled ) { 
 
@@ -839,15 +843,6 @@ class WCVendors_Pro {
 			'desc' => __( 'Delete vendor coupons permanently. ', 'wcvendors-pro' ),
 			'tip'  => __( 'Bypass the trash when a vendor deletes a coupon and delete permanently.', 'wcvendors-pro' ),
 			'id'   => 'vendor_coupon_trash',
-			'type' => 'checkbox',
-			'std'  => false,
-		);
-
-		$options[ ] = array(
-			'name' => __( 'View Your Store', 'wcvendors-pro' ),
-			'desc' => __( 'Disable view your store in dashboard menu.', 'wcvendors-pro' ),
-			'tip'  => __( 'Remove the menu link', 'wcvendors-pro' ),
-			'id'   => 'view_your_store',
 			'type' => 'checkbox',
 			'std'  => false,
 		);
@@ -1455,5 +1450,55 @@ class WCVendors_Pro {
 		}
 
 	} // wc_shipping_address_hook() 
+
+	/**
+	 * This function fires when an attachment is uploaded in wp-admin and will generate an md5 of the post GUID. 
+	 * 
+	 * @since 1.3.9
+	 * @access public 
+	 */	
+	public static function add_md5_to_attachment( $meta_data, $post_id ){  
+
+		WCVendors_Pro::md5_attachment_url( $post_id ); 
+
+		// Return original Meta data 
+		return $meta_data; 
+
+	} // add_md5_to_attachment() 
+
+	/**
+	 * This function will add an md5 hash of the file url ( post GUID ) on attachment post types. 
+	 * 
+	 * @since 1.3.9
+	 * @access public 
+	 */
+	public static function md5_attachment_url( $post_id ){ 
+
+		// Add an MD5 of the GUID for later queries. 
+		if ( !$attachment_post = get_post( $post_id ) )
+			return false; 
+		
+		update_post_meta( $attachment_post->ID, '_md5_guid', md5( $attachment_post->guid ) ); 
+
+	} // md5_upload_attachment 
+
+	/**
+	 * This function will return the md5 hash of an attachment post if the id is 
+	 * 
+	 * @since 1.3.9
+	 * @access public 
+	 * @return int $attachment_id 
+	 */
+	public static function get_attachment_id( $md5_guid ){ 
+
+		global $wpdb;
+		// Get the attachment_id from the database
+		$attachment_id = $wpdb->get_var( "select post_id from $wpdb->postmeta where meta_key = '_md5_guid' AND meta_value ='$md5_guid'" );
+
+		return $attachment_id; 
+
+	} // get_attachment_id 
+
+
 
 } // WCVendors_Pro

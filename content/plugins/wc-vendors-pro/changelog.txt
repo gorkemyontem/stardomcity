@@ -1,5 +1,26 @@
 Changelog for WC Vendors Pro
 
+Version 1.3.9 - 24th January 2016
+
+* Added: Indicate if a product is out of stock on pro dashboard #500
+* Added: Error message to store name #509
+* Added: Action hook 'wcv_before_product_type' in product-edit form 
+* Added: New filters for product row labels categories and tags #502
+* Updated: License notice for dev/staging sites #522 
+* Fixed: Updated variations to use new download file code
+* Fixed: Installer activation code not running #526
+* Fixed: A Product's Featured "status" is removed after editing in Pro Dashboard #523
+* Fixed: Downloadable files and attachment ID sync issues #518
+* Fixed: Possible XSS from Vendors #527
+* Fixed: Duplicate wp-admin menu item #513
+* Fixed: Pinterest link is missing a double-quote #521 
+* Fixed: Tooltip with no tip #514
+* Fixed: Attributes not selected for variations showing in variations #519
+* Fixed: Filter Typo #520
+* Fixed: Multi Select limited for tags: when this method is used, tags are not saved to the product #505
+* Fixed: Product level override is not working if store default is set to: Int'l Disabled. #499
+* Fixed: Add plugin page is full of errors and unusable. #508
+
 Version 1.3.8 - 16th November 2016 
 
 * Added: wcv_dashboard_nav_class filter to add a css class to dashboard nav

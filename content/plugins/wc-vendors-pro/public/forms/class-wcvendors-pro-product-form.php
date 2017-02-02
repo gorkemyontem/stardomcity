@@ -615,7 +615,7 @@ class WCVendors_Pro_Product_Form {
 		WCVendors_Pro_Form_Helper::select2( apply_filters( 'wcv_product_tags_dropdown', 
 			array( 
 				'post_id'			=> $post_id, 
-				'id' 				=> 'product_tag[]', 
+				'id' 				=> 'product_tags[]', 
 				'taxonomy'			=> 'product_tag', 
 				'show_option_none'	=> $show_option_none,
 				'taxonomy_args'		=> array( 
@@ -865,7 +865,8 @@ class WCVendors_Pro_Product_Form {
 
 		if ( ! self::$general_options[ 'download_files' ] ) { 
 
-			$readonly = ( self::$general_options[ 'download_file_url' ] ) ? 'readonly' : ''; 
+			$readonly 			= ( self::$general_options[ 'download_file_url' ] ) ? 'readonly' : ''; 
+			$file_display_type 	= WCVendors_Pro::get_option( 'file_display' );
 
 			include_once( apply_filters( 'wcvendors_pro_product_form_download_files_path', 'partials/wcvendors-pro-downloadable-files.php' ) );
 		} 
@@ -1067,7 +1068,7 @@ class WCVendors_Pro_Product_Form {
 
 		if ( ! self::$general_options[ 'external_url' ]  ) {
 
-			WCVendors_Pro_Form_Helper::input( apply_filters( 'wcv_product_proudct_url', array( 
+			WCVendors_Pro_Form_Helper::input( apply_filters( 'wcv_product_product_url', array( 
 				'post_id'		=> $post_id, 
 				'id' 			=> '_product_url', 
 				'label' 		=> __( 'Product URL', 'wcvendors-pro' ), 

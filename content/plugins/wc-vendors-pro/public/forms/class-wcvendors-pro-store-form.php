@@ -466,6 +466,7 @@ class WCVendors_Pro_Store_Form {
 			'value'				=> $store_name,
 			'custom_attributes' => array(
 				'data-rules' 	=> 'required', 
+				'data-error' => __( 'This field is required.', 'wcvendors-pro' )
 				),
 			)
 		) );
@@ -1000,7 +1001,7 @@ class WCVendors_Pro_Store_Form {
 				'label' 			=> __( 'Pinterest URL', 'wcvendors-pro' ), 
 				'placeholder' 		=> __( 'https://www.pinterest.com/username/', 'wcvendors-pro' ), 
 				'desc_tip' 			=> 'true', 
-				'description' 		=> __( 'Your <a href=https://www.pinterest.com/">Pinterest</a> url.', 'wcvendors-pro' ), 
+				'description' 		=> __( 'Your <a href="https://www.pinterest.com/">Pinterest</a> url.', 'wcvendors-pro' ), 
 				'type' 				=> 'url', 
 				'value'				=> $value
 				)

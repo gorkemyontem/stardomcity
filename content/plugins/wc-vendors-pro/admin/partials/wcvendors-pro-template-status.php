@@ -14,7 +14,7 @@
 <table class="wc_status_table widefat" cellspacing="0">
 	<thead>
 		<tr>
-			<th colspan="3" data-export-label="Templates"><?php _e( 'WC Vendors Pro Templates', 'wcvendors-pro' ); ?><?php echo ' <a href="#" class="help_tip" data-tip="' . esc_attr__( 'This section shows any files that are overriding the default WC Vendors Pro template pages.', 'wcvendors-pro' ) . '">[?]</a>'; ?></th>
+			<th colspan="3" data-export-label="Templates"><?php _e( 'WC Vendors Pro Templates', 'wcvendors-pro' ); ?><?php echo ' <a href="#" class="help_tip" data-tip="' . esc_attr__( 'This section shows any files that are overriding the default WC Vendors Pro template pages.', 'wcvendors-pro' ) . '"></a>'; ?></th>
 		</tr>
 	</thead>
 	<tbody>

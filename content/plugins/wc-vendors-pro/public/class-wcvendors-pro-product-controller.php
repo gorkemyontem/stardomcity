@@ -457,9 +457,9 @@ class WCVendors_Pro_Product_Controller {
 		}
 	
 		// Featured
-		if ( update_post_meta( $post_id, '_featured', isset( $_POST[ '_featured' ] ) ? 'yes' : 'no' ) ) {
-			delete_transient( 'wc_featured_products' );
-		}
+		// if ( update_post_meta( $post_id, '_featured', isset( $_POST[ '_featured' ] ) ? 'yes' : 'no' ) ) {
+		// 	delete_transient( 'wc_featured_products' );
+		// }
 
 		// Dimensions
 		if ( 'no' == $is_virtual ) {
@@ -914,22 +914,22 @@ class WCVendors_Pro_Product_Controller {
 			if ( isset( $_POST[ '_wc_file_urls' ] ) ) {
 				$file_names    		= isset( $_POST[ '_wc_file_names' ] ) 	? $_POST[ '_wc_file_names' ] : array();
 				$file_urls     		= isset( $_POST[ '_wc_file_urls' ] ) 	? array_map( 'trim', $_POST[ '_wc_file_urls' ] ) : array();
-				$file_display     	= isset( $_POST[ '_wc_file_display' ] ) ? array_map( 'trim', $_POST[ '_wc_file_display' ] ) : array();
 				$file_ids    		= isset( $_POST[ '_wc_file_ids' ] ) 	? $_POST[ '_wc_file_ids' ] : array();
-				$file_url_size = sizeof( $file_urls );
+				$file_url_size 		= sizeof( $file_urls );
 
 				for ( $i = 0; $i < $file_url_size; $i ++ ) {
 					if ( ! empty( $file_urls[ $i ] ) ) {
 						$file_url            = ( 0 !== strpos( $file_urls[ $i ], 'http' ) ) ? wc_clean( $file_urls[ $i ] ) : esc_url_raw( $file_urls[ $i ] );
 						$file_name           = wc_clean( $file_names[ $i ] );
-						$file_display        = wc_clean( $file_display[ $i ] );
 						$file_hash           = md5( $file_url );
+			
+						// Need the file id to store the md5 hash of the uploaded file
 						$file_id 			 = $file_ids[ $i ]; 
+						WCVendors_Pro::md5_attachment_url( $file_id ); 
+
 						$files[ $file_hash ] = array(
 							'name' 			=> $file_name,
 							'file' 			=> $file_url, 
-							'file_display'	=> $file_display, 
-							'id'   			=> $file_id, 
 						);
 					}
 				}
@@ -1279,7 +1279,6 @@ class WCVendors_Pro_Product_Controller {
 
 							$file_name 		= wc_clean( $file_names[ $ii ] );
 							$file_hash 		= md5( $file_url );
-							$file_display 	= wc_clean( $file_display[ $ii ] );
 							$file_id 		= $file_ids[ $ii ]; 
 
 							// Validate the file extension
@@ -1301,11 +1300,12 @@ class WCVendors_Pro_Product_Controller {
 								continue;
 							}
 
+							// Has the file selected 
+							WCVendors_Pro::md5_attachment_url( $file_id ); 
+
 							$files[ $file_hash ] = array(
 								'name' 			=> $file_name,
 								'file' 			=> $file_url, 
-								'file_display'	=> $file_display, 
-								'id'			=> $file_id
 							);
 						}
 					}
@@ -1654,11 +1654,16 @@ class WCVendors_Pro_Product_Controller {
 			// Check if you can duplicate the product 
 			if ( $disable_duplicate ) unset( $row_actions[ 'duplicate' ] ); 
 
+			$categories_label 		= apply_filters( 'wcv_product_row_category_label', __( 'Categories:', 'wcvendors-pro' ), $product, $product->id ); 
+			$tags_label 			= apply_filters( 'wcv_product_row_tags_label', __( 'Tags:', 'wcvendors-pro'), $product, $product->id ); 
+			$stock_status 			= ( $product->is_in_stock() ) ? __( 'In Stock', 'wcvendors-pro' ) : __( 'Out of Stock', 'wcvendors-pro' ); 
+			$stock_status_label 	= apply_filters( 'wcv_stock_status_label', __('Stock Status: ', 'wcvendors-pro' ) ); 
+
 			$new_row->ID	 		= $row->ID; 
 			$new_row->tn 			= get_the_post_thumbnail( $row->ID, array( 120, 120 ) );  
-			$new_row->details 		= apply_filters( 'wcv_product_row_details' , sprintf('<h4>%s</h4> %s %s <br />%s %s <br />' , $product->get_title(), __( 'Categories:', 'wcvendors-pro' ),$product->get_categories(), __('Tags:', 'wcvendors-pro'), $product->get_tags() ) ); 
+			$new_row->details 		= apply_filters( 'wcv_product_row_details' , sprintf('<h4>%s</h4> %s %s <br />%s %s <br />' , $product->get_title(), $categories_label, $product->get_categories(), $tags_label, $product->get_tags() ), $product, $product->id ); 
 			$new_row->price  		= wc_price( $product->get_display_price() ) . $product->get_price_suffix(); 
-			$new_row->status 		= sprintf('%s <br /> %s', WCVendors_Pro_Product_Controller::product_status( $row->post_status ), date_i18n( get_option( 'date_format' ), strtotime( $row->post_date ) ) );
+			$new_row->status 		= sprintf('%s <br /> %s <br /> %s', WCVendors_Pro_Product_Controller::product_status( $row->post_status ), date_i18n( get_option( 'date_format' ), strtotime( $row->post_date ) ), $stock_status_label . $stock_status );
 			$new_row->row_actions 	= $row_actions; 
 			$new_row->product 		= $product; 
 

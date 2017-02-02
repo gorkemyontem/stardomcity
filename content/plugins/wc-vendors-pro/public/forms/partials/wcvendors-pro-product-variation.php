@@ -31,6 +31,10 @@ extract( $variation_data );
 						// Get current value for variation (if set)
 						$variation_selected_value = isset( $variation_data[ 'attribute_' . sanitize_title( $attribute['name'] ) ] ) ? $variation_data[ 'attribute_' . sanitize_title( $attribute['name'] ) ] : '';
 
+						if ( array_key_exists( 'is_variation', $attribute ) && $attribute[ 'is_variation' ] == 0 ) {
+							continue;
+						}
+
 						// Name will be something like attribute_pa_color
 						echo '<select data-taxonomy="'.sanitize_title( $attribute['name'] ).'" class="variation_attribute '. sanitize_title( $key ) .'" name="attribute_' . sanitize_title( $key ) . '[' . $loop . ']"><option value="">' . __( 'Any', 'wcvendors-pro' ) . ' ' . esc_html( wc_attribute_label( $key ) ) . '&hellip;</option>';
 
@@ -311,13 +315,19 @@ extract( $variation_data );
 								<tbody>
 									<?php
 									if ( $_downloadable_files ) {
+
+										$file_display_type 	= WCVendors_Pro::get_option( 'file_display' );
+
 										foreach ( $_downloadable_files as $key => $file ) {
+
+											$file_id = WCVendors_Pro::get_attachment_id( $key );
+											$file_display = ( $file_display_type == 'file_url' ) ? $file[ 'file' ] : basename( $file['file'] );
+
+
 											if ( ! is_array( $file ) ) {
 												$file = array(
 													'file' => $file,
 													'name' => '', 
-													'id'   => '', 
-													'file_display' => '', 
 												);
 											}
 											include( 'wcvendors-pro-product-variation-download.php' );

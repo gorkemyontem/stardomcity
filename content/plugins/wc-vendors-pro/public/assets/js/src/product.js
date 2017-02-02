@@ -218,7 +218,6 @@ jQuery( function( $ ){
 			button: {
 				text: $el.data('update'),
 			},
-			multiple: true,
 			states : [
 				new wp.media.controller.Library({
 					title: $el.data('choose'),

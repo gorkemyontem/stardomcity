@@ -316,7 +316,6 @@ class WCVendors_Pro_Public {
 
 	}
 
-
 	/**
 	 * Select 2 seperator options for tag search 
 	 * 

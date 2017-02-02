@@ -19,7 +19,7 @@
 			<thead>
 				<tr>
 					<th class="sort">&nbsp;</th>
-					<th><?php _e( 'Name', 'wcvendors-pro' ); ?> <span class="tips" data-tip="<?php _e( 'This is the name of the download shown to the customer.', 'wcvendors-pro' ); ?>">[?]</span></th>
+					<th><?php _e( 'Name', 'wcvendors-pro' ); ?> <span class="tips" data-tip="<?php _e( 'This is the name of the download shown to the customer.', 'wcvendors-pro' ); ?>"></span></th>
 					<th colspan="2"><?php _e( 'File ', 'wcvendors-pro' ); ?></th>
 					<th>&nbsp;</th>
 				</tr>
@@ -28,16 +28,20 @@
 				<?php $downloadable_files = $post_id ? get_post_meta( $post_id, '_downloadable_files', true ) : false; ?>
 
 				<?php if ( $downloadable_files ) : ?>
+
 					<?php foreach ( $downloadable_files as $key => $file ) : ?>
-						<?php $file['file_display'] = empty( $file['file_display'] ) ? basename( $file['file'] ) : $file['file_display'];  ?> 
+
+						<?php $file_id = WCVendors_Pro::get_attachment_id( $key ); ?>
+						<?php $file_display = ( $file_display_type == 'file_url' ) ? $file[ 'file' ] : basename( $file['file'] ); ?> 
+
 					<tr>
 						<td class="sort"><i class="fa fa-sort"></i></td>
 						<td class="file_name"><div class="control-group"><div class="control">
 						<input type="text" class="input_text" placeholder="<?php _e( 'File Name', 'wcvendors-pro' ); ?>" name="_wc_file_names[]" value="<?php echo esc_attr( $file['name'] ); ?>" /></div></div></td>
 						<td class="file_url">
-							<input type="text" class="input_text file_display" placeholder="<?php _e( "http://", 'wcvendors-pro' ); ?>" name="_wc_file_display[]" value="<?php echo esc_attr( $file['file_display'] ); ?>" />
+							<input type="text" class="input_text file_display" placeholder="<?php _e( "http://", 'wcvendors-pro' ); ?>" name="_wc_file_display[]" value="<?php echo esc_attr( $file_display ); ?>" />
 							<input type="hidden" class="file_url" name="_wc_file_urls[]" value="<?php echo esc_attr( $file['file'] ); ?>" />
-							<input type="hidden" class="file_id" name="_wc_file_ids[]" value="<?php echo esc_attr( $file['id'] ); ?>" />
+							<input type="hidden" class="file_id" name="_wc_file_ids[]" value="<?php echo $file_id; ?>" />
 						</td>
 						<td class="file_url_choose" width="1%"><a href="#" class="button upload_file_button" data-choose="<?php _e( 'Choose file', 'wcvendors-pro' ); ?>" data-update="<?php _e( 'Insert file URL', 'wcvendors-pro' ); ?>"><?php echo str_replace( ' ', '&nbsp;', __( 'Choose file', 'wcvendors-pro' ) ); ?></a></td>
 						<td width="1%"><a href="#" class="delete"><i class="fa fa-times"></i></a></td>

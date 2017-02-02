@@ -14,7 +14,7 @@
 <table class="wc_status_table widefat" cellspacing="0">
 	<thead>
 		<tr>
-			<th colspan="3" data-export-label="WC Vendors Pro"><?php _e( 'WC Vendors Pro', 'wcvendors-pro' ); ?><?php echo ' <a href="#" class="help_tip" data-tip="' . esc_attr__( 'This section shows information about WC Vendors Pro requirements.', 'wcvendors-pro' ) . '">[?]</a>'; ?></th>
+			<th colspan="3" data-export-label="WC Vendors Pro"><?php _e( 'WC Vendors Pro', 'wcvendors-pro' ); ?><?php echo ' <a href="#" class="help_tip" data-tip="' . esc_attr__( 'This section shows information about WC Vendors Pro requirements.', 'wcvendors-pro' ) . '"></a>'; ?></th>
 		</tr>
 	</thead>
 	<tbody>
