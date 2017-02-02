@@ -1,3 +1,4 @@
+<?php if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly ?>
 <?php 
 $tax_line_label = (!empty($row['tax_line_label'])) ? $row['tax_line_label'] : '';
 $tax_line_name = (!empty($row['tax_line_name'])) ? $row['tax_line_name'] : '';

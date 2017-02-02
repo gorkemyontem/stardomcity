@@ -1,7 +1,9 @@
+<?php if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly ?>
 <?php
 /*
   Name: Slider
  */
+use Keywordrush\AffiliateEgg\TemplateHelper;   
 ?>
 <?php
 //$product_price_update = get_post_meta( get_the_ID(), 'affegg_product_last_update', true );
@@ -13,9 +15,10 @@
 <div class="post_slider media_slider blog_slider egg_cart_slider loading">
     <ul class="slides">        
         <?php foreach ($items as $item): ?>
-            <?php $offer_price = str_replace(' ', '', $item['price']); if($offer_price =='0') {$offer_price = '';} ?>
-            <?php $offer_price_old = str_replace(' ', '', $item['old_price']); if($offer_price_old =='0') {$offer_price_old = '';} ?>
-            <?php $afflink = $item['url'] ;?>
+            <?php $offer_price = (!empty($item['price'])) ? $item['price'] : ''; ?>
+            <?php $offer_price_old = (!empty($item['price'])) ? $item['old_price'] : ''; ?>
+            <?php $offer_post_url = $item['url'] ;?>
+            <?php $afflink = apply_filters('rh_post_offer_url_filter', $offer_post_url );?>
             <?php $aff_thumb = $item['img'] ;?>
             <?php $offer_title = wp_trim_words( $item['title'], 20, '...' ); ?>
             <?php $offer_desc = $item['description'] ;?>  
@@ -48,10 +51,10 @@
                         <?php if(!empty($offer_price)) : ?>
                             <div class="deal-box-price" itemprop="offers" itemscope itemtype="http://schema.org/Offer">
                                 <?php $format_offer_price = $offer_price; ?>
-                                <sup class="cur_sign"><?php echo $item['currency']; ?></sup><?php echo $format_offer_price ?>
+                                <?php echo TemplateHelper::formatPriceCurrency($item['price_raw'], $item['currency_code'], '', ''); ?>
                                 <?php if(!empty($offer_price_old)) : ?>
                                 <span class="retail-old">
-                                  <strike><span class="value"><?php echo $offer_price_old ?></span></strike>
+                                    <strike><?php echo TemplateHelper::formatPriceCurrency($item['old_price_raw'], $item['currency_code'], '', ''); ?></strike>
                                 </span>
                                 <?php endif ;?>                
                                 <meta itemprop="price" content="<?php echo $item['price_raw'] ?>">
@@ -72,7 +75,6 @@
                                 <div>
                                     <a class="re_track_btn btn_offer_block" href="<?php echo esc_url($afflink) ?>"<?php echo $item['ga_event'] ?> target="_blank" rel="nofollow">
                                         <?php echo $btn_txt ; ?>
-                                        <span class="aff_tag mtinside"><?php echo rehub_get_site_favicon($item['orig_url']); ?></span>
                                     </a>
                                     <?php $offer_coupon_mask = 1 ?>
                                     <?php if(!empty($item['extra']['coupon']['code_date'])) : ?>
@@ -107,6 +109,7 @@
                                     <?php endif ;?>                                                  
                                 </div>
                             </div>
+                            <span class="aff_tag"><?php echo rehub_get_site_favicon($item['orig_url']); ?></span>                            
                         </div> 
                     </div>           
                 </div> 

@@ -1,7 +1,9 @@
+<?php if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly ?>
 <?php
 /*
   Name: Big product cart with extra and deals list (use for multiple products)
  */
+use Keywordrush\AffiliateEgg\TemplateHelper;  
 ?>
 <?php
 // sort items by price
@@ -18,6 +20,7 @@ $offer_desc_overwrite = get_post_meta( get_the_ID(), 'affegg_desc_over', true );
 $aff_thumb_first = (!empty ($aff_thumb_overwrite)) ? $aff_thumb_overwrite : $items[0]['img'];
 $offer_title_first = wp_trim_words( $items[0]['title'], 20, '...' );
 $offer_url_first = $items[0]['url'];
+$offer_url_first = apply_filters('rh_post_offer_url_filter', $offer_url_first );
 $offer_desc_first = (!empty ($aff_thumb_overwrite)) ? $aff_thumb_overwrite : $items[0]['description'] ;
 $best_price_value = str_replace(' ', '', $items[0]['price']); if($best_price_value =='0') {$best_price_value = '';}
 $best_price_currency = $items[0]['currency'];
@@ -45,7 +48,7 @@ if (!empty($items[0]['extra']['comments'])) {$import_comments = $items[0]['extra
                             <?php if(!empty($best_price_value)) : ?>
                                 <div class="deals-box-pricebest">
                                 <span><?php _e('Start from: ', 'rehub_framework');?></span>
-                                    <?php echo $items[0]['price_formatted']; ?>                        
+                                    <?php echo TemplateHelper::formatPriceCurrency($items[0]['price_raw'], $items[0]['currency_code'], '', ''); ?>                  
                                 </div>                                                       
                             <?php endif ;?> 
                             <?php if(!empty($offer_url_first)) : ?> 
@@ -53,11 +56,11 @@ if (!empty($items[0]['extra']['comments'])) {$import_comments = $items[0]['extra
                                     <div>
                                         <a class="re_track_btn btn_offer_block" href="<?php echo esc_url($offer_url_first) ?>"<?php echo $items[0]['ga_event'] ?> target="_blank" rel="nofollow">
                                             <?php echo $best_price_text; ?>
-                                            <span class="aff_tag mtinside"><?php echo rehub_get_site_favicon($items[0]['orig_url']); ?></span>
                                         </a>
                                         
                                     </div>
                                 </div>
+                                <span class="aff_tag"><?php echo rehub_get_site_favicon($items[0]['orig_url']); ?></span>                                
                             <?php endif ;?>                                                                       
                         </div>                
                     </div>
@@ -66,7 +69,7 @@ if (!empty($items[0]['extra']['comments'])) {$import_comments = $items[0]['extra
                 <?php if(!empty($best_price_value)) : ?>
                     <div class="deals-box-pricebest">
                     <span><?php _e('Start from: ', 'rehub_framework');?></span>
-                        <?php echo $items[0]['price_formatted']; ?>                    
+                    <?php echo TemplateHelper::formatPriceCurrency($items[0]['price_raw'], $items[0]['currency_code'], '', ''); ?>                    
                     </div>                                                       
                 <?php endif ;?> 
                 <?php if(!empty($offer_url_first)) : ?> 
@@ -74,17 +77,17 @@ if (!empty($items[0]['extra']['comments'])) {$import_comments = $items[0]['extra
                         <div>
                             <a class="re_track_btn btn_offer_block" href="<?php echo esc_url($offer_url_first) ?>"<?php echo $items[0]['ga_event'] ?> target="_blank" rel="nofollow">
                                 <?php _e('Best price', 'rehub_framework'); ?>
-                                <span class="aff_tag mtinside"><?php echo rehub_get_site_favicon($items[0]['orig_url']); ?></span>
                             </a>
                             
                         </div>
                     </div>
+                    <span class="aff_tag"><?php echo rehub_get_site_favicon($items[0]['orig_url']); ?></span>                    
                 <?php endif ;?>
                 <br />
             <?php endif ;?>                     
             <?php if (!empty($offer_desc_first)): ?>
                 <p><?php rehub_truncate('maxchar=300&text='.$offer_desc_first.''); ?></p>
-                <p><a class="color_link read_more_aff" href="<?php echo esc_url($offer_url_first) ?>"<?php echo $items[0]['ga_event'] ?> target="_blank" rel="nofollow"><?php _e('Read more on shop website ', 'rehub_framework'); ?>&#8594;</a></p>                  
+                <p><a class="rehub-main-color read_more_aff" href="<?php echo esc_url($offer_url_first) ?>"<?php echo $items[0]['ga_event'] ?> target="_blank" rel="nofollow"><?php _e('Read more on shop website ', 'rehub_framework'); ?>&#8594;</a></p>                  
             <?php endif; ?>             
         </div>           
     </div> 
@@ -104,15 +107,16 @@ if (!empty($items[0]['extra']['comments'])) {$import_comments = $items[0]['extra
             <div class="egg_sort_list simple_sort_list"><a name="aff-link-list"></a>
                 <div class="aff_offer_links">
                     <?php $i=0; foreach ($items as $key => $item): ?>
-                        <?php $offer_price = str_replace(' ', '', $item['price']); if($offer_price =='0') {$offer_price = '';} ?>
+                        <?php $offer_price = (!empty($item['price'])) ? $item['price'] : ''; ?>
                         <?php $offer_price_old = str_replace(' ', '', $item['old_price']); if($offer_price_old =='0') {$offer_price_old = '';}?>
-                        <?php $afflink = $item['url'] ;?>
+                        <?php $offer_post_url = $item['url'] ;?>
+                        <?php $afflink = apply_filters('rh_post_offer_url_filter', $offer_post_url );?>
                         <?php $aff_thumb = $item['img'] ;?>
                         <?php $offer_title = wp_trim_words( $item['title'], 10, '...' ); ?>
                         <?php $offer_desc = $item['description'] ;?>
                         <?php $i++;?>  
                         <?php if(rehub_option('rehub_btn_text') !='') :?><?php $btn_txt = rehub_option('rehub_btn_text') ; ?><?php else :?><?php $btn_txt = __('Buy this item', 'rehub_framework') ;?><?php endif ;?>  
-                        <div class="rehub_feat_block table_view_block<?php if ($i == 1){echo' best_price_item';}?>">
+                        <div class="table_view_block<?php if ($i == 1){echo' best_price_item';}?>">
                             <div>
                                 <div class="offer_thumb">   
                                     <a rel="nofollow" target="_blank" class="re_track_btn" href="<?php echo esc_url($afflink) ?>"<?php echo $item['ga_event'] ?>>
@@ -130,11 +134,9 @@ if (!empty($items[0]['extra']['comments'])) {$import_comments = $items[0]['extra
                                     <?php if(!empty($offer_price)) : ?>
                                         <p itemprop="offers" itemscope itemtype="http://schema.org/Offer">
                                             <span class="price_count">
-                                                <?php echo $item['price_formatted']; ?>
+                                                <?php echo TemplateHelper::formatPriceCurrency($item['price_raw'], $item['currency_code'], '<span class="cegg-currency">', '</span>'); ?>
                                                 <?php if(!empty($offer_price_old)) : ?>
-                                                <strike>
-                                                    <span class="amount"><?php echo $item['old_price_formatted']; ?></span>
-                                                </strike>
+                                                    <strike><?php echo TemplateHelper::formatPriceCurrency($item['old_price_raw'], $item['currency_code'], '', ''); ?></strike>
                                                 <?php endif ;?>                                      
                                             </span> 
                                             <meta itemprop="price" content="<?php echo $item['price_raw'] ?>">
@@ -143,12 +145,9 @@ if (!empty($items[0]['extra']['comments'])) {$import_comments = $items[0]['extra
                                                 <link itemprop="availability" href="http://schema.org/InStock">
                                             <?php endif ;?>                         
                                         </p>
-                                    <?php endif ;?>                        
+                                    <?php endif ;?>                       
                                 </div>
-                                <div class="desc_col shop_simple_col">
-                                   <div class="aff_tag mt10"><?php echo rehub_get_site_favicon($item['orig_url']); ?></div> 
-                                   <small class="small_size available_stock"><?php if ($item['in_stock']): ?><span class="yes_available"><?php _e('In stock', 'rehub_framework') ;?></span><?php endif; ?></small>
-                                </div>
+
                                 <div class="buttons_col">
                                     <div class="priced_block clearfix">
                                         <div>
@@ -189,6 +188,8 @@ if (!empty($items[0]['extra']['comments'])) {$import_comments = $items[0]['extra
                                                                         
                                         </div>
                                     </div>
+                                   <div class="aff_tag mt10"><?php echo rehub_get_site_favicon($item['orig_url']); ?></div> 
+                                   <small class="small_size available_stock"><?php if ($item['in_stock']): ?><span class="yes_available"><?php _e('In stock', 'rehub_framework') ;?></span><?php endif; ?></small>                                    
                                 </div>
                             </div>                                                          
                         </div>

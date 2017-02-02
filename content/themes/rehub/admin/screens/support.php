@@ -1,3 +1,4 @@
+<?php if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly ?>
 <?php
 $rehub_theme = wp_get_theme();
 if($rehub_theme->parent_theme) {

@@ -1,3 +1,4 @@
+<?php if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly ?>
 <?php 
 $shortcode_line = (!empty($row['shortcode_line'])) ? $row['shortcode_line'] : '';
 ?>

@@ -1,6 +1,5 @@
 <?php 
-if ( ! defined( 'ABSPATH' ) )
-	die( "Can't load this file directly" );
+if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 
 class WPS_Shortcode
 {
@@ -16,6 +15,7 @@ class WPS_Shortcode
 			add_filter( 'mce_external_plugins', array( $this, 'filter_mce_plugin' ) );
 			add_action('media_buttons_context',  array( $this, 'add_my_custom_button' ));
 			add_action( 'admin_footer', array( $this, 'wpsm_generator_popup' ));
+			add_action( 'wp_ajax_shortcode_generate', array( $this, 'ajax_shortcode_generate' ) );
 		}
 	}
 	
@@ -38,7 +38,7 @@ class WPS_Shortcode
 		return $plugins;
 	}
 
-function add_my_custom_button( ) {
+	function add_my_custom_button( ) {
 		echo '<a href="#TB_inline?width=590&height=500&inlineId=wpsm-generator-wrap" class="thickbox button" title="WPS shortcode generator"><img src="'.get_template_directory_uri().'/shortcodes/icon.png" style="padding-bottom:3px" /></a>';
 	}
 
@@ -51,7 +51,9 @@ function add_my_custom_button( ) {
         <script data-cfasync="false" src="<?php echo get_template_directory_uri(); ?>/shortcodes/tinyMCE/jquery.selection.js"></script>
 		<link rel="stylesheet" href="<?php echo get_template_directory_uri(); ?>/jsonids/css/token-input.css" />
 		<script data-cfasync="false" src="<?php echo get_template_directory_uri(); ?>/jsonids/js/jquery.tokeninput.min.js"></script>         
-			<?php echo '
+			<?php 
+			$ajaxs_nonce = wp_create_nonce( "shortcodename" );
+			echo '
 			<script>
 			 jQuery(document).ready(function($){
 				//select shortcode
@@ -63,7 +65,7 @@ function add_my_custom_button( ) {
 							shortcodeSelectText += $(this).text();
 						  });
 						  if( shortcodeName != "none") {
-							$("#shortcode-content").load("'.get_template_directory_uri().'/shortcodes/tinyMCE/includes/"+shortcodeName+".php", function(){
+							$("#shortcode-content").load(ajaxurl + "?action=shortcode_generate&security='.$ajaxs_nonce.'&shortcode_name=" + shortcodeName, function(){
 								$(".shortcode-title").text(shortcodeSelectText + " '.__('Shortcode Generator', 'rehub_framework').'");
 							});
 						  } else {
@@ -131,7 +133,6 @@ function add_my_custom_button( ) {
 							<option class="shortcode_option" value="membercontent"><?php _e('Content for members', 'rehub_framework') ;?></option>
 							<option class="shortcode_option" value="icecat"><?php _e('Specification from Icecat', 'rehub_framework') ;?></option>
 
-
 							</select></span>
 							<div class="clear"></div>
 						</li>
@@ -148,8 +149,18 @@ function add_my_custom_button( ) {
 		<?php
 	}
 
-	
-
+	function ajax_shortcode_generate() {
+		check_ajax_referer( 'shortcodename', 'security' );
+		$shortcode_name = sanitize_text_field($_GET['shortcode_name']);
+		$shortcode_content = rh_locate_template( 'shortcodes/tinyMCE/includes/'. $shortcode_name .'.php' );
+		
+		if ( $shortcode_content ) {
+			load_template( $shortcode_content );
+		} else {
+			printf( '<span style="color:red">%s</span>', __( 'The shortcode file not found!', 'rehub_framework' ) );
+		}
+		wp_die();
+	}
 
 }
 

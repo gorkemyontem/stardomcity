@@ -1,3 +1,4 @@
+<?php if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly ?>
 <?php  wp_enqueue_script('flexslider');   ?>
 <?php $review_woo_link = vp_metabox('rehub_post.review_post.0.review_woo_product.0.review_woo_link'); $resizer = vp_metabox('rehub_post.review_post.0.review_woo_product.0.review_woo_slider_resize'); ?>
 <?php   
@@ -14,7 +15,8 @@
     <?php while ( $products->have_posts() ) : $products->the_post(); global $product?>
         <?php $gallery_images = $product->get_gallery_attachment_ids(); ?>
         <?php if ( $gallery_images ) { ?>
-            <div class="post_slider media_slider<?php if ($resizer =='1') :?> blog_slider<?php else :?> gallery_top_slider<?php endif ;?> loading"> 
+            <div class="post_slider flexslider media_slider<?php if ($resizer =='1') :?> blog_slider<?php else :?> gallery_top_slider<?php endif ;?> loading">
+                <i class="fa fa-spinner fa-pulse"></i> 
                 <ul class="slides">
                 <?php if ( has_post_thumbnail($post->ID) ) :?>
                     <?php $image_woo_id = get_post_thumbnail_id($post->ID);  $image_woo_url = wp_get_attachment_url($image_woo_id); ?>

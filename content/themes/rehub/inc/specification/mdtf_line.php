@@ -1,3 +1,4 @@
+<?php if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly ?>
 <?php 
     $mdtf_line = (!empty($row['mdtf_line'])) ? $row['mdtf_line'] : '';       
 ?>

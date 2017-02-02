@@ -1,3 +1,4 @@
+<?php if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly ?>
 <?php
 
 if( !function_exists('rehub_get_offer') ) {
@@ -568,16 +569,15 @@ function rehub_create_btn ($btn_more='', $showme = '') {
 			<?php $reveal_enabled = ($coupon_mask_enabled =='1') ? ' reveal_enabled' : '';?>
 	        <div class="priced_block clearfix <?php echo $reveal_enabled; echo $coupon_style; ?>">
 	            <?php if(!empty($offer_price) && $showme !='button') : ?>
-	            	<p>
+	            	<span class="rh_price_wrapper">
 	            		<span class="price_count">
 	            			<ins><?php echo esc_html($offer_price) ?></ins>
 	            			<?php if($offer_price_old !='') :?> <del><?php echo esc_html($offer_price_old) ; ?></del><?php endif ;?>
 	            		</span>
-	            	</p>
+	            	</span>
 	            <?php endif ;?>
 	    		<?php if($showme !='price') : ?>
-		            <div>
-			            <a href="<?php echo esc_url ($offer_url) ?>" class="btn_offer_block re_track_btn" target="_blank" rel="nofollow">
+		            <a href="<?php echo esc_url ($offer_url) ?>" class="btn_offer_block re_track_btn" target="_blank" rel="nofollow">
 			            <?php if($offer_btn_text !='') :?>
 			            	<?php echo esc_html ($offer_btn_text); ?>
 			            <?php elseif(rehub_option('rehub_btn_text') !='') :?>
@@ -585,8 +585,7 @@ function rehub_create_btn ($btn_more='', $showme = '') {
 			            <?php else :?>
 			            	<?php _e('Buy It Now', 'rehub_framework') ?>
 			            <?php endif ;?>
-			            </a>
-		            </div>
+		            </a>
 	            <?php endif;?>	
 		    	<?php if ($coupon_mask_enabled =='1') :?>
 		    		<?php if($showme !='price') : ?>
@@ -616,11 +615,11 @@ function rehub_create_btn ($btn_more='', $showme = '') {
                 <?php 
                 	$min_price = get_post_meta(get_the_ID(), 'rehub_main_product_price', true );
                  	if ($min_price !='' && $showme !='button') : ?>
-                		<p>
+                		<span class="rh_price_wrapper">
                 			<span class="price_count">
                 				<ins><?php echo rehub_option('rehub_currency'); echo $min_price; ?></ins>
                 			</span>
-                		</p>
+                		</span>
                 <?php endif ;?>
 	            <?php if($showme !='price') : ?>
 	            	<div>
@@ -637,7 +636,7 @@ function rehub_create_btn ($btn_more='', $showme = '') {
 		<?php elseif (!empty($aff_url_exist)) : ?>
 
 			<?php if (version_compare(PHP_VERSION, '5.3.0', '>=')) {
-				include(locate_template( 'inc/parts/affeggbutton.php' ) );
+				include(rh_locate_template( 'inc/parts/affeggbutton.php' ) );
 			} ?>
 		<?php elseif (vp_metabox('rehub_post.rehub_framework_post_type') == 'review' && vp_metabox('rehub_post.review_post.0.review_post_schema_type') == 'review_post_review_product') : ?>
 			<?php $review_aff_link = vp_metabox('rehub_post.review_post.0.review_post_product.0.review_aff_link');
@@ -656,7 +655,13 @@ function rehub_create_btn ($btn_more='', $showme = '') {
 		        <?php $offer_price_old = vp_metabox('rehub_post.review_post.0.review_post_product.0.review_post_product_price_old') ?>
 	    	<?php endif;?>
 	        <div class="priced_block clearfix">
-	            <?php if(!empty($offer_price) && $showme !='button') : ?><p> <span class="price_count"><ins><?php echo esc_html($offer_price) ?></ins><?php if($offer_price_old !='') :?> <del><?php echo esc_html($offer_price_old) ; ?></del><?php endif ;?></span></p><?php endif ;?>
+	            <?php if(!empty($offer_price) && $showme !='button') : ?>
+	            	<span class="rh_price_wrapper"> 
+	            		<span class="price_count"><ins><?php echo esc_html($offer_price) ?></ins>
+	            		<?php if($offer_price_old !='') :?> <del><?php echo esc_html($offer_price_old) ; ?></del><?php endif ;?>
+	            		</span>
+	            	</span>
+	            <?php endif ;?>
 	            <?php if($showme !='price') : ?><div><a href="<?php echo esc_url ($offer_url) ?>" class="re_track_btn btn_offer_block" target="_blank" rel="nofollow"><?php if($offer_btn_text !='') :?><?php echo $offer_btn_text ; ?><?php elseif(rehub_option('rehub_btn_text') !='') :?><?php echo rehub_option('rehub_btn_text') ; ?><?php else :?><?php _e('Buy It Now', 'rehub_framework') ?><?php endif ;?></a></div><?php endif ;?>
 	        </div>
 	    <?php elseif (vp_metabox('rehub_post.rehub_framework_post_type') == 'review' && vp_metabox('rehub_post.review_post.0.review_post_schema_type') == 'review_aff_product') :?>
@@ -664,7 +669,7 @@ function rehub_create_btn ($btn_more='', $showme = '') {
 			if(function_exists('thirstyInit') && !empty($rehub_aff_post_ids)) :?>
 		        <div class="priced_block clearfix">
 	                <?php $min_aff_price_count = get_post_meta(get_the_ID(), 'rehub_min_aff_price', true); if ($min_aff_price_count !='' && $showme !='button') : ?>
-	                	<p><span class="price_count"><ins><?php echo rehub_option('rehub_currency'); echo esc_html($min_aff_price_count); ?></ins></span></p>
+	                	<span class="rh_price_wrapper"><span class="price_count"><ins><?php echo rehub_option('rehub_currency'); echo esc_html($min_aff_price_count); ?></ins></span></span>
 	                <?php endif ;?>
 		            <?php if($showme !='price') : ?><div><a href="<?php the_permalink();?>#aff-link-list" class="btn_offer_block" target="_blank" rel="nofollow"><?php if(rehub_option('rehub_btn_text_aff_links') !='') :?><?php echo rehub_option('rehub_btn_text_aff_links') ; ?><?php else :?><?php _e('Choose offer', 'rehub_framework') ?><?php endif ;?></a></div><?php endif ;?>
 		        </div>
@@ -698,7 +703,7 @@ function rehub_create_btn ($btn_more='', $showme = '') {
 					<?php while ( $products->have_posts() ) : $products->the_post(); global $product?>
 					<?php $offer_price = $product->get_price_html() ?>
 					<div class="priced_block clearfix">
-		                <?php if(!empty($offer_price) && $showme !='button') : ?><p> <span class="price_count"><?php echo $offer_price ?></span></p><?php endif ;?>
+		                <?php if(!empty($offer_price) && $showme !='button') : ?><span class="rh_price_wrapper"> <span class="price_count"><?php echo $offer_price ?></span></span><?php endif ;?>
 		                <?php if($showme !='price') : ?>
 			                <div>
 			                	<?php if ($product->product_type =='external' && $product->add_to_cart_url() =='') :?>
@@ -754,7 +759,7 @@ if(!empty($offer_url_exist) ) :
 	$out = esc_url($offer_url);
 elseif(!empty($aff_url_exist)) :
 	if (version_compare(PHP_VERSION, '5.3.0', '>=')) :
-		include(locate_template( 'inc/parts/affeggurl.php' ) );
+		include(rh_locate_template( 'inc/parts/affeggurl.php' ) );
 	endif; 
 elseif (vp_metabox('rehub_post.rehub_framework_post_type') == 'review' && vp_metabox('rehub_post.review_post.0.review_post_schema_type') == 'review_post_review_product') :
 	$review_aff_link = vp_metabox('rehub_post.review_post.0.review_post_product.0.review_aff_link');
@@ -839,7 +844,7 @@ function rehub_create_price_for_list($id) {
 if( !function_exists('rehub_quick_offer') ) {
 function rehub_quick_offer($id=''){
 	global $post;
-	$postid = (!empty($id)) ? $id : $post->ID;
+	$postid = (!empty($id)) ? (int)$id : $post->ID;
 	$multiofferrows = get_post_meta($postid, 'rehub_multioffer_group', true);
 	if(!empty($multiofferrows[0]['multioffer_url'])){
 		$result_min = array();
@@ -872,7 +877,7 @@ function rehub_quick_offer($id=''){
 			}
             $price_clean = rehub_price_clean($offer_price); 
             $result_min[] = $price_clean;							
-			include(locate_template('inc/parts/multiofferpart.php'));
+			include(rh_locate_template('inc/parts/multiofferpart.php'));
 		}
 		echo '</div>';
 		if (!empty($result_min)) {
@@ -899,7 +904,7 @@ function rehub_quick_offer($id=''){
 		$offer_coupon_mask = get_post_meta( $postid, 'rehub_offer_coupon_mask', true );
 		$offer_desc = get_post_meta( $postid, 'rehub_offer_product_desc', true );
 		$offer_brand_url = esc_url (get_post_meta( $postid, 'rehub_offer_logo_url', true ));
-		include(locate_template('inc/parts/singleofferpart.php'));	
+		include(rh_locate_template('inc/parts/singleofferpart.php'));	
 	}	
 }
 }
@@ -949,8 +954,8 @@ function set_content_end($content) {
 		rehub_get_review();
 		$output .= ob_get_clean();
 	endif;
-	$post_layout = vp_metabox('rehub_post_side._post_layout');
-	if ($post_layout == 'meta_compact' || $post_layout == 'meta_compact_dir' || $post_layout == 'corner_offer' || $post_layout == 'big_post_offer' || $post_layout == 'offer_and_review'){
+	$post_layout = get_post_meta( $post->ID, '_post_layout', true );
+	if ($post_layout == 'meta_compact' || $post_layout == 'meta_compact_dir' || $post_layout == 'corner_offer' || $post_layout == 'big_post_offer' || $post_layout == 'offer_and_review' || $post_layout == ''){
 			$offer_url_exist = get_post_meta( $post->ID, 'rehub_offer_product_url', true );
 			if (!empty($offer_url_exist)) :
 				ob_start();
@@ -974,7 +979,7 @@ function rehub_sort_price_ce ($a, $b) {
 	return $a['price'] - $b['price'];
 }
 if (!function_exists('rehub_save_meta_ce')) {
-    function rehub_save_meta_ce($data, $module_id, $post_id = null) {
+    function rehub_save_meta_ce($data, $module_id, $post_id) {
 		if (!$post_id){
 			global $post;
 			if (isset($post)){
@@ -1028,10 +1033,10 @@ if (!function_exists('rehub_save_meta_ce')) {
 				$price_sale = $price_old = '';        							
 				$currency_code = (!empty($cegg_fields[$keyupdate]['currencyCode'])) ? $cegg_fields[$keyupdate]['currencyCode'] : '';
 	    		if(!empty ($cegg_fields[$keyupdate]['price'])) { //Saving price with price pattern
-					$price_sale = RhPriceTemplateHelper::formatPriceCurrency($cegg_fields[$keyupdate]['price'], $currency_code);
+					$price_sale = \ContentEgg\application\helpers\TemplateHelper::formatPriceCurrency($cegg_fields[$keyupdate]['price'], $currency_code);
 	    		}	
 	    		if(!empty ($cegg_fields[$keyupdate]['priceOld'])) {
-	    			$price_old = RhPriceTemplateHelper::formatPriceCurrency($cegg_fields[$keyupdate]['priceOld'], $currency_code);
+	    			$price_old = \ContentEgg\application\helpers\TemplateHelper::formatPriceCurrency($cegg_fields[$keyupdate]['priceOld'], $currency_code);
 	    		}
 				if ('product' == get_post_type($post_id)) {
 					if(!empty ($cegg_fields[$keyupdate]['price'])) {						
@@ -1089,9 +1094,7 @@ if (!function_exists('rehub_save_meta_ce')) {
             		else{
             			$logo = '';
             		}
-            		if($logo){
-            			update_post_meta($post_id, 'rehub_offer_logo_url', $logo);	 
-            		}
+            		update_post_meta($post_id, 'rehub_offer_logo_url', $logo);	 
 	    			    			    			    		
 		    		if(!empty ($cegg_fields[$keyupdate]['description'])) {
 		    			update_post_meta($post_id, 'rehub_offer_product_desc', esc_html($cegg_fields[$keyupdate]['description'])); 
@@ -1146,10 +1149,10 @@ function rh_save_autoblog_ce ($post_id){
 			$price_sale = $price_old = '';   
 			$currency_code = (!empty($cegg_fields[0]['currencyCode'])) ? $cegg_fields[0]['currencyCode'] : '';
     		if(!empty ($cegg_fields[0]['price'])) { //Saving price with price pattern
-				$price_sale = RhPriceTemplateHelper::formatPriceCurrency($cegg_fields[0]['price'], $currency_code);
+				$price_sale = \ContentEgg\application\helpers\TemplateHelper::formatPriceCurrency($cegg_fields[0]['price'], $currency_code);
     		}	
     		if(!empty ($cegg_fields[0]['priceOld'])) {
-    			$price_old = RhPriceTemplateHelper::formatPriceCurrency($cegg_fields[0]['priceOld'], $currency_code);
+    			$price_old = \ContentEgg\application\helpers\TemplateHelper::formatPriceCurrency($cegg_fields[0]['priceOld'], $currency_code);
     		}
 			if ('product' == get_post_type($post_id)) {
 				if(!empty ($cegg_fields[0]['price'])) {						
@@ -1186,15 +1189,22 @@ function rh_save_autoblog_ce ($post_id){
 	    		if(!empty ($cegg_fields[0]['img'])) {
 	    			update_post_meta($post_id, 'rehub_offer_product_thumb', $cegg_fields[0]['img']); 
 	    		}
-	    		if(!empty ($cegg_fields[0]['extra']['domain'])) {
+	    		if(!empty ($cegg_fields[0]['domain'])) {
+	    			$domain = $cegg_fields[0]['domain'];
+	    			update_post_meta($post_id, 'rehub_offer_domain', $domain); 
+	    		}		    		
+	    		elseif(!empty ($cegg_fields[0]['extra']['domain'])) {
 	    			$domain = $cegg_fields[0]['extra']['domain'];
 	    			update_post_meta($post_id, 'rehub_offer_domain', $domain); 
 	    		}	
 	    		if(!empty ($cegg_fields[0]['merchant'])) {
 	    			$merchant = $cegg_fields[0]['merchant'];
 	    			update_post_meta($post_id, 'rehub_offer_merchant', $merchant); 
-	    		}	
-        		if (!empty($cegg_fields[0]['extra']['logo'])){
+	    		}
+        		if (!empty($cegg_fields[0]['logo'])){
+        			$logo = $cegg_fields[0]['logo'];
+        		}	    			
+        		elseif (!empty($cegg_fields[0]['extra']['logo'])){
         			$logo = $cegg_fields[0]['extra']['logo'];
         		}
         		elseif(!empty($cegg_fields[0]['extra']['MerchantLogoURL'])){
@@ -1206,9 +1216,7 @@ function rh_save_autoblog_ce ($post_id){
         		else{
         			$logo = '';
         		}
-        		if($logo){
-        			update_post_meta($post_id, 'rehub_offer_logo_url', $logo);	 
-        		}	    		
+        		update_post_meta($post_id, 'rehub_offer_logo_url', $logo);	 	    		
 	    		if(!empty ($cegg_fields[0]['module_id'])) {
 	    			update_post_meta($post_id, '_rehub_module_ce_id', $cegg_fields[0]['module_id']); 
 	    		}
@@ -1549,5 +1557,39 @@ if (!function_exists('rehub_change_post_query')){
 		}	
 	}
 }
+
+if ( !function_exists( 'rh_get_post_ids_on_sale' ) ) {
+	function rh_get_post_ids_on_sale() {
+		global $wpdb;
+
+		// Load from cache
+		$post_ids_on_sale = get_transient( 'rh_posts_onsale' );
+
+		// Valid cache found
+		if ( false !== $post_ids_on_sale ) {
+			return $post_ids_on_sale;
+		}
+
+		$on_sale_posts = $wpdb->get_results( "
+			SELECT post.ID, post.post_parent FROM `$wpdb->posts` AS post
+			LEFT JOIN `$wpdb->postmeta` AS meta ON post.ID = meta.post_id
+			LEFT JOIN `$wpdb->postmeta` AS meta2 ON post.ID = meta2.post_id
+			WHERE post.post_type IN ( 'post' )
+				AND post.post_status = 'publish'
+				AND meta.meta_key = 'rehub_offer_product_url'
+				AND meta2.meta_key = 'rehub_offer_product_price'
+				AND CAST( meta.meta_value AS CHAR ) != ''
+				AND CAST( meta2.meta_value AS CHAR ) != ''
+			GROUP BY post.ID;
+		" );
+
+		$post_ids_on_sale = array_unique( array_map( 'absint', array_merge( wp_list_pluck( $on_sale_posts, 'ID' ), array_diff( wp_list_pluck( $on_sale_posts, 'post_parent' ), array( 0 ) ) ) ) );
+
+		set_transient( 'rh_posts_onsale', $post_ids_on_sale, DAY_IN_SECONDS * 7 );
+
+		return $post_ids_on_sale;
+	}
+}
+
 
 ?>

@@ -1,3 +1,4 @@
+<?php if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly ?>
 <?php 
 	$feat_tagid = rehub_option('rehub_featured_tag');
 	$rehub_featured_type = (rehub_option('rehub_featured_type')) ? rehub_option('rehub_featured_type') : '1';

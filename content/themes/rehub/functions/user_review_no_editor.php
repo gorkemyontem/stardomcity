@@ -1,10 +1,7 @@
+<?php if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly ?>
 <?php
 
-
-
 /*compatibility for servers without math library*/
-
-
 
 if( !function_exists( "bcdiv" ) )
 {

@@ -1,3 +1,4 @@
+<?php if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly ?>
 <?php $ultimatemember->shortcodes->loop = $ultimatemember->query->make('post_type=comment&number=10&offset=0&user_id=' . um_user('ID') ); ?>
 
 <?php if ( $ultimatemember->shortcodes->loop ) { ?>

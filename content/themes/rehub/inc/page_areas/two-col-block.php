@@ -1,3 +1,4 @@
+<?php if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly ?>
 <?php 
 	$title_enable = vp_metabox('mag_builder_page.pagebuilders.'.$pbid.'.two_col_news.0.two_col_news_module_toggle_title');
 	$title_name = vp_metabox('mag_builder_page.pagebuilders.'.$pbid.'.two_col_news.0.two_col_news_module_title');

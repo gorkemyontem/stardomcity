@@ -1,3 +1,4 @@
+<?php if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly ?>
 <?php global $product; global $post;?>
 <?php if (empty( $product ) || ! $product->is_visible() ) {return;}?>
 <?php $classes = array('product', 'col_item');?>

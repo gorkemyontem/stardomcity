@@ -1,3 +1,4 @@
+<?php if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly ?>
 <?php
 /**
  * Plugin Name: News Widget
@@ -12,7 +13,7 @@ function rehub_featured_slider_load_widget() {
 class rehub_featured_slider_widget extends WP_Widget {
 
     function __construct() {
-        $widget_ops = array( 'classname' => 'featured_slider', 'description' => __('Widget that displays custom featured slider of posts or products. Use only in sidebar!', 'rehub_framework') );
+        $widget_ops = array( 'classname' => 'featured_slider flexslider', 'description' => __('Widget that displays custom featured slider of posts or products. Use only in sidebar!', 'rehub_framework') );
         $control_ops = array( 'width' => 250, 'height' => 350, 'id_base' => 'rehub_featured_slider' );
         parent::__construct('rehub_featured_slider', __('ReHub: Featured Slider', 'rehub_framework'), $widget_ops, $control_ops);
     }
@@ -109,7 +110,7 @@ function widget( $args, $instance ) {
 				        </div>							
 					</div>	
 				<?php else:?>
-					<div class="wrap">
+					<div class="wrap rehub-main-font">
 						<a href="<?php the_permalink();?>" class="view-link">
 							<span class="pattern"></span>
 							<div class="image"><?php wpsm_thumb ('grid_news') ?></div>
@@ -117,7 +118,7 @@ function widget( $args, $instance ) {
 							<?php $category = get_the_category($post->ID); $first_cat = $category[0]->term_id; $cat_name = get_cat_name($first_cat);?>
 							<span class="reviews"><?php echo $cat_name ;?></span>
 						</a>
-						<h3><a class="link" href="<?php the_permalink();?>"><?php the_title();?></a></h3>
+						<h3 class="link"><a class="rehub-main-color" href="<?php the_permalink();?>"><?php the_title();?></a></h3>
 						<p><?php kama_excerpt('maxchar=100'); ?></p>
 					</div>				
 				<?php endif;?>

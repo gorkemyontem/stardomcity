@@ -1,3 +1,4 @@
+<?php if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly ?>
 <?php $video_schema = vp_metabox('rehub_post.video_post.0.video_post_schema');?>
 <?php  if (($video_schema)=='1'): ?>
     <?php                                                                               

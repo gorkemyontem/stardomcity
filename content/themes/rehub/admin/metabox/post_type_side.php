@@ -1,3 +1,4 @@
+<?php if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly ?>
 <?php
 
 return array(
@@ -36,7 +37,7 @@ return array(
 			'type' => 'radiobutton',
 			'name' => 'post_size',
 			'label' => __('Post w/ sidebar or Full width', 'rehub_framework'),
-			'description' => __('Note, normal post width - 765px, full width - 1130px', 'rehub_framework'),
+			'description' => __('Note, normal post width - 788px, full width - 1130px', 'rehub_framework'),
 			'default' => 'normal_post',
 			'items' => array(
 				array(
@@ -58,7 +59,13 @@ return array(
 			'label' => __('Disable Featured Image, Video or Gallery in top part on post page', 'rehub_framework'),
 			'default' => '0',
 		),		
-
+		array(
+			'type' => 'textbox',
+			'name' => 'rehub_branded_banner_image_single',
+			'label' => __('Branded area', 'rehub_framework'),
+			'description' => __('Set any custom code or link to image for branded banner after header ', 'rehub_framework'),
+			'default' => '',
+		),
 		array(
 			'type' => 'toggle',
 			'name' => 'disable_parts',

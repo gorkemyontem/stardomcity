@@ -1,3 +1,4 @@
+<?php if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly ?>
 <?php
 if (class_exists('WCVendors_Pro')) {
     $vendor_dasboard = get_permalink(WCVendors_Pro::get_option( 'dashboard_page_id' ));

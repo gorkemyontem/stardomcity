@@ -1,3 +1,4 @@
+<?php if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly ?>
 <?php 
 $map_line_location = (!empty($row['map_line_location'])) ? $row['map_line_location'] : '';
 $map_line_longitude = (!empty($row['map_line_longitude'])) ? $row['map_line_longitude'] : '';

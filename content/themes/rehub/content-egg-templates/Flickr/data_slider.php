@@ -7,7 +7,7 @@
 
 <?php  wp_enqueue_script('flexslider'); ?>
 
-<div class="post_slider media_slider blog_slider loading"> 
+<div class="flexslider post_slider media_slider blog_slider loading"> 
     <ul class="slides">
         <?php 
             foreach ($items as $item) {
@@ -19,7 +19,7 @@
                         <p class="font80 mt10"><?php printf(__('Photo %s on Flickr', 'rehub_framework'), '<a href="' . $item['url'] . '" target="_blank" rel="nofollow">' . $item['extra']['author'] . '</a>'); ?></p>
                     </div>
                 <?php endif;?>
-                <img src="<?php $params = array( 'width' => 765, 'height' => 478, 'crop' => true    );echo bfi_thumb($item['img'], $params); ?>" />
+                <img src="<?php $params = array( 'width' => 788, 'height' => 478, 'crop' => true    );echo bfi_thumb($item['img'], $params); ?>" />
             </li>                                                                                                                                        
 
         <?php

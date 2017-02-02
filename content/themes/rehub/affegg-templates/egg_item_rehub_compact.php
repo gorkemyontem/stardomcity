@@ -1,13 +1,16 @@
+<?php if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly ?>
 <?php
 /*
   Name: Compact product cart
  */
+use Keywordrush\AffiliateEgg\TemplateHelper;  
 ?>
 
 <?php foreach ($items as $item): ?>
-    <?php $offer_price = str_replace(' ', '', $item['price']); if($offer_price =='0') {$offer_price = '';} ?>
-    <?php $offer_price_old = str_replace(' ', '', $item['old_price']); if($offer_price_old =='0') {$offer_price_old = '';} ?>
-    <?php $afflink = $item['url'] ;?>
+    <?php $offer_price = (!empty($item['price'])) ? $item['price'] : ''; ?>
+    <?php $offer_price_old = (!empty($item['price'])) ? $item['old_price'] : ''; ?>
+    <?php $offer_post_url = $item['url'] ;?>
+    <?php $afflink = apply_filters('rh_post_offer_url_filter', $offer_post_url );?>
     <?php $aff_thumb = $item['img'] ;?>
     <?php $offer_title = wp_trim_words( $item['title'], 12, '...' ); ?>
     <?php $offer_desc = $item['description'] ;?>  
@@ -35,13 +38,13 @@
                 <div class="buttons_col">
                     <div class="priced_block clearfix">
                         <?php if(!empty($offer_price)) : ?>
-                            <p itemprop="offers" itemscope itemtype="http://schema.org/Offer">
+                            <div itemprop="offers" itemscope itemtype="http://schema.org/Offer" class="rh_price_wrapper">
                                 <span class="price_count">
-                                    <ins><?php echo $item['price_formatted'] ?></ins>
+                                    <ins><?php echo TemplateHelper::formatPriceCurrency($item['price_raw'], $item['currency_code'], '', ''); ?></ins>
                                     <?php if(!empty($offer_price_old)) : ?>
-                                    <del>
-                                        <span class="amount"><?php echo $item['old_price_formatted'] ?></span>
-                                    </del>
+                                        <span class="amount"><del><?php echo $item['old_price_raw'];?></del>
+                                        </span>
+                                    
                                     <?php endif ;?>                                      
                                 </span> 
                                 <meta itemprop="price" content="<?php echo $item['price_raw'] ?>">
@@ -49,7 +52,7 @@
                                 <?php if ($item['in_stock']): ?>
                                     <link itemprop="availability" href="http://schema.org/InStock">
                                 <?php endif ;?>                         
-                            </p>
+                            </div>
                         <?php endif ;?>
                         <div>
 	                        <a class="re_track_btn btn_offer_block" href="<?php echo esc_url($afflink) ?>"<?php echo $item['ga_event'] ?> target="_blank" rel="nofollow">

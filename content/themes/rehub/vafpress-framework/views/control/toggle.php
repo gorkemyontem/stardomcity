@@ -1,3 +1,4 @@
+<?php if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly ?>
 <?php if(!$is_compact) echo VP_View::instance()->load('control/template_control_head', $head_info); ?>
 
 <label>
@@ -5,4 +6,4 @@
 	<span></span>
 </label>
 
-<?php if(!$is_compact) echo VP_View::instance()->load('control/template_control_foot'); ?>
+<?php if(!$is_compact) echo VP_View::instance()->load('control/template_control_foot', $head_info); ?>

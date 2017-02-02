@@ -1,3 +1,4 @@
+<?php if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly ?>
 <?php
 
 VP_Security::instance()->whitelist_function('rehub_framework_pb_is_two_col_news');
@@ -572,6 +573,37 @@ function admin_badge_preview_html($label = '', $color = '')
 		$result .= '</div>';
 	}
 	return $result;
+}
+
+VP_Security::instance()->whitelist_function('get_ce_modules_id_for_sinc');
+function get_ce_modules_id_for_sinc()
+{
+	$data  = array();
+	if(!rh_is_plugin_active('content-egg/content-egg.php')){
+		$data[] = array(
+			'value' => '',
+			'label' => 'Content Egg is not installed',
+		);		
+	}
+	else{
+		$modules = \ContentEgg\application\components\ModuleManager::getInstance()->getAffiliateParsers();
+		if (!empty($modules)) {
+			foreach ($modules as $module) {
+				$data[] = array(
+					'value' => $module->getId(),
+					'label' => $module->getName(),
+				);
+		    } 			
+		}else{
+			$data[] = array(
+				'value' => '',
+				'label' => 'Content Egg modules not found',
+			);			
+		}
+		
+	}
+
+	return $data;
 }
 
 VP_Security::instance()->whitelist_function('rehub_get_offer_user_info');

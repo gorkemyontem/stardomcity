@@ -1,3 +1,4 @@
+<?php if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly ?>
 <form method="post" class="rh_wcv_date_picker">
 		<div class="wpsm-four-fifth">
 			<div class="wpsm-one-half">

@@ -1,3 +1,4 @@
+<?php if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly ?>
 <?php
 /**
  * Plugin Name: News Widget
@@ -25,10 +26,10 @@ class rehub_tabsajax_widget extends WP_Widget {
 
 		/* Our variables from the widget settings. */
 		$title = apply_filters('widget_title', $instance['title'] );
-		if( function_exists('icl_t') )  $titlefirst = icl_t( 'Widget title' , 'widget_title_'.$this->id , $instance['titlefirst'] ); else $titlefirst = $instance['titlefirst'] ;
-		if( function_exists('icl_t') )  $titlesecond = icl_t( 'Widget title second' , 'widget_title_second'.$this->id , $instance['titlesecond'] ); else $titlesecond = $instance['titlesecond'] ;
-		if( function_exists('icl_t') )  $titlethird = icl_t( 'Widget title' , 'widget_title_'.$this->id , $instance['titlethird'] ); else $titlethird = $instance['titlethird'] ;
-		if( function_exists('icl_t') )  $titlefourth = icl_t( 'Widget title fourth' , 'widget_title_fourth'.$this->id , $instance['titlefourth'] ); else $titlefourth = $instance['titlefourth'] ;		
+		if( function_exists('icl_t') )  $titlefirst = icl_t( 'Enter title for first tab' , 'widget_title_'.$this->id , $instance['titlefirst'] ); else $titlefirst = $instance['titlefirst'] ;
+		if( function_exists('icl_t') )  $titlesecond = icl_t( 'Enter title for second tab' , 'widget_title_second'.$this->id , $instance['titlesecond'] ); else $titlesecond = $instance['titlesecond'] ;
+		if( function_exists('icl_t') )  $titlethird = icl_t( 'Enter title for third tab' , 'widget_title_'.$this->id , $instance['titlethird'] ); else $titlethird = $instance['titlethird'] ;
+		if( function_exists('icl_t') )  $titlefourth = icl_t( 'Enter title for fourth tab' , 'widget_title_fourth'.$this->id , $instance['titlefourth'] ); else $titlefourth = $instance['titlefourth'] ;		
 		$metafirst = $instance['metafirst'];
 		$metasecond = $instance['metasecond'];
 		$metathird = $instance['metathird'];
@@ -130,10 +131,10 @@ class rehub_tabsajax_widget extends WP_Widget {
 		$instance['datefourth'] = $new_instance['datefourth'];		
 
 		if (function_exists('icl_register_string')) {
-			icl_register_string( 'Widget title' , 'widget_title_'.$this->id, $new_instance['titlefirst'] );
-			icl_register_string( 'Widget title second' , 'widget_title_second'.$this->id, $new_instance['titlesecond'] );
-			icl_register_string( 'Widget title' , 'widget_title_'.$this->id, $new_instance['titlethird'] );
-			icl_register_string( 'Widget title second' , 'widget_title_second'.$this->id, $new_instance['titlefourth'] );			
+			icl_register_string( 'Enter title for first tab' , 'widget_title_'.$this->id, $new_instance['titlefirst'] );
+			icl_register_string( 'Enter title for second tab' , 'widget_title_second'.$this->id, $new_instance['titlesecond'] );
+			icl_register_string( 'Enter title for third tab' , 'widget_title_'.$this->id, $new_instance['titlethird'] );
+			icl_register_string( 'Enter title for fourth tab' , 'widget_title_second'.$this->id, $new_instance['titlefourth'] );			
 		}		
 
 		return $instance;
@@ -168,7 +169,7 @@ class rehub_tabsajax_widget extends WP_Widget {
 		</select>
 		</p>		
 		<p>
-			<label for="<?php echo $this->get_field_id( 'metafirst' ); ?>"><?php _e('Enter meta for first tab:', 'rehub_framework'); ?></label>
+			<label for="<?php echo $this->get_field_id( 'metafirst' ); ?>"><?php _e('Enter meta for first tab', 'rehub_framework'); ?></label>
 			<input  type="text" class="widefat" id="<?php echo $this->get_field_id( 'metafirst' ); ?>" name="<?php echo $this->get_field_name( 'metafirst' ); ?>" value="<?php echo $instance['metafirst']; ?>"  />
 		</p>
 		<p style="font-style: italic;">

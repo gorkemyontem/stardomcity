@@ -1,3 +1,4 @@
+<?php if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly ?>
 <?php use ContentEgg\application\helpers\TemplateHelper;?>
 <article class="small_post">
     <div>
@@ -21,28 +22,39 @@
         <div class="buttons_col">
             <div class="priced_block clearfix">
                 <?php if(!empty($offer_price)) : ?>
-                    <p itemprop="offers" itemscope itemtype="http://schema.org/Offer">
+                    <div itemprop="offers" itemscope itemtype="http://schema.org/Offer" class="rh_price_wrapper">
                         <span class="price_count">
-                            <ins><?php echo TemplateHelper::formatPriceCurrency($offer_price, $currency_code); ?></ins>
+                            <ins>                        
+                                <?php echo TemplateHelper::formatPriceCurrency($offer_price, $currency_code, '<span class="cur_sign">', '</span>'); ?>
+                            </ins>
                             <?php if(!empty($offer_price_old)) : ?>
                             <del>
-                                <span class="amount"><?php echo $offer_price_old ?></span>
+                                <span class="amount">
+                                    <?php echo TemplateHelper::formatPriceCurrency($offer_price_old, $currency_code, '<span class="value">', '</span>'); ?>
+                                </span>
                             </del>
                             <?php endif ;?>                                      
                         </span> 
-                        <meta itemprop="price" content="<?php echo $clean_price ?>">
+                        <meta itemprop="price" content="<?php echo $offer_price ?>">
                         <meta itemprop="priceCurrency" content="<?php echo $currency_code; ?>">
                         <?php if ($availability): ?>
                             <link itemprop="availability" href="http://schema.org/InStock">
                         <?php endif ;?>                         
-                    </p>
+                    </div>
                 <?php endif ;?>
                 <div>
                     <a class="re_track_btn btn_offer_block" href="<?php echo esc_url($afflink) ?>" target="_blank" rel="nofollow">
                         <?php echo $btn_txt ; ?>
                     </a> 
                     <div class="aff_tag mt10 small_size">
-                        <?php echo $merchant; ?>                            
+                        <img src="<?php echo esc_attr(TemplateHelper::getMerhantIconUrl($item, true)); ?>" />
+                        <?php if (!empty($merchant)):?>
+                            <?php echo esc_html($merchant); ?>
+                        <?php elseif(!empty($domain)):?>
+                            <?php echo esc_html($domain); ?>    
+                        <?php else:?>
+                            <?php echo esc_html($item['domain']); ?>                                  
+                        <?php endif;?>                            
                     </div>                            
                 </div>
             </div>

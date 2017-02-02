@@ -1,3 +1,4 @@
+<?php if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly ?>
 <?php global $post;?>
 <?php
 $columns = (isset($columns)) ? $columns : '';
@@ -17,7 +18,7 @@ else {
     $target = '';  
 }
 ?>
-<article class="col_item offer_grid offer_grid_com<?php if ($disable_act != 1) :?> offer_act_enabled<?php endif;?><?php if ($disable_btn == 1) :?> no_btn_enabled<?php endif;?><?php echo rh_expired_or_not($post->ID, 'class');?>"> 
+<article class="col_item offer_grid mobile_compact_grid offer_grid_com<?php if ($disable_act != 1) :?> offer_act_enabled<?php endif;?><?php if ($disable_btn == 1) :?> no_btn_enabled<?php endif;?><?php echo rh_expired_or_not($post->ID, 'class');?>"> 
     <div class="info_in_dealgrid">
         <?php echo re_badge_create('ribbonleft'); ?>        
         <figure>
@@ -57,31 +58,33 @@ else {
             </a>
         </figure>
         <?php do_action( 'rehub_after_compact_grid_figure' ); ?>
-        <div class="grid_row_info">
-            <div class="price_row_grid">
-                <div class="price_for_grid floatleft">
-                    <?php rehub_create_btn('no', 'price') ;?>
-                </div>
-                <div class="floatright vendor_for_grid">
-                    <?php if ($price_meta == 'admin'):?>
-                        <?php $author_id=$post->post_author;?>
-                        <a class="admin" href="<?php echo get_author_posts_url( $author_id ) ?>" title="<?php the_author_meta( 'display_name', $author_id ); ?>">
-                        <?php echo get_avatar( $author_id, '22' ); ?>
-                        </a>
-                    <?php elseif ($price_meta == 'store'):?>
-                        <div class="brand_logo_small">       
-                            <?php WPSM_Postfilters::re_show_brand_tax('logo'); //show brand logo?>
-                        </div>                    
-                    <?php endif;?>
-                </div>
-            </div>     
-            <?php do_action( 'rehub_after_compact_grid_price' ); ?>        
-            <h3 class="eq_height_inpost <?php if(rehub_option('hotmeter_disable') !='1') :?><?php echo getHotIconclass($post->ID); ?><?php endif ;?>"><?php echo rh_expired_or_not($post->ID, 'span');?><a href="<?php echo $link;?>"<?php echo $target;?>><?php the_title();?></a></h3> 
-            <?php do_action( 'rehub_after_compact_grid_title' ); ?>
-        </div>
-        <?php if ($disable_btn != 1) :?>
-            <?php rehub_create_btn('no', 'button') ;?>
-        <?php endif;?>                                          
+        <div class="grid_desc_and_btn">
+            <div class="grid_row_info">
+                <div class="price_row_grid">
+                    <div class="price_for_grid floatleft">
+                        <?php rehub_create_btn('no', 'price') ;?>
+                    </div>
+                    <div class="floatright vendor_for_grid">
+                        <?php if ($price_meta == 'admin'):?>
+                            <?php $author_id=$post->post_author;?>
+                            <a class="admin" href="<?php echo get_author_posts_url( $author_id ) ?>" title="<?php the_author_meta( 'display_name', $author_id ); ?>">
+                            <?php echo get_avatar( $author_id, '22' ); ?>
+                            </a>
+                        <?php elseif ($price_meta == 'store'):?>
+                            <div class="brand_logo_small">       
+                                <?php WPSM_Postfilters::re_show_brand_tax('logo'); //show brand logo?>
+                            </div>                    
+                        <?php endif;?>
+                    </div>
+                </div>     
+                <?php do_action( 'rehub_after_compact_grid_price' ); ?>        
+                <h3 class="eq_height_inpost <?php if(rehub_option('hotmeter_disable') !='1') :?><?php echo getHotIconclass($post->ID); ?><?php endif ;?>"><?php echo rh_expired_or_not($post->ID, 'span');?><a href="<?php echo $link;?>"<?php echo $target;?>><?php the_title();?></a></h3> 
+                <?php do_action( 'rehub_after_compact_grid_title' ); ?>
+            </div>
+            <?php if ($disable_btn != 1) :?>
+                <?php rehub_create_btn('no', 'button') ;?>
+            <?php endif;?>   
+        </div>                                       
     </div>
     <div class="meta_for_grid">
         <div class="cat_store_for_grid floatleft">

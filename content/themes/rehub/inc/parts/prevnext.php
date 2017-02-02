@@ -1,3 +1,4 @@
+<?php if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly ?>
 <!-- PAGER SECTION -->
 <div class="float-posts-nav" id="float-posts-nav">
     <div class="postNavigation prevPostBox">

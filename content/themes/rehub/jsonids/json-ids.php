@@ -2,9 +2,9 @@
 require_once(dirName(__FILE__).'/../../../../wp-load.php'); 
 
 if ( empty( $_GET['q'] ) && !empty( $_GET['t'] ) ) {
-	$taxonomies = $_GET['taxonomy'];
+	$taxonomies = sanitize_text_field($_GET['taxonomy']);
 	$args = array(
-		'search' => $_GET['t'],
+		'search' => sanitize_text_field($_GET['t']),
 		'hide_empty' => 1,
 		'taxonomy'=> $taxonomies,
 	);
@@ -21,9 +21,9 @@ if ( empty( $_GET['q'] ) && !empty( $_GET['t'] ) ) {
 
 } else {
     $args = array(
-        's' => $_GET['q'],
-        'post_type' => $_GET['posttype'],
-        'posts_per_page' => $_GET['postnum'],
+        's' => sanitize_text_field($_GET['q']),
+        'post_type' => sanitize_text_field($_GET['posttype']),
+        'posts_per_page' => sanitize_text_field($_GET['postnum']),
         'post_status' => 'publish',
 		'cache_results' => false,
 		'no_found_rows' => true	    

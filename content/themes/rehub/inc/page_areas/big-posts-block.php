@@ -1,3 +1,4 @@
+<?php if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly ?>
 <?php 
 	$title_enable = vp_metabox('mag_builder_page.pagebuilders.'.$pbid.'.regular_blog_loop_mod.0.regular_blog_loop_toggle_title');
 	$title_name = vp_metabox('mag_builder_page.pagebuilders.'.$pbid.'.regular_blog_loop_mod.0.regular_blog_loop_title');

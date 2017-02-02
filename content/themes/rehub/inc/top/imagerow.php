@@ -1,3 +1,6 @@
+<?php if ( ! defined( 'ABSPATH' ) ) {
+    exit; // Exit if accessed directly
+}?>
 <?php $sticky_header = (isset ($row['sticky_header']) && $row['sticky_header'] == 1) ? ' sticky-cell': '';?>
 <div class="product_image_col<?php echo $sticky_header; ?>">
     <?php if ($compareids !='') {echo '<i class="fa fa-times-circle-o re-compare-close-in-chart"></i>';}?>    

@@ -1,3 +1,4 @@
+<?php if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly ?>
 <?php 
     $meta_line_type = (!empty($row['acfmeta_line_type'])) ? $row['acfmeta_line_type'] : '';
     $meta_line_label = (!empty($row['acfmeta_line_label'])) ? $row['acfmeta_line_label'] : '';

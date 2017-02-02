@@ -1,3 +1,4 @@
+<?php if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly ?>
 <?php foreach ($import_comments as $key => $comment): ?>
     <div class="helpful-review rh-cartbox">
         <div class="quote-top"><i class="fa fa-quote-left"></i></div>

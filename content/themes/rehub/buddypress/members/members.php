@@ -1,3 +1,4 @@
+<?php if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly ?>
 <?php
 /**
  * BuddyPress - Members
@@ -14,10 +15,6 @@ do_action( 'bp_before_directory_members_page' ); ?>
 		do_action( 'bp_before_directory_members' ); 
 		do_action( 'bp_before_directory_members_content' ); 
 	?>
-
-	<div id="members-dir-search" class="dir-search" role="search">
-		<?php bp_directory_members_search_form(); ?>
-	</div><!-- #members-dir-search -->
 
 	<?php do_action( 'bp_before_directory_members_tabs' ); ?>
 

@@ -1,3 +1,4 @@
+<?php if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly ?>
 <?php 
 	$photo_line = (!empty($row['photo_line'])) ? $row['photo_line'] : '';		    
 ?>

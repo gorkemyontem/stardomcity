@@ -1,3 +1,4 @@
+<?php if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly ?>
 <div id="comments" class="clearfix">
 <?php if(rehub_option('rehub_widget_comments') && comments_open()) : ?><?php echo htmlspecialchars_decode( stripslashes(rehub_kses(rehub_option('rehub_widget_comments')))); ?><div style="margin-bottom:15px; clear:both"></div><?php endif; ?>
 <?php if(rehub_option('rehub_disable_comments') != '1') :?>

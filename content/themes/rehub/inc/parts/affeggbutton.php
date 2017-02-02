@@ -1,3 +1,4 @@
+<?php if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly ?>
 <?php
     $re_egg_id = get_post_meta( get_the_ID(), '_affegg_egg_id', true );
     $re_egg_product_id = get_post_meta( get_the_ID(), '_affegg_product_id', true );
@@ -37,12 +38,12 @@
 <?php endif ;?>
 <div class="priced_block clearfix">
     <?php if(!empty($offer_price) && $offer_price !='0' && $showme !='button') : ?>
-        <p>
+        <span class="rh_price_wrapper">
             <span class="price_count">
                 <ins><?php echo $offer_formated_price;?></ins>
                 <?php if(!empty($offer_price_old) && $offer_price_old !='0') :?> <del><?php echo $offer_formated_priceold; ?></del><?php endif ;?>
             </span>
-        </p>
+        </span>
     <?php endif ;?>
     <?php if(!empty($offer_last_update)) : ?>
         <span class="offer_last_update"><?php echo esc_html($offer_last_update) ?></span>

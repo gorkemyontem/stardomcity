@@ -1,3 +1,4 @@
+<?php if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly ?>
 <?php global $post;?>
 <?php $nometa = (isset($nometa)) ? $nometa : '';?>
 <?php $image = (isset($image)) ? $image : '';?>

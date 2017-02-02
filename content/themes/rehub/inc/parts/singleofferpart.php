@@ -1,3 +1,4 @@
+<?php if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly ?>
 <?php $coupon_style = $expired = ''; if(!empty($offer_coupon_date)) : ?>
     <?php
         $timestamp1 = strtotime($offer_coupon_date);

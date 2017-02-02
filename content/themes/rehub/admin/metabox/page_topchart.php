@@ -1,3 +1,4 @@
+<?php if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly ?>
 <?php
 
 return array(
@@ -16,7 +17,7 @@ return array(
 		array(
 			'type' => 'textbox',
 			'name' => 'top_chart_type',
-			'label' => __('Enter name of custom post type or leave blank (default, post)', 'rehub_framework'),			
+			'label' => __('Enter name of custom post type or leave blank (default, post). For woocommerce - type "product"', 'rehub_framework'),			
 		),												
 	    array(
 			'type'      => 'group',
@@ -50,14 +51,18 @@ return array(
 						array(
 							'value' => 'title',
 							'label' => __('Title', 'rehub_framework'),
-						),																		
+						),	
+						array(
+							'value' => 'excerpt',
+							'label' => __('Short description', 'rehub_framework'),
+						),																							
 						array(
 							'value' => 'meta_value',
 							'label' => __('Meta value', 'rehub_framework'),
 						),
 						array(
 							'value' => 'taxonomy_value',
-							'label' => __('Taxonomy value', 'rehub_framework'),
+							'label' => __('Taxonomy value / Woocommerce attribute', 'rehub_framework'),
 						),																
 						array(
 							'value' => 'review_function',
@@ -78,7 +83,23 @@ return array(
 						array(
 							'value' => 'affiliate_btn',
 							'label' => __('Affiliate button', 'rehub_framework'),
+						),
+						array(
+							'value' => 'woo_attribute',
+							'label' => __('Woocommerce attribute by slug', 'rehub_framework'),
+						),						
+						array(
+							'value' => 'woo_review',
+							'label' => __('Woocommerce review score', 'rehub_framework'),
 						),	
+						array(
+							'value' => 'woo_btn',
+							'label' => __('Woocommerce button with price', 'rehub_framework'),
+						),
+						array(
+							'value' => 'woo_vendor',
+							'label' => __('Woocommerce vendor', 'rehub_framework'),
+						),																		
 						array(
 							'value' => 'shortcode',
 							'label' => __('Shortcode', 'rehub_framework'),
@@ -127,12 +148,22 @@ return array(
 					'type' => 'textbox',
 					'name' => 'tax_name',
 					'label' => __('Enter taxonomy slug', 'rehub_framework'),
-					'description' => __('Enter slug of your taxonomy. Example, taxonomy for posts - is category.', 'rehub_framework'),
+					'description' => __('Enter slug of your taxonomy. If you want to get woocommerce attribute, enable checkbox below.', 'rehub_framework'),
 					'dependency' => array(
 						'field'    => 'column_type',
 						'function' => 'rehub_column_is_tax',
 					),					
-				),			    
+				),
+				array(
+					'type' => 'toggle',
+					'name' => 'is_attribute',
+					'label' => __('Is this woocommerce attribute?', 'rehub_framework'),
+					'default' => '0',
+					'dependency' => array(
+						'field'    => 'column_type',
+						'function' => 'rehub_column_is_tax',
+					),					
+				),							    
 				array(
 					'type' => 'toggle',
 					'name' => 'image_link_affiliate',
@@ -208,6 +239,7 @@ return array(
 							'type'      => 'textbox',
 							'name'      => 'column_meta_name',
 							'label'     => __('Key (slug) of custom field', 'rehub_framework'),
+							'description'     => __('Check some theme <a href="http://rehub.wpsoul.com/documentation/docs.html#metafield" target="_blank">keys here</a>', 'rehub_framework'),							
 						),		
 						array(
 							'type'      => 'textbox',

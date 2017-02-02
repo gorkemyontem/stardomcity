@@ -1,7 +1,9 @@
+<?php if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly ?>
 <?php
 /*
   Name: List widget with store logos 
  */
+  use Keywordrush\AffiliateEgg\TemplateHelper; 
 ?>
 <?php
 // sort items by price
@@ -14,8 +16,8 @@ $product_price_update = $items[0]['last_update'];
 ?>
 <div class="widget_logo_list">    
     <?php $i=0; foreach ($items as $key => $item): ?>
-        <?php $offer_price = str_replace(' ', '', $item['price']); if($offer_price =='0') {$offer_price = '';} ?>
-        <?php $offer_price_old = str_replace(' ', '', $item['old_price']); if($offer_price_old =='0') {$offer_price_old = '';} ?>
+        <?php $offer_price = (!empty($item['price'])) ? $item['price'] : ''; ?>
+        <?php $offer_price_old = (!empty($item['price'])) ? $item['old_price'] : ''; ?>
         <?php $afflink = $item['url']; $domain = str_ireplace('www.', '', parse_url($item['orig_url'], PHP_URL_HOST)); ?>
         <?php $offer_title = wp_trim_words( $item['title'], 10, '...' ); ?>
         <?php $aff_thumb = rh_ae_logo_get($item['orig_url']); if (empty($aff_thumb)) {$aff_thumb = $item['img'];} ?>
@@ -30,11 +32,9 @@ $product_price_update = $items[0]['last_update'];
                 <div class="price_simple_col">
                     <?php if(!empty($offer_price)) : ?>
                         <div itemprop="offers" itemscope itemtype="http://schema.org/Offer">
-                            <span class="cur_sim_price"><?php echo $item['currency']; ?></span> <span class="val_sim_price"><?php echo $offer_price ?></span>
+                            <?php echo TemplateHelper::formatPriceCurrency($item['price_raw'], $item['currency_code'], '', ''); ?>
                             <?php if(!empty($offer_price_old)) : ?>
-                            <strike>
-                                <span class="amount"><?php echo $offer_price_old ?></span>
-                            </strike>
+                                <strike><?php echo TemplateHelper::formatPriceCurrency($item['old_price_raw'], $item['currency_code'], '', ''); ?></strike>
                             <?php endif ;?>                                      
                             <meta itemprop="price" content="<?php echo $offer_price ?>">
                             <meta itemprop="priceCurrency" content="<?php echo $item['currency']; ?>">

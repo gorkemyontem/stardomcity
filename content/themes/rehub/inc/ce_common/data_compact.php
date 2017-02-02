@@ -1,3 +1,4 @@
+<?php if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly ?>
 <?php use ContentEgg\application\helpers\TemplateHelper;?>
 <div class="rehub_woo_review compact_w_deals">
     <div class="rehub_feat_block table_view_block">
@@ -15,14 +16,14 @@
                 </h4>
                 <?php if ($description): ?>
                     <p><?php echo $description; ?></p> 
-                <?php elseif(!empty($keyspecs)):?>
+                <?php elseif(!empty($item['extra']['keyspecs'])):?>
                     <p class="featured_list">
-                        <?php $total_spec = count($keyspecs); $count = 0;?>
-                        <?php foreach ($keyspecs as $keyspec) :?>
+                        <?php $total_spec = count($item['extra']['keyspecs']); $count = 0;?>
+                        <?php foreach ($item['extra']['keyspecs'] as $keyspec) :?>
                             <?php echo $keyspec; $count ++; ?><?php if ($count != $total_spec) :?>, <?php endif;?>
                         <?php endforeach; ?>   
                     </p>                                   
-                <?php endif; ?>
+                <?php endif; ?> 
                 <small class="small_size">
                     <?php if ($availability): ?>
                         <?php _e('Available: ', 'rehub_framework') ;?><span class="yes_available"><?php _e('In stock', 'rehub_framework') ;?></span>
@@ -32,31 +33,39 @@
             <div class="buttons_col">
                 <div class="priced_block clearfix">
                     <?php if(!empty($offer_price)) : ?>
-                        <p itemprop="offers" itemscope itemtype="http://schema.org/Offer">
+                        <div itemprop="offers" itemscope itemtype="http://schema.org/Offer" class="rh_price_wrapper">
                             <span class="price_count">
-                                <ins><?php echo TemplateHelper::formatPriceCurrency($offer_price, $currency_code); ?></ins>
+                                <ins>                        
+                                    <?php echo TemplateHelper::formatPriceCurrency($offer_price, $currency_code, '<span class="cur_sign">', '</span>'); ?>
+                                </ins>
                                 <?php if(!empty($offer_price_old)) : ?>
                                 <del>
-                                    <span class="amount"><?php echo $offer_price_old ?></span>
+                                    <span class="amount">
+                                        <?php echo TemplateHelper::formatPriceCurrency($offer_price_old, $currency_code, '<span class="value">', '</span>'); ?>
+                                    </span>
                                 </del>
-                                <?php endif ;?>                                      
+                                <?php endif ;?>                                       
                             </span> 
-                            <meta itemprop="price" content="<?php echo $clean_price ?>">
+                            <meta itemprop="price" content="<?php echo $offer_price ?>">
                             <meta itemprop="priceCurrency" content="<?php echo $currency_code; ?>">
                             <?php if ($availability): ?>
                                 <link itemprop="availability" href="http://schema.org/InStock">
                             <?php endif ;?>                         
-                        </p>
+                        </div>
                     <?php endif ;?>
                     <div>
                         <a class="re_track_btn btn_offer_block" href="<?php echo esc_url($afflink) ?>" target="_blank" rel="nofollow">
                             <?php echo $btn_txt ; ?>
                         </a>
-                        <?php if($logo) :?>
-                            <div class="egg-logo mt10"><img src="<?php echo $logo; ?>" alt="<?php echo esc_attr($offer_title); ?>" /></div>
-                        <?php elseif ($merchant) :?>
-                            <div class="aff_tag mt10"><?php echo $merchant; ?></div>
-                        <?php endif ;?>	                        
+                        <?php $logo = TemplateHelper::getMerhantLogoUrl($item, false);?>
+                        <?php if(!empty($logo)) :?>
+                            <div class="egg-logo mt10">
+                            <img src="<?php echo esc_attr(TemplateHelper::getMerhantLogoUrl($item, true)); ?>" alt="<?php echo esc_attr($offer_title); ?>" />
+                            </div>
+                        <?php endif;?>
+                        <?php if ($domain) :?>
+                            <div class="aff_tag mt5"><?php echo $domain; ?></div>
+                        <?php endif ;?>                      
                     </div>
                 </div>
             </div>

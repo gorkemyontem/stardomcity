@@ -1,3 +1,4 @@
+<?php if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly ?>
 <?php if(!$is_compact) echo VP_View::instance()->load('control/template_control_head', $head_info); ?>
 
 <input class="vp-input" type="text" readonly id="<?php echo $name; ?>" name="<?php echo $name; ?>" value="<?php echo $value; ?>" />
@@ -9,4 +10,4 @@
 	<img src="<?php echo $preview; ?>" alt="" />
 </div>
 
-<?php if(!$is_compact) echo VP_View::instance()->load('control/template_control_foot'); ?>
+<?php if(!$is_compact) echo VP_View::instance()->load('control/template_control_foot', $head_info); ?>

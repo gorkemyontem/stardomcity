@@ -1,3 +1,4 @@
+<?php if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly ?>
 <?php
 /**
  * Shortcode attributes
@@ -49,7 +50,6 @@ if ( 'nivo' === $type ) {
 	$el_end = '</li>';
 	$slides_wrap_start = '<ul class="slides">';
 	$slides_wrap_end = '</ul>';
-	wp_enqueue_style( 'flexslider' );
 	wp_enqueue_script( 'flexslider' );
 } else if ( 'image_grid' === $type ) {
 	wp_enqueue_script( 'vc_grid-js-imagesloaded' );
@@ -68,7 +68,7 @@ if ( 'link_image' === $onclick ) {
 
 $flex_fx = '';
 if ( $type == 'flexslider' || $type == 'flexslider_slide' ) {
-	$type = ' post_slider media_slider blog_slider loading';
+	$type = ' flexslider post_slider media_slider blog_slider loading';
 }  else if ( $type == 'image_grid' ) {
 	$type = ' wpb_image_grid';
 }

@@ -1,5 +1,7 @@
+<?php if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly ?>
 <?php get_header(); ?>
-<?php $rh_post_layout_style = vp_metabox('rehub_post_side._post_layout');?>
+<?php global $post;?>
+<?php $rh_post_layout_style = get_post_meta($post->ID, '_post_layout', true);?>
 <?php if ($rh_post_layout_style == '') {$rh_post_layout_style = rehub_option('post_layout_style');} ?>
 <?php if ($rh_post_layout_style == '') :?>
     <?php       
@@ -28,37 +30,37 @@
 
 
 <?php if($rh_post_layout_style == 'default') : ?>
-    <?php include(locate_template('inc/post_layout/single-default.php')); ?>
+    <?php include(rh_locate_template('inc/post_layout/single-default.php')); ?>
 <?php elseif($rh_post_layout_style == 'meta_outside') : ?>
-    <?php include(locate_template('inc/post_layout/single-meta-outside.php')); ?> 
+    <?php include(rh_locate_template('inc/post_layout/single-meta-outside.php')); ?> 
 <?php elseif($rh_post_layout_style == 'meta_center') : ?>
-    <?php include(locate_template('inc/post_layout/single-meta-center.php')); ?> 
+    <?php include(rh_locate_template('inc/post_layout/single-meta-center.php')); ?> 
 <?php elseif($rh_post_layout_style == 'meta_compact') : ?>
-    <?php include(locate_template('inc/post_layout/single-meta-compact.php')); ?>
+    <?php include(rh_locate_template('inc/post_layout/single-meta-compact.php')); ?>
 <?php elseif($rh_post_layout_style == 'meta_compact_dir') : ?>
-    <?php include(locate_template('inc/post_layout/single-meta-compact-dir.php')); ?>   
+    <?php include(rh_locate_template('inc/post_layout/single-meta-compact-dir.php')); ?>   
 <?php elseif($rh_post_layout_style == 'corner_offer') : ?>
-    <?php include(locate_template('inc/post_layout/single-corner-offer.php')); ?>
+    <?php include(rh_locate_template('inc/post_layout/single-corner-offer.php')); ?>
 <?php elseif($rh_post_layout_style == 'meta_in_image') : ?>
-    <?php include(locate_template('inc/post_layout/single-inimage.php')); ?>
+    <?php include(rh_locate_template('inc/post_layout/single-inimage.php')); ?>
 <?php elseif($rh_post_layout_style == 'meta_in_imagefull') : ?>
-    <?php include(locate_template('inc/post_layout/single-inimagefull.php')); ?>
+    <?php include(rh_locate_template('inc/post_layout/single-inimagefull.php')); ?>
 <?php elseif($rh_post_layout_style == 'meta_ce_compare') : ?>
-    <?php include(locate_template('inc/post_layout/single-ce-compare.php')); ?>  
+    <?php include(rh_locate_template('inc/post_layout/single-ce-compare.php')); ?>  
 <?php elseif($rh_post_layout_style == 'meta_ce_compare_sec') : ?>
-    <?php include(locate_template('inc/post_layout/single-ce-compare-sec.php')); ?>
+    <?php include(rh_locate_template('inc/post_layout/single-ce-compare-sec.php')); ?>
 <?php elseif($rh_post_layout_style == 'meta_ce_compare_full') : ?>
-    <?php include(locate_template('inc/post_layout/single-ce-compare-full.php')); ?>  
+    <?php include(rh_locate_template('inc/post_layout/single-ce-compare-full.php')); ?>  
 <?php elseif($rh_post_layout_style == 'meta_ce_compare_auto') : ?>
-    <?php include(locate_template('inc/post_layout/single-ce-compare-fullauto.php')); ?>
+    <?php include(rh_locate_template('inc/post_layout/single-ce-compare-fullauto.php')); ?>
 <?php elseif($rh_post_layout_style == 'big_post_offer') : ?>
-    <?php include(locate_template('inc/post_layout/single-big-offer.php')); ?>    
+    <?php include(rh_locate_template('inc/post_layout/single-big-offer.php')); ?>    
 <?php elseif($rh_post_layout_style == 'meta_ce_compare_auto_sec') : ?>
-    <?php include(locate_template('inc/post_layout/single-ce-compare-autocontent.php')); ?>      
+    <?php include(rh_locate_template('inc/post_layout/single-ce-compare-autocontent.php')); ?>      
 <?php elseif($rh_post_layout_style == 'offer_and_review') : ?>
-    <?php include(locate_template('inc/post_layout/single-offer-reviewscore.php')); ?>       
+    <?php include(rh_locate_template('inc/post_layout/single-offer-reviewscore.php')); ?>       
 <?php else:?>
-    <?php include(locate_template('inc/post_layout/single-default.php')); ?>                               
+    <?php include(rh_locate_template('inc/post_layout/single-default.php')); ?>                               
 <?php endif;?>
 
 <!-- FOOTER -->

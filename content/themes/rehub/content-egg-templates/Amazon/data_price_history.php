@@ -44,7 +44,9 @@ use ContentEgg\application\helpers\TemplateHelper;
             </div>
         </td>
         <td class="rh-tabletext-block-right">
+            <div class="rh-table-price-graph">
             <?php TemplateHelper::priceHistoryMorrisChart($item['unique_id'], $module_id, 180, array('lineWidth' => 2, 'postUnits' => ' ' . $item['currencyCode'], 'goals' => array((int) $item['price']), 'fillOpacity' => 0.5), array('style' => 'height: 230px;')); ?>
+            </div>
             <ul class="rh-lowest-highest">
                 <?php $price = TemplateHelper::priceHistoryMax($item['unique_id'], $module_id); ?>
                 <?php if ($price): ?>

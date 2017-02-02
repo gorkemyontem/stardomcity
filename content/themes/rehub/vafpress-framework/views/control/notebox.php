@@ -1,3 +1,4 @@
+<?php if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly ?>
 <?php extract($head_info); ?>
 
 <?php if(!$is_compact): ?>

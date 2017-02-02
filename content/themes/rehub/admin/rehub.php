@@ -1,5 +1,10 @@
 <?php
 
+// Do not allow directly accessing this file.
+if ( ! defined( 'ABSPATH' ) ) {
+	exit( 'Direct script access denied.' );
+}
+
 if ( ! defined( 'REHUB_ADMIN_DIR' ) ) {
 	define( 'REHUB_ADMIN_DIR', get_template_directory_uri() . '/admin/' );
 }
@@ -108,7 +113,7 @@ if ( ! class_exists( 'Rehub_Admin' ) ) {
 
 				//Child theme updater
 				if(!defined('PLUGIN_REPO')){
-					define('PLUGIN_REPO', 'http://rehub.wpsoul.com/plugins/');
+					define('PLUGIN_REPO', 'http://wpsoul.net/plugins/');
 				}
 		        if (REHUB_NAME_ACTIVE_THEME == 'RECASH') {
 		            if(!defined('THEMESHILD_SLUG')){

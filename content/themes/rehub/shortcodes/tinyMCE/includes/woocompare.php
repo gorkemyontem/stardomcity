@@ -1,4 +1,4 @@
-<?php require_once(dirName(__FILE__).'/../../../../../../wp-load.php'); ?>
+<?php if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly ?>
 
 <script data-cfasync="false">
 // executes this when the DOM is ready

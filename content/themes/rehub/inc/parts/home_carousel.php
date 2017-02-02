@@ -1,3 +1,4 @@
+<?php if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly ?>
 <?php $add_badge_short = (rehub_option('rehub_homecarousel_label')=='1') ? ' add_badge="1"' : '';?>
 <?php $badge_title = (rehub_option('rehub_homecarousel_label')=='1') ? ' badge_title="'.rehub_option('rehub_homecarousel_label_text').'"' : ''; ?>
 <?php $badge_color = (rehub_option('rehub_label_color')!='') ? ' color_stamp="'.str_replace('def', '', rehub_option('rehub_label_color')).'"': '';?>

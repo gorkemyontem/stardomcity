@@ -1,3 +1,4 @@
+<?php if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly ?>
 <?php $no_featured_image_layout = (isset($no_featured_image_layout)) ? $no_featured_image_layout : '';?>
 <?php if(vp_metabox('rehub_post_side.show_featured_image') == '1')  : ?>
 <?php else : ?>
@@ -63,7 +64,7 @@
                         <?php if (vp_metabox('rehub_post_side.post_size') == 'full_post') : ?>
                             <?php echo parse_video_url($video_url, 'embed', '1130', '635');?>
                         <?php else : ?>
-                            <?php echo parse_video_url($video_url, 'embed', '765', '430');?>
+                            <?php echo parse_video_url($video_url, 'embed', '788', '430');?>
                         <?php endif ;?> 
                     </div>	
 			<?php else : ?>		
@@ -79,7 +80,8 @@
 	<?php elseif(vp_metabox('rehub_post.rehub_framework_post_type') == 'gallery') : ?>
 		<?php  wp_enqueue_script('flexslider');  ?>
 		<?php $gallery_images = vp_metabox('rehub_post.gallery_post.0.gallery_post_images'); $resizer = vp_metabox('rehub_post.gallery_post.0.gallery_post_images_resize');?>
-		<div class="post_slider media_slider<?php if ($resizer =='1') :?> blog_slider<?php else :?> gallery_top_slider<?php endif ;?> loading">	
+		<div class="post_slider flexslider media_slider<?php if ($resizer =='1') :?> blog_slider<?php else :?> gallery_top_slider<?php endif ;?> loading">	
+		    <i class="fa fa-spinner fa-pulse"></i>
 			<ul class="slides">		
 				<?php 
 					foreach ($gallery_images as $gallery_img) {
@@ -98,12 +100,12 @@
 					<?php else : ?>
                         <?php if (!empty ($gallery_img['gallery_post_video'])) :?>
                             <li data-thumb="<?php echo parse_video_url($gallery_img['gallery_post_video'], 'hqthumb'); ?>" class="play3">
-                                <?php echo parse_video_url($gallery_img['gallery_post_video'], 'embed', '765', '478');?>
+                                <?php echo parse_video_url($gallery_img['gallery_post_video'], 'embed', '788', '478');?>
                             </li>                                            
                         <?php else : ?>
 							<li data-thumb="<?php $params = array( 'width' => 80, 'height' => 80, 'crop' => true ); echo bfi_thumb($gallery_img['gallery_post_image'], $params); ?>">
 								<?php if (!empty ($gallery_img['gallery_post_image_caption'])) :?><div class="bigcaption"><?php echo $gallery_img['gallery_post_image_caption']; ?></div><?php endif;?>
-								<img src="<?php if ($resizer =='1') {$params = array( 'width' => 765);} else {$params = array( 'width' => 765, 'height' => 478, 'crop' => true   );}; echo bfi_thumb($gallery_img['gallery_post_image'], $params); ?>" />
+								<img src="<?php if ($resizer =='1') {$params = array( 'width' => 788);} else {$params = array( 'width' => 788, 'height' => 478, 'crop' => true   );}; echo bfi_thumb($gallery_img['gallery_post_image'], $params); ?>" />
 							</li>                                            
                         <?php endif; ?> 						                                                
 					<?php endif; ?>

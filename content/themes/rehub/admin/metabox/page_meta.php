@@ -1,3 +1,4 @@
+<?php if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly ?>
 <?php
 
 return array(
@@ -66,7 +67,7 @@ return array(
 							'type' => 'textbox',
 							'name' => 'rehub_background_offset_single',
 							'label' => __('Set offset', 'rehub_framework'),
-							'description' => __('Set offset from top for background (without px) for avoid header overlap', 'rehub_framework'),
+							'description' => __('Set offset from top for background (with px) for avoid header overlap', 'rehub_framework'),
 							'validation' => 'numeric',
 						),
 						array(

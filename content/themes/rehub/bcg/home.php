@@ -1,3 +1,4 @@
+<?php if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly ?>
 <div id="subnav" class="item-list-tabs no-ajax">
 	<ul>
 		<?php bcg_get_options_menu();?>

@@ -1,13 +1,16 @@
+<?php if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly ?>
 <?php
 /*
   Name: Big product cart
  */
+use Keywordrush\AffiliateEgg\TemplateHelper;
 ?>
 <?php //wp_enqueue_style('eggrehub'); ?>
 <?php foreach ($items as $item): ?>
-    <?php $offer_price = str_replace(' ', '', $item['price']); if($offer_price =='0') {$offer_price = '';} ?>
-    <?php $offer_price_old = str_replace(' ', '', $item['old_price']); if($offer_price_old =='0') {$offer_price_old = '';} ?>
-    <?php $afflink = $item['url'] ;?>
+    <?php $offer_price = (!empty($item['price'])) ? $item['price'] : ''; ?>
+    <?php $offer_price_old = (!empty($item['price'])) ? $item['old_price'] : ''; ?>
+    <?php $offer_post_url = $item['url'] ;?>
+    <?php $afflink = apply_filters('rh_post_offer_url_filter', $offer_post_url );?>
     <?php $aff_thumb = $item['img'] ;?>
     <?php $offer_title = wp_trim_words( $item['title'], 20, '...' ); ?>
     <?php $offer_desc = $item['description'] ;?>  
@@ -40,10 +43,10 @@
 
 	            <?php if(!empty($offer_price)) : ?>
 	                <div class="deal-box-price" itemprop="offers" itemscope itemtype="http://schema.org/Offer">
-	                    <?php echo $item['price_formatted'] ?>
+	                    <?php echo TemplateHelper::formatPriceCurrency($item['price_raw'], $item['currency_code'], '<span class="cegg-currency">', '</span>'); ?>
 	                    <?php if(!empty($offer_price_old)) : ?>
 	                    <span class="retail-old">
-	                      <strike><span class="value"><?php echo $item['old_price_formatted']; ?></span></strike>
+	                      <strike><span class="value"><?php echo TemplateHelper::formatPriceCurrency($item['old_price_raw'], $item['currency_code'], '<small>', '</small>'); ?></span></strike>
 	                    </span>
 	                    <?php endif ;?>                
 	                    <meta itemprop="price" content="<?php echo $item['price_raw'] ?>">
@@ -64,7 +67,6 @@
 	                    <div>
 	                        <a class="re_track_btn btn_offer_block" href="<?php echo esc_url($afflink) ?>"<?php echo $item['ga_event'] ?> target="_blank" rel="nofollow">
 	                            <?php echo $btn_txt ; ?>
-	                            <span class="aff_tag mtinside"><?php echo rehub_get_site_favicon($item['orig_url']); ?></span>
 	                        </a>
 	                        <?php $offer_coupon_mask = 1 ?>
 	                        <?php if(!empty($item['extra']['coupon']['code_date'])) : ?>
@@ -99,6 +101,7 @@
 	                        <?php endif ;?>                                                  
 	                    </div>
 	                </div>
+	                <span class="aff_tag"><?php echo rehub_get_site_favicon($item['orig_url']); ?></span>	                
 	            </div> 
             </div>           
         </div> 

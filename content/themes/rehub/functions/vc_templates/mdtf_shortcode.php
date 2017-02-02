@@ -1,3 +1,4 @@
+<?php if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly ?>
 <?php 
     $post_type = $data_source = $orderby = $order = $show = $ajax = $pag_pos = $tax = $sortid ='';
     $atts = vc_map_get_attributes( $this->getShortcode(), $atts );

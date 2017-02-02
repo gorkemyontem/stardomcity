@@ -1,3 +1,6 @@
+<?php if ( ! defined( 'ABSPATH' ) ) {
+    exit; // Exit if accessed directly
+}?>
 <?php 
 	$rating_circle = $row['top_review_circle'];	
 	if ($rating_circle ==''){$exerptvalue = '1';};	    

@@ -1,3 +1,4 @@
+<?php if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly ?>
 <?php $post_type_show = (rehub_option('post_type_for_uu')) ? rehub_option('post_type_for_uu') : 'post';?>
 <?php $ultimatemember->shortcodes->loop = $ultimatemember->query->make('post_type='.$post_type_show.'&posts_per_page=10&offset=0&author=' . um_user('ID') ); ?>
 

@@ -1,3 +1,4 @@
+<?php if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly ?>
 <?php
 $output = $title = $interval = $el_class = $style_sec = '';
 $atts = vc_map_get_attributes( $this->getShortcode(), $atts );

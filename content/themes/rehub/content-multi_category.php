@@ -1,3 +1,4 @@
+<?php if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly ?>
 <div id="post-<?php the_ID(); ?>" class="clearfix multi_cat_artical">
 	<div class="multi_cat_image">
 		<?php if ( has_post_thumbnail() ) {

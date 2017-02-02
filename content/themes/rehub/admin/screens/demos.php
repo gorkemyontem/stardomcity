@@ -1,3 +1,4 @@
+<?php if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly ?>
 <?php
 $rehub_theme = wp_get_theme();
 if($rehub_theme->parent_theme) {
@@ -19,7 +20,7 @@ $prepare_request = array(
 	'sslverify'    => false,
 	'timeout'     => 10,
 );
-$demos_json = wp_remote_get( 'http://rehub.wpsoul.com/demosdata/rehubdemos.json', $prepare_request);
+$demos_json = wp_remote_get( PLUGIN_REPO.'demosdata/rehubdemos.json', $prepare_request);
 $demos = '';
 if ( ! is_wp_error( $demos_json ) ) {
 	$demos = wp_remote_retrieve_body( $demos_json );
@@ -59,7 +60,11 @@ if ( ! is_wp_error( $demos_json ) ) {
 			<a href="https://wordpress.org/plugins/wp-clone-by-wp-academy/" target="_blank"><?php echo __( "WP Clone plugin", "rehub_framework" ); ?></a>. 
 			<?php echo __( "Choose demo stack and click on Link button to see direct link of clone zip file. Just insert this link in plugin field - Restore from URL. ", "rehub_framework" ); ?>
 			<br /><br />
-			<strong style="color:red; font-size: 16px"><?php echo __( "Note, after installing, use login:rehubdemo, pass: RehubPass999777 to get access to admin page.", "rehub_framework" ); ?></strong> <?php echo __( "After installing demo clone - delete rehubdemo account. For this, create new account in Users - Add new, make it as administrator. Log out from rehubdemo and login as new account. Delete rehubdemo account in Users - all users. Assign all content to your new account while deleting", "rehub_framework" ); ?>
+			<strong style="color:red; font-size: 16px"><?php echo __( "Note, after installing, use login:rehubdemo, pass: RehubPass999777 to get access to admin page.", "rehub_framework" ); ?></strong> 
+			<br />
+			<strong style="color:red; font-size: 16px">After installing demo clone - delete rehubdemo account.</strong>
+			<br /><br />
+			For this, create new account in Users - Add new, make it as administrator. Log out from rehubdemo and login as new account. Delete rehubdemo account in Users - all users. <strong>Assign all content to your new account while deleting when wordpress ask you.</strong>
 			<br /><br />
 			<span class="re-show-hide"><?php echo __( "Common issues - read before install!!!!!!", "rehub_framework" ); ?></span>		
 			<span class="open-re-onclk">

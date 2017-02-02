@@ -1,7 +1,6 @@
+<?php if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly ?>
 <?php
 
-//Include Widget for deal of day
-include (locate_template( 'inc/widgets/dealwoo.php' ));
 include (locate_template( 'inc/widgets/woocategory.php' ));
 
 //CREATE BRAND TAXONOMY
@@ -313,7 +312,7 @@ function rehub_woocommerce_placeholder_img_src( $src ) {
 //////////////////////////////////////////////////////////////////
 // Woo update cart in header
 //////////////////////////////////////////////////////////////////
-if (rehub_option('woo_cart_place') =='1' || rehub_option('woo_cart_place') =='2'){
+if (rehub_option('woo_cart_place') =='1' || rehub_option('woo_cart_place') =='2' || rehub_option('rehub_header_style') =='header_seven'){
 	add_filter('add_to_cart_fragments', 'woocommerce_header_add_to_cart_fragment');
 	if( !function_exists('woocommerce_header_add_to_cart_fragment') ) { 
 	function woocommerce_header_add_to_cart_fragment( $fragments ) {
@@ -322,7 +321,7 @@ if (rehub_option('woo_cart_place') =='1' || rehub_option('woo_cart_place') =='2'
 		?>
 		<?php if (rehub_option('woo_cart_place') =='1'):?>
 			<a class="cart-contents cart_count_<?php echo $woocommerce->cart->cart_contents_count; ?>" href="<?php echo $woocommerce->cart->get_cart_url(); ?>"><i class="fa fa-shopping-cart"></i> <?php _e( 'Cart', 'rehub_framework' ); ?> (<?php echo $woocommerce->cart->cart_contents_count; ?>) - <?php echo $woocommerce->cart->get_cart_total(); ?></a>		
-		<?php elseif (rehub_option('woo_cart_place') =='2'):?>
+		<?php elseif (rehub_option('woo_cart_place') =='2' || rehub_option('rehub_header_style') =='header_seven'):?>
 			<a class="rh_woocartmenu-link icon-in-main-menu menu-item-one-line cart-contents cart_count_<?php echo $woocommerce->cart->cart_contents_count; ?>" href="<?php echo $woocommerce->cart->get_cart_url(); ?>"><span class="rh_woocartmenu-icon"><strong><?php echo $woocommerce->cart->cart_contents_count;?></strong><span class="rh_woocartmenu-icon-handle"></span></span><span class="rh_woocartmenu-amount"><?php echo $woocommerce->cart->get_cart_total();?></span></a>		
 		<?php endif;?>
 		<?php
@@ -793,7 +792,8 @@ if (!function_exists('rh_change_product_query')){
 		if (rehub_option('woo_exclude_expired') == '1') {
 			//exclude from woo archives expired products
 		    if (is_post_type_archive('product') || is_product_category()) {
-			    $q->set( 'meta_query', array(
+		    	$meta_query = $q->get( 'meta_query' );
+			    $meta_query[] = array(
 			    	'relation' => 'OR',
 			    	array(
 			       		'key' => 're_post_expired',
@@ -804,7 +804,8 @@ if (!function_exists('rh_change_product_query')){
 			       		'key' => 're_post_expired',
 			       		'compare' => 'NOT EXISTS',
 			    	),				    	 				    	   	
-			    ));
+			    );
+			    $q->set( 'meta_query', $meta_query );
 			}
 		}
 		if (is_tax('store')){ //Here we change number of posts in brand store archives
@@ -870,6 +871,39 @@ if (rehub_option('wooregister_xprofile') == 1){
 	}
 	}	
 
+	//Validating required Xprofile fields
+	add_action( 'woocommerce_register_post', 'rh_validate_xprofile_to_woocommerce_register', 10, 3 );
+	function rh_validate_xprofile_to_woocommerce_register( $username, $email, $validation_errors ) {
+		if ( class_exists( 'BuddyPress' ) ) {
+			if (!empty($_POST['signup_profile_field_ids']) && rehub_option('wooregister_xprofile_hidename') !=1){
+				$user_error_req_fields = array();
+				$signup_profile_field_ids = explode(',', $_POST['signup_profile_field_ids']);
+				foreach ((array)$signup_profile_field_ids as $field_id) {
+					if ( ! isset( $_POST['field_' . $field_id] ) ) {
+						if ( ! empty( $_POST['field_' . $field_id . '_day'] ) && ! empty( $_POST['field_' . $field_id . '_month'] ) && ! empty( $_POST['field_' . $field_id . '_year'] ) ) {
+							// Concatenate the values.
+							$date_value = $_POST['field_' . $field_id . '_day'] . ' ' . $_POST['field_' . $field_id . '_month'] . ' ' . $_POST['field_' . $field_id . '_year'];
+
+							// Turn the concatenated value into a timestamp.
+							$_POST['field_' . $field_id] = date( 'Y-m-d H:i:s', strtotime( $date_value ) );
+							
+						}
+					}
+					// Create errors for required fields without values.
+					if ( xprofile_check_is_required_field( $field_id ) && empty( $_POST[ 'field_' . $field_id ] ) && ! bp_current_user_can( 'bp_moderate' ) ){
+						$field_data = xprofile_get_field($field_id );
+						if(is_object($field_data)){
+							$user_error_req_fields[]= $field_data->name;
+						}		
+					}
+				}
+				if(!empty($user_error_req_fields)){
+		        	$validation_errors->add( 'billing_first_name_error', __( ' Next fields are required: ', 'rehub_framework' ).implode(', ',$user_error_req_fields) );									
+				}			
+			}
+		}	 
+	    return $validation_errors;
+	} 	
 
 	//Updating use meta after registration successful registration
 	add_action('woocommerce_created_customer','rh_save_xprofile_to_woocommerce_register');
@@ -891,10 +925,12 @@ if (rehub_option('wooregister_xprofile') == 1){
 				if(!empty($_POST['field_' . $field_id])){
 					$field_val = $_POST['field_' . $field_id];
 					xprofile_set_field_data($field_id, $user_id, $field_val);
+					$visibility_level = ! empty( $_POST['field_' . $field_id . '_visibility'] ) ? $_POST['field_' . $field_id . '_visibility'] : 'public';
+					xprofile_set_field_visibility_level( $field_id, $user_id, $visibility_level );					
 				}			
 			}
 		}
-	}
+	}	
 
 }
 

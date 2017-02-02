@@ -3,7 +3,7 @@
  * Name: Price history table with graph
  * Modules:
  * Module Types: PRODUCT
- * 
+ * Shortcoded: FALSE
  */
 ?>
 <?php
@@ -51,7 +51,9 @@ use ContentEgg\application\helpers\TemplateHelper;
                     </div>
                 </td>
                 <td class="rh-tabletext-block-right">
+                    <div class="rh-table-price-graph">
                     <?php TemplateHelper::priceHistoryMorrisChart($unique_id, $module_id, 180, array('lineWidth' => 2, 'postUnits' => ' ' . $syncitem['currencyCode'], 'goals' => array((int) $syncitem['price']), 'fillOpacity' => 0.5), array('style' => 'height: 230px;')); ?>
+                    </div>
                     <ul class="rh-lowest-highest">
                         <?php $price = TemplateHelper::priceHistoryMax($unique_id, $module_id); ?>
                         <?php if ($price): ?>

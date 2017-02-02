@@ -1,3 +1,4 @@
+<?php if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly ?>
 <?php 
 	$video_line = (!empty($row['video_line'])) ? $row['video_line'] : '';		    
 ?>

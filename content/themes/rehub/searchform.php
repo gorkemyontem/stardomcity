@@ -1,3 +1,4 @@
+<?php if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly ?>
 <?php $search_text = (rehub_option("rehub_search_text")) ? rehub_option("rehub_search_text") : __("Search", "rehub_framework"); ?>
 <?php $posttypes = rehub_option("rehub_search_ptypes");?>
 <?php $posttype = (!empty($posttypes) && is_array($posttypes)) ? implode(',', $posttypes) : 'post'; ?>

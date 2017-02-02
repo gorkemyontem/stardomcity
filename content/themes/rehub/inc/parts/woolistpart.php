@@ -1,3 +1,4 @@
+<?php if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly ?>
 <?php global $product; global $post;?>
 <?php if (empty( $product ) || ! $product->is_visible() ) {return;}?>
 <?php $woolink = ($product->product_type =='external' && $product->add_to_cart_url() !='') ? $product->add_to_cart_url() : get_post_permalink($post->ID) ;?>

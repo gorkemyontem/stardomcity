@@ -1,4 +1,4 @@
-
+<?php if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly ?>
 <?php 
 	$q = new WP_Query( bcg_get_query() );
 	global $post;

@@ -1,3 +1,6 @@
+<?php if ( ! defined( 'ABSPATH' ) ) {
+    exit; // Exit if accessed directly
+}?>
 <?php 
 	$metavalues = $row['column_meta_fields'];	    
 ?>

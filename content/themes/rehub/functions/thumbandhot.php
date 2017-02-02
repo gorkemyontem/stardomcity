@@ -1,3 +1,4 @@
+<?php if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly ?>
 <?php
 
 //////////////////////////////////////////////////////////////////////////////
@@ -314,15 +315,15 @@ function getHotThumb( $post_id, $comment_meta = false, $deal_score = false, $onl
     $output .= '<span class="table_cell_thumbs">';
         if ($onlyone == false) {
             if ( AlreadyHot( $post_id ) ) { // already liked, set up unlike addon
-                $output .= '<button class="thumbminus alreadyhot" alt="'.__('Vote down', 'rehub_framework').'" title="'.__('Vote down', 'rehub_framework').'" data-post_id="'.$post_id.'" data-informer="'.$temp.'"></button>';
+                $output .= '<button class="thumbminus alreadyhot" title="'.__('Vote down', 'rehub_framework').'" data-post_id="'.$post_id.'" data-informer="'.$temp.'"></button>';
             } else { // normal like button
-                $output .= '<button class="thumbminus" alt="'.__('Vote down', 'rehub_framework').'" title="'.__('Vote down', 'rehub_framework').'" data-post_id="'.$post_id.'" data-informer="'.$temp.'"></button>';
+                $output .= '<button class="thumbminus" title="'.__('Vote down', 'rehub_framework').'" data-post_id="'.$post_id.'" data-informer="'.$temp.'"></button>';
             }
         }    
         if ( AlreadyHot( $post_id ) ) { // already liked, set up unlike addon
-            $output .= '<button class="thumbplus alreadyhot'.$onlyheartclass.'" alt="'.__('Vote up', 'rehub_framework').'" title="'.__('Vote up', 'rehub_framework').'" data-post_id="'.$post_id.'" data-informer="'.$temp.'"></button>';
+            $output .= '<button class="thumbplus alreadyhot'.$onlyheartclass.'" title="'.__('Vote up', 'rehub_framework').'" data-post_id="'.$post_id.'" data-informer="'.$temp.'"></button>';
         } else { // normal like button
-            $output .= '<button class="thumbplus'.$onlyheartclass.'" alt="'.__('Vote up', 'rehub_framework').'" title="'.__('Vote up', 'rehub_framework').'" data-post_id="'.$post_id.'" data-informer="'.$temp.'"></button>';
+            $output .= '<button class="thumbplus'.$onlyheartclass.'" title="'.__('Vote up', 'rehub_framework').'" data-post_id="'.$post_id.'" data-informer="'.$temp.'"></button>';
         }   
     $output .= '</span>';
     if ($deal_score == false) {
@@ -359,7 +360,7 @@ function getHotSingleButton( $post_id ) {
     $output .= '<span class="post_thumbs_meter">';    
     $output .= '<span class="table_cell_thumbs">';
     $alreadyhotclass = ( AlreadyHot( $post_id ) ) ? ' alreadyhot' : '';
-    $output .= '<button class="thumbplus heartplus'.$alreadyhotclass.'" alt="'.__('Vote up', 'rehub_framework').'" title="'.__('Vote up', 'rehub_framework').'" data-post_id="'.$post_id.'" data-informer="'.$temp.'"></button>';   
+    $output .= '<button class="thumbplus heartplus'.$alreadyhotclass.'" title="'.__('Vote up', 'rehub_framework').'" data-post_id="'.$post_id.'" data-informer="'.$temp.'"></button>';   
     $output .= '</span>';
         $output .= '<span id="thumbscount'.$post_id.'" class="thumbscount';
         if ($temp < 0) :

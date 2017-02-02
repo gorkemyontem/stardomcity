@@ -1,3 +1,4 @@
+<?php if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly ?>
 <?php if (!empty ($attributes)) :?>
     <div class="wpsm-table wpsm-icecat-spec">
         <table>

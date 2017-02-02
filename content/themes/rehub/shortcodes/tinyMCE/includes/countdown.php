@@ -1,4 +1,5 @@
-<?php require_once(dirName(__FILE__).'/../../../../../../wp-load.php'); ?>
+<?php if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly ?>
+
 <script data-cfasync="false">
 jQuery(document).ready(function() {
 	// handles the click event of the submit box

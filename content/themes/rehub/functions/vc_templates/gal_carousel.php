@@ -1,3 +1,4 @@
+<?php if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly ?>
 <?php
 $output = $onclick = $custom_links = $images = $el_class = $custom_links_target = '';
 $onclick = 'link_image';

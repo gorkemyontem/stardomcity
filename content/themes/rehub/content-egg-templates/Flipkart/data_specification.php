@@ -6,11 +6,12 @@ use ContentEgg\application\helpers\TemplateHelper;
 ?>
 
 <?php foreach ($items as $item): ?>
+
     <?php if(!empty($item['extra']['specificationList'])):?>
         <div class="wpsm-table wpsm-icecat-spec">
             <table>
                 <?php foreach($item['extra']['specificationList'] as $specarray): ?>
-                    <?php if(!empty($specarray['values'])):?>
+                    <?php if(!empty($specarray['values']) && !empty($specarray['key']) && $specarray['key'] !='Important Note'):?>
                         <tr class="heading-th-spec-line">
                             <th colspan="2"></th>
                         </tr>            
@@ -28,14 +29,13 @@ use ContentEgg\application\helpers\TemplateHelper;
                                         <?php endforeach;?>
                                     </td>
                                 <?php else:?>
-                                    <?php foreach ($f as $key => $spec) :?>
-                                        <td class="icecat-spec-val"><?php echo $key;?></td>
-                                        <td>
-                                            <?php foreach ($spec as $key => $value) :?>
-                                                <?php echo $value;?>
-                                            <?php endforeach;?>
-                                        </td>                                        
-                                    <?php endforeach;?>                                    
+                                	<?php if(!empty($f['value']) && is_array($f['value'])):?>
+                                		<td colspan="2">
+		                                    <?php foreach ($f['value'] as $key => $value) :?>
+		                                        <?php echo $value;?>                                       
+		                                    <?php endforeach;?>
+	                                    </td>
+                                    <?php endif;?>                                    
                                 <?php endif;?>
                             </tr>
                         <?php endforeach; ?>

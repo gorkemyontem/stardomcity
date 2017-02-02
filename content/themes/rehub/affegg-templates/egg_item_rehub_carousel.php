@@ -1,7 +1,9 @@
+<?php if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly ?>
 <?php
 /*
   Name: Carousel
  */
+use Keywordrush\AffiliateEgg\TemplateHelper;  
 ?>
 <?php
 //$product_price_update = get_post_meta( get_the_ID(), 'affegg_product_last_update', true );
@@ -15,9 +17,10 @@
         <div class="re_carousel egg_carousel" data-showrow="4" data-auto="0" data-laizy="1">    
             
             <?php $i=0; foreach ($items as $key => $item): ?>
-                <?php $offer_price = str_replace(' ', '', $item['price']); if($offer_price =='0') {$offer_price = '';} ?>
-                <?php $offer_price_old = str_replace(' ', '', $item['old_price']); if($offer_price_old =='0') {$offer_price_old = '';} ?>
-                <?php $afflink = $item['url'] ;?>
+                <?php $offer_price = (!empty($item['price'])) ? $item['price'] : ''; ?>
+                <?php $offer_price_old = (!empty($item['price'])) ? $item['old_price'] : ''; ?>
+                <?php $offer_post_url = $item['url'] ;?>
+                <?php $afflink = apply_filters('rh_post_offer_url_filter', $offer_post_url );?>
                 <?php $aff_thumb = $item['img'] ;?>
                 <?php $offer_title = wp_trim_words( $item['title'], 8, '...' ); ?>
                 <?php $i++;?> 
@@ -55,10 +58,10 @@
                             <?php if(!empty($offer_price)) : ?>
                                 <p itemprop="offers" itemscope itemtype="http://schema.org/Offer">
                                     <span>
-                                        <?php echo $item['price_formatted']; ?>
+                                        <?php echo TemplateHelper::formatPriceCurrency($item['price_raw'], $item['currency_code'], '<span class="cegg-currency">', '</span>'); ?>
                                         <?php if(!empty($offer_price_old)) : ?>
                                         <del>
-                                            <span class="amount"><?php echo $item['old_price_formatted'] ?></span>
+                                            <span class="amount"><?php echo TemplateHelper::formatPriceCurrency($item['old_price_raw'], $item['currency_code'], '', ''); ?></span>
                                         </del>
                                         <?php endif ;?>                                      
                                     </span> 

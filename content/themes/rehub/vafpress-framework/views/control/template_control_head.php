@@ -1,3 +1,4 @@
+<?php if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly ?>
 <div class="vp-field <?php echo $type; ?><?php echo !empty($container_extra_classes) ? (' ' . $container_extra_classes) : ''; ?>"
 	data-vp-type="<?php echo $type; ?>"
 	<?php echo VP_Util_Text::print_if_exists($validation, 'data-vp-validation="%s"'); ?>
@@ -7,7 +8,6 @@
 	id="<?php echo $name; ?>">
 	<div class="label">
 		<label><?php echo $label; ?></label>
-		<?php VP_Util_Text::print_if_exists($description, '<div class="description">%s</div>'); ?>
 	</div>
 	<div class="field">
 		<div class="input">

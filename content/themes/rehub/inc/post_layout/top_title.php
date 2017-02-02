@@ -1,3 +1,4 @@
+<?php if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly ?>
 <!-- Title area -->
 <div class="rh_post_layout_default">
 <div class="title_single_area">
