@@ -1,3 +1,4 @@
+<?php if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly ?>
 <?php global $post;?>
 <?php $image = (isset($image)) ? $image : '';?>
 <div class="item-small-news <?php if($image):?> item-small-news-image<?php endif;?>">

@@ -1,3 +1,4 @@
+<?php if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly ?>
 <?php
 
 define('REHUB_ADMIN', get_stylesheet_directory() . '/admin');

@@ -198,7 +198,7 @@ $theme_options =  array(
 						array(
 							'type' => 'color',
 							'name' => 'rehub_btnoffer_color',
-							'label' => __('Set offer buttons color.', 'rehub_framework'),
+							'label' => __('Set offer buttons color', 'rehub_framework'),
 							'format' => 'hex',
 							'default'=> '#ff4e0c',						
 						),	
@@ -230,14 +230,13 @@ $theme_options =  array(
 							'type' => 'color',
 							'name' => 'rehub_color_background',
 							'label' => __('Background Color', 'rehub_framework'),
-							'description' => __('This works only if you set background image. For flat background - use option above', 'rehub_framework'),
 							'format' => 'hex',
 						),
 						array(
 							'type' => 'upload',
 							'name' => 'rehub_background_image',
 							'label' => __('Background Image', 'rehub_framework'),
-							'description' => __('Upload a background image', 'rehub_framework'),
+							'description' => __('Upload a background image. This field works only if you set also background color in field above', 'rehub_framework'),
 							'default' => '',
 						),
 						array(
@@ -289,7 +288,7 @@ $theme_options =  array(
 							'type' => 'textbox',
 							'name' => 'rehub_background_offset',
 							'label' => __('Set offset', 'rehub_framework'),
-							'description' => __('Set offset from top for background (without px) for avoid header overlap', 'rehub_framework'),
+							'description' => __('Set offset from top for background (with px) for avoid header overlap', 'rehub_framework'),
 							'validation' => 'numeric',
 						),
 						array(
