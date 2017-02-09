@@ -98,6 +98,11 @@ nav.top_menu > ul > li > a:hover, nav.top_menu > ul > li.current-menu-item a{bor
 #rh-header-bp-avatar img{
   border: 0px solid #fff !important;
 }
+
+/* Coverdaki puanlari kaldirir*/
+#rh-bp-profile-stats{
+  display: none;
+}
 .wcvendors-pro-dashboard-wrapper .wcv_product_attributes .wcv-column-group .align-right{
   display: none;
 }

@@ -279,7 +279,7 @@ function rh_show_vendor_store_in_bp() {
 	rh_show_vendor_ministore($vendor_id, $label);
 }}
 if (defined('wcv_plugin_dir')) {
-add_action( 'bp_after_member_header', 'rh_show_vendor_store_in_bp' );
+add_action( 'bp_after_member_body', 'rh_show_vendor_store_in_bp' );
 }
 
 if(!bp_is_active( 'activity' ) && REHUB_NAME_ACTIVE_THEME == 'REVENDOR'){
