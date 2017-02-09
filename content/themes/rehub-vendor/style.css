@@ -4,7 +4,7 @@
   Description: A Hybrid magazine/shop/review/news Wordpress Theme
   Author: Wpsoul
   Author URI: https://wpsoul.com/
-  Version: 6.7
+  Version: 6.8
   Template: rehub
   Text Domain: rehubchild
 */
@@ -141,8 +141,11 @@ Adapted from: http://blog.heyimcat.com/universal-signup-form/ */
 .mc-field-group {
     display: inline-block;
 }
-/* positions input field horizontally */
 
+#dl-menu a.logo_image_mobile img{ position: absolute; top: 0; left: 100px; right: auto; bottom: 0; margin: auto; display: block;}
+.rh-content-wrap{padding: 0px;}
+
+/* positions input field horizontally */
 #mc_embed_signup input.email {
     font-family: "Open Sans", "Helvetica Neue", Arial, Helvetica, Verdana, sans-serif;
     font-size: 15px;
